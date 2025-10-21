@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.datamate.datamanagement.infrastructure.persistence.mapper.DatasetMapper">
+
+  <sql id="Base_Column_List">
+    id, name, description, dataset_type, category, path, format, schema_info, size_bytes, file_count, record_count,
+        retention_days, tags, metadata, status, is_public, is_featured, version, created_at, updated_at, created_by, updated_by
+  </sql>
+
+  <sql id="Alias_D_Column_List">
+        d.id AS id,
+        d.name AS name,
+        d.description AS description,
+        d.dataset_type AS dataset_type,
+        d.category AS category,
+        d.path AS path,
+        d.format AS format,
+        d.schema_info AS schema_info,
+        d.size_bytes AS size_bytes,
+        d.file_count AS file_count,
+        d.record_count AS record_count,
+        d.retention_days AS retention_days,
+        d.tags AS tags,
+        d.metadata AS metadata,
+        d.status AS status,
+        d.is_public AS is_public,
+        d.is_featured AS is_featured,
+        d.version AS version,
+        d.created_at AS created_at,
+        d.updated_at AS updated_at,
+        d.created_by AS created_by,
+        d.updated_by AS updated_by
+  </sql>
+
+  <select id="findById" parameterType="string" resultType="com.datamate.datamanagement.domain.model.dataset.Dataset">
+        SELECT <include refid="Base_Column_List"/>
+        FROM t_dm_datasets
+        WHERE id = #{id}
+    </select>
+
+  <select id="findByName" parameterType="string"
+          resultType="com.datamate.datamanagement.domain.model.dataset.Dataset">
+        SELECT <include refid="Base_Column_List"/>
+        FROM t_dm_datasets
+        WHERE name = #{name}
+        LIMIT 1
+    </select>
+
+  <select id="findByStatus" parameterType="string"
+          resultType="com.datamate.datamanagement.domain.model.dataset.Dataset">
+        SELECT <include refid="Base_Column_List"/>
+        FROM t_dm_datasets
+        WHERE status = #{status}
+        ORDER BY updated_at DESC
+    </select>
+
+  <select id="findByCreatedBy" resultType="com.datamate.datamanagement.domain.model.dataset.Dataset">
+        SELECT <include refid="Base_Column_List"/>
+        FROM t_dm_datasets
+        WHERE created_by = #{createdBy}
+        ORDER BY created_at DESC
+    </select>
+
+  <select id="findByTypeCode" resultType="com.datamate.datamanagement.domain.model.dataset.Dataset">
+        SELECT <include refid="Base_Column_List"/>
+        FROM t_dm_datasets
+        WHERE dataset_type = #{typeCode}
+        ORDER BY created_at DESC
+    </select>
+
+  <select id="findByTagNames" resultType="com.datamate.datamanagement.domain.model.dataset.Dataset">
+        SELECT DISTINCT <include refid="Alias_D_Column_List"/>
+        FROM t_dm_datasets d
+        JOIN t_dm_dataset_tags dt ON d.id = dt.dataset_id
+        JOIN t_dm_tags t ON t.id = dt.tag_id
+        WHERE t.name IN
+        <foreach collection="tagNames" item="name" open="(" separator="," close=")">
+            #{name}
+        </foreach>
+        ORDER BY d.created_at DESC
+    </select>
+
+  <select id="findByKeyword" resultType="com.datamate.datamanagement.domain.model.dataset.Dataset">
+        SELECT <include refid="Base_Column_List"/>
+        FROM t_dm_datasets
+        WHERE name LIKE CONCAT('%', #{keyword}, '%')
+           OR description LIKE CONCAT('%', #{keyword}, '%')
+        ORDER BY created_at DESC
+    </select>
+
+  <select id="findByCriteria" resultType="com.datamate.datamanagement.domain.model.dataset.Dataset">
+        SELECT DISTINCT <include refid="Alias_D_Column_List"/>
+        FROM t_dm_datasets d
+        LEFT JOIN t_dm_dataset_tags dt ON d.id = dt.dataset_id
+        LEFT JOIN t_dm_tags t ON t.id = dt.tag_id
+        <where>
+            <if test="typeCode != null and typeCode != ''">
+                AND d.dataset_type = #{typeCode}
+            </if>
+            <if test="status != null and status != ''">
+                AND d.status = #{status}
+            </if>
+            <if test="keyword != null and keyword != ''">
+                AND (d.name LIKE CONCAT('%', #{keyword}, '%') OR d.description LIKE CONCAT('%', #{keyword}, '%'))
+            </if>
+            <if test="tagNames != null and tagNames.size > 0">
+                AND t.name IN
+                <foreach collection="tagNames" item="n" open="(" separator="," close=")">
+                    #{n}
+                </foreach>
+            </if>
+        </where>
+        ORDER BY d.created_at DESC
+    </select>
+
+    <select id="countByCriteria" resultType="long">
+        SELECT COUNT(DISTINCT d.id)
+        FROM t_dm_datasets d
+        LEFT JOIN t_dm_dataset_tags dt ON d.id = dt.dataset_id
+        LEFT JOIN t_dm_tags t ON t.id = dt.tag_id
+        <where>
+            <if test="typeCode != null and typeCode != ''">
+                AND d.dataset_type = #{typeCode}
+            </if>
+            <if test="status != null and status != ''">
+                AND d.status = #{status}
+            </if>
+            <if test="keyword != null and keyword != ''">
+                AND (d.name LIKE CONCAT('%', #{keyword}, '%') OR d.description LIKE CONCAT('%', #{keyword}, '%'))
+            </if>
+            <if test="tagNames != null and tagNames.size > 0">
+                AND t.name IN
+                <foreach collection="tagNames" item="n" open="(" separator="," close=")">
+                    #{n}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+    <delete id="deleteById" parameterType="string">
+        DELETE FROM t_dm_datasets WHERE id = #{id}
+    </delete>
+
+    <select id="getAllDatasetStatistics" resultType="com.datamate.datamanagement.interfaces.dto.AllDatasetStatisticsResponse">
+      SELECT
+        COUNT(*) AS total_datasets,
+        SUM(size_bytes) AS total_size,
+        SUM(file_count) AS total_files
+      FROM t_dm_datasets;
+    </select>
+</mapper>

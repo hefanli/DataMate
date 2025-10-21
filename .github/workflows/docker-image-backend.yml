@@ -1,0 +1,27 @@
+name: Backend Docker Image CI
+
+on:
+  push:
+    branches: [ "develop_930" ]
+    paths:
+      - 'backend/**'
+      - 'scripts/images/backend/**'
+      - '.github/workflows/docker-image-backend.yml'
+  pull_request:
+    branches: [ "develop_930" ]
+    paths:
+      - 'backend/**'
+      - 'scripts/images/backend/**'
+      - '.github/workflows/docker-image-backend.yml'
+  workflow_dispatch:
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Build the Backend Docker image
+      run: make build-backend

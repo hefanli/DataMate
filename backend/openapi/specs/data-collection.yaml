@@ -1,0 +1,517 @@
+openapi: 3.0.3
+info:
+  title: Data Collection Service API
+  description: |
+    数据归集服务API，基于数据归集实现数据采集和归集功能。
+
+    主要功能：
+    - 数据归集任务创建和管理
+    - 数据同步任务执行
+    - 任务监控和状态查询
+    - 执行日志查看
+
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8090/api/v1/collection
+    description: Development server
+
+tags:
+  - name: CollectionTask
+    description: 数据归集任务管理（包括模板查询）
+  - name: TaskExecution
+    description: 任务执行管理
+
+paths:
+  /data-collection/tasks:
+    get:
+      operationId: getTasks
+      tags: [CollectionTask]
+      summary: 获取归集任务列表
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 0
+        - name: size
+          in: query
+          schema:
+            type: integer
+            default: 20
+        - name: status
+          in: query
+          schema:
+            $ref: '#/components/schemas/TaskStatus'
+        - name: name
+          in: query
+          description: 任务名称关键字搜索
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 归集任务列表
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagedCollectionTaskSummary'
+
+    post:
+      operationId: createTask
+      tags: [CollectionTask]
+      summary: 创建归集任务
+      description: 创建新的数据归集任务
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCollectionTaskRequest'
+      responses:
+        '201':
+          description: 归集任务创建成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionTaskResponse'
+
+  /data-collection/tasks/{id}:
+    get:
+      operationId: getTaskDetail
+      tags: [CollectionTask]
+      summary: 获取归集任务详情
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 归集任务详情
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionTaskResponse'
+        '404':
+          description: 归集任务不存在
+
+    put:
+      operationId: updateTask
+      tags: [CollectionTask]
+      summary: 更新归集任务
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCollectionTaskRequest'
+      responses:
+        '200':
+          description: 归集任务更新成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionTaskResponse'
+
+    delete:
+      operationId: deleteTask
+      tags: [CollectionTask]
+      summary: 删除归集任务
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: 归集任务删除成功
+
+  /tasks/{id}/execute:
+    post:
+      tags: [TaskExecution]
+      summary: 执行归集任务
+      description: 立即执行指定的归集任务
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '201':
+          description: 任务执行已启动
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskExecutionResponse'
+
+  /tasks/{id}/executions:
+    get:
+      tags: [TaskExecution]
+      summary: 获取任务执行记录
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 0
+        - name: size
+          in: query
+          schema:
+            type: integer
+            default: 20
+      responses:
+        '200':
+          description: 任务执行记录列表
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagedTaskExecutions'
+
+  /executions/{id}:
+    get:
+      tags: [TaskExecution]
+      summary: 获取执行详情
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 执行详情
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskExecutionDetail'
+
+    delete:
+      tags: [TaskExecution]
+      summary: 停止任务执行
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: 任务执行已停止
+
+  /templates:
+    get:
+      tags: [CollectionTask]
+      summary: 获取DataX模板列表
+      description: 获取可用的DataX任务模板列表，用于创建任务时选择
+      parameters:
+        - name: sourceType
+          in: query
+          description: 源数据源类型过滤
+          schema:
+            type: string
+        - name: targetType
+          in: query
+          description: 目标数据源类型过滤
+          schema:
+            type: string
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 0
+        - name: size
+          in: query
+          schema:
+            type: integer
+            default: 20
+      responses:
+        '200':
+          description: 归集模板列表
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagedDataxTemplates'
+
+components:
+  schemas:
+    TaskStatus:
+      type: string
+      enum:
+        - DRAFT
+        - READY
+        - RUNNING
+        - SUCCESS
+        - FAILED
+        - STOPPED
+      description: |
+        任务和执行状态枚举:
+        - DRAFT: 草稿状态
+        - READY: 就绪状态
+        - RUNNING: 运行中
+        - SUCCESS: 执行成功 (对应原来的COMPLETED/SUCCESS)
+        - FAILED: 执行失败
+        - STOPPED: 已停止
+
+    SyncMode:
+      type: string
+      enum: [ONCE, SCHEDULED]
+      description: 同步方式：一次性(ONCE) 或 定时(SCHEDULED)
+
+    CollectionTaskSummary:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        status:
+          $ref: '#/components/schemas/TaskStatus'
+        syncMode:
+          $ref: '#/components/schemas/SyncMode'
+        lastExecutionId:
+          type: string
+          description: 最后执行ID
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      description: 任务列表摘要信息（不包含详细配置与调度表达式）
+
+    CollectionTaskResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        config:
+          type: object
+          additionalProperties: true
+          description: 归集配置，包含源端和目标端配置信息
+        status:
+          $ref: '#/components/schemas/TaskStatus'
+        syncMode:
+          $ref: '#/components/schemas/SyncMode'
+        scheduleExpression:
+          type: string
+          description: Cron调度表达式 (仅当 syncMode = SCHEDULED 时有效)
+        lastExecutionId:
+          type: string
+          description: 最后执行ID
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    CreateCollectionTaskRequest:
+      type: object
+      required:
+        - name
+        - config
+        - syncMode
+      properties:
+        name:
+          type: string
+          description: 任务名称
+          minLength: 1
+          maxLength: 100
+        description:
+          type: string
+          description: 任务描述
+          maxLength: 500
+        config:
+          type: object
+          description: 归集配置，包含源端和目标端配置信息
+          additionalProperties: true
+        syncMode:
+          $ref: '#/components/schemas/SyncMode'
+        scheduleExpression:
+          type: string
+          description: Cron调度表达式 (syncMode=SCHEDULED 时必填)
+
+    UpdateCollectionTaskRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: 任务名称
+          minLength: 1
+          maxLength: 100
+        description:
+          type: string
+          description: 任务描述
+          maxLength: 500
+        config:
+          type: object
+          description: 归集配置，包含源端和目标端配置信息
+          additionalProperties: true
+        syncMode:
+          $ref: '#/components/schemas/SyncMode'
+        scheduleExpression:
+          type: string
+          description: Cron调度表达式 (syncMode=SCHEDULED 时必填)
+
+    PagedCollectionTaskSummary:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/CollectionTaskSummary'
+        totalElements:
+          type: integer
+        totalPages:
+          type: integer
+        number:
+          type: integer
+        size:
+          type: integer
+
+    PagedCollectionTasks:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/CollectionTaskResponse'
+        totalElements:
+          type: integer
+        totalPages:
+          type: integer
+        number:
+          type: integer
+        size:
+          type: integer
+
+    TaskExecutionResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        taskId:
+          type: string
+        taskName:
+          type: string
+        status:
+          $ref: '#/components/schemas/TaskStatus'
+        startedAt:
+          type: string
+          format: date-time
+
+    TaskExecutionDetail:
+      type: object
+      properties:
+        id:
+          type: string
+        taskId:
+          type: string
+        taskName:
+          type: string
+        status:
+          $ref: '#/components/schemas/TaskStatus'
+        progress:
+          type: number
+          format: double
+          minimum: 0
+          maximum: 100
+        recordsTotal:
+          type: integer
+        recordsProcessed:
+          type: integer
+        recordsSuccess:
+          type: integer
+        recordsFailed:
+          type: integer
+        throughput:
+          type: number
+          format: double
+        dataSizeBytes:
+          type: integer
+        startedAt:
+          type: string
+          format: date-time
+        completedAt:
+          type: string
+          format: date-time
+        durationSeconds:
+          type: integer
+        errorMessage:
+          type: string
+
+    PagedTaskExecutions:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/TaskExecutionDetail'
+        totalElements:
+          type: integer
+        totalPages:
+          type: integer
+        number:
+          type: integer
+        size:
+          type: integer
+
+    DataxTemplateSummary:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        sourceType:
+          type: string
+          description: 源数据源类型
+        targetType:
+          type: string
+          description: 目标数据源类型
+        description:
+          type: string
+        version:
+          type: string
+        isSystem:
+          type: boolean
+          description: 是否为系统模板
+        createdAt:
+          type: string
+          format: date-time
+
+    PagedDataxTemplates:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/DataxTemplateSummary'
+        totalElements:
+          type: integer
+        totalPages:
+          type: integer
+        number:
+          type: integer
+        size:
+          type: integer

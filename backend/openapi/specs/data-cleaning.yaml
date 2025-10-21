@@ -1,0 +1,491 @@
+openapi: 3.0.3
+info:
+  title: Data Cleaning Service API
+  description: 数据清洗服务API - 策略/规则、流程编排对接
+  version: 1.0.0
+  contact:
+    name: Data Mate Platform Team
+
+servers:
+  - url: http://localhost:8084
+    description: Development server
+
+tags:
+  - name: CleaningTask
+    description: 数据清洗任务管理
+  - name: CleaningTemplate
+    description: 数据清洗模板管理
+
+paths:
+  /ray/log:
+    get:
+      summary: 获取ray日志文件
+      deprecated: false
+      description: ''
+      tags: [ ]
+      parameters: [ ]
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: { }
+          headers: { }
+      security: [ ]
+  /cleaning/tasks:
+    get:
+      summary: 查询数据清洗任务列表
+      deprecated: false
+      description: 获取所有数据清洗任务或根据查询参数筛选任务。
+      tags:
+        - CleaningTask
+      parameters:
+        - name: status
+          in: query
+          description: 根据任务状态筛选 (e.g., pending, running, completed, failed)
+          required: false
+          schema:
+            type: string
+        - name: keywords
+          in: query
+          description: 关键字
+          required: false
+          schema:
+            type: string
+        - name: page
+          in: query
+          description: 分页数
+          required: true
+          schema:
+            type: integer
+        - name: size
+          in: query
+          description: 分页单页数
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 成功获取任务列表
+          content:
+            application/json:
+              schema:
+                type: array
+                items: &ref_1
+                  $ref: '#/components/schemas/CleaningTask'
+          headers: { }
+      security: [ ]
+    post:
+      summary: 创建新的数据清洗任务
+      deprecated: false
+      description: 可以直接创建任务或基于现有模板创建任务。
+      tags:
+        - CleaningTask
+      parameters: [ ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCleaningTaskRequest'
+            examples: { }
+      responses:
+        '201':
+          description: 任务创建成功
+          content:
+            application/json:
+              schema: *ref_1
+          headers: { }
+      security: [ ]
+  /cleaning/tasks/{taskId}:
+    get:
+      summary: 获取单个数据清洗任务详情
+      deprecated: false
+      description: 根据任务ID获取任务的详细信息。
+      tags:
+        - CleaningTask
+      parameters:
+        - name: taskId
+          in: path
+          description: 任务的唯一标识符
+          required: true
+          example: ''
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 成功获取任务详情
+          content:
+            application/json:
+              schema: *ref_1
+          headers: { }
+      security: [ ]
+    delete:
+      summary: 删除数据清洗任务
+      deprecated: false
+      description: 根据任务ID删除指定的任务。
+      tags:
+        - CleaningTask
+      parameters:
+        - name: taskId
+          in: path
+          description: 任务的唯一标识符
+          required: true
+          example: ''
+          schema:
+            type: string
+      responses:
+        '204':
+          description: 任务删除成功
+          headers: { }
+      security: [ ]
+  /cleaning/templates:
+    get:
+      summary: 查询数据清洗模板列表
+      deprecated: false
+      description: 获取所有可用的数据清洗模板。
+      tags:
+        - CleaningTemplate
+      parameters: [ ]
+      responses:
+        '200':
+          description: 成功获取模板列表
+          content:
+            application/json:
+              schema:
+                type: array
+                items: &ref_2
+                  $ref: '#/components/schemas/CleaningTemplate'
+          headers: { }
+      security: [ ]
+    post:
+      summary: 创建新的数据清洗模板
+      deprecated: false
+      description: 定义一个新的数据清洗模板。
+      tags:
+        - CleaningTemplate
+      parameters: [ ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCleaningTemplateRequest'
+      responses:
+        '201':
+          description: 模板创建成功
+          content:
+            application/json:
+              schema: *ref_2
+          headers: { }
+      security: [ ]
+  /cleaning/templates/{templateId}:
+    get:
+      summary: 获取单个数据清洗模板详情
+      deprecated: false
+      description: 根据模板ID获取模板的详细信息。
+      tags:
+        - CleaningTemplate
+      parameters:
+        - name: templateId
+          in: path
+          description: 模板的唯一标识符
+          required: true
+          example: ''
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 成功获取模板详情
+          content:
+            application/json:
+              schema: *ref_2
+          headers: { }
+      security: [ ]
+    put:
+      summary: 更新数据清洗模板
+      deprecated: false
+      description: 根据模板ID更新模板的全部信息。
+      tags:
+        - CleaningTemplate
+      parameters:
+        - name: templateId
+          in: path
+          description: 模板的唯一标识符
+          required: true
+          example: ''
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCleaningTemplateRequest'
+      responses:
+        '200':
+          description: 模板更新成功
+          content:
+            application/json:
+              schema: *ref_2
+          headers: { }
+      security: [ ]
+    delete:
+      summary: 删除数据清洗模板
+      deprecated: false
+      description: 根据模板ID删除指定的模板。
+      tags:
+        - CleaningTemplate
+      parameters:
+        - name: templateId
+          in: path
+          description: 模板的唯一标识符
+          required: true
+          example: ''
+          schema:
+            type: string
+      responses:
+        '204':
+          description: 模板删除成功
+          headers: { }
+      security: [ ]
+
+components:
+  schemas:
+    OperatorInstance:
+      type: object
+      properties:
+        id:
+          type: string
+        overrides:
+          type: object
+          properties: { }
+          additionalProperties:
+            type: object
+            properties: { }
+      required:
+        - id
+        - overrides
+    CleaningProcess:
+      type: object
+      properties:
+        process:
+          type: number
+          format: float
+          description: 进度百分比
+        totalFileNum:
+          type: integer
+          description: 总文件数量
+        finishedFileNum:
+          type: integer
+          description: 已完成文件数量
+      required:
+        - process
+        - totalFileNum
+        - finishedFileNum
+    OperatorResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: 算子ID
+        name:
+          type: string
+          description: 算子名称
+        description:
+          type: string
+          description: 算子描述
+        version:
+          type: string
+          description: 算子版本
+        inputs:
+          type: string
+          description: 输入类型
+        outputs:
+          type: string
+          description: 输入类型
+        runtime:
+          type: string
+          description: 运行时设置
+        settings:
+          type: string
+          description: 算子参数
+        isStar:
+          type: boolean
+          description: 是否收藏
+        createdAt:
+          type: string
+          format: date-time
+          description: 创建时间
+        updatedAt:
+          type: string
+          format: date-time
+          description: 更新时间
+      required:
+        - inputs
+        - outputs
+        - runtime
+        - settings
+        - isStar
+    UpdateCleaningTemplateRequest:
+      type: object
+      required:
+        - name
+        - instance
+        - id
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+          description: 模板名称
+        description:
+          type: string
+          description: 模板描述
+        instance:
+          type: array
+          items: &ref_3
+            $ref: '#/components/schemas/OperatorInstance'
+          description: 模板定义的清洗规则和配置
+    CreateCleaningTemplateRequest:
+      type: object
+      required:
+        - name
+        - instance
+      properties:
+        name:
+          type: string
+          description: 模板名称
+        description:
+          type: string
+          description: 模板描述
+        instance:
+          type: array
+          items: *ref_3
+          description: 任务的具体配置（如果非模板创建，则直接定义）'
+    CleaningTemplate:
+      type: object
+      required:
+        - id
+        - name
+        - instance
+        - createdAt
+      properties:
+        id:
+          type: string
+          description: 模板唯一标识符
+        name:
+          type: string
+          description: 模板名称
+        description:
+          type: string
+          description: 模板描述
+        instance:
+          type: array
+          items: &ref_4
+            $ref: '#/components/schemas/OperatorResponse'
+          description: 模板定义的清洗规则和配置
+        createdAt:
+          type: string
+          format: date-time
+          description: 模板创建时间
+        updatedAt:
+          type: string
+          format: date-time
+          description: 模板最后更新时间
+    CreateCleaningTaskRequest:
+      type: object
+      required:
+        - name
+        - instance
+        - srcDatasetId
+        - srcDatasetName
+        - destDatasetName
+        - destDatasetType
+      properties:
+        name:
+          type: string
+          description: 任务名称
+        description:
+          type: string
+          description: 任务描述
+        srcDatasetId:
+          type: string
+        srcDatasetName:
+          type: string
+        destDatasetName:
+          type: string
+        destDatasetType:
+          type: string
+        instance:
+          type: array
+          items: *ref_3
+          description: 任务的具体配置（如果非模板创建，则直接定义）
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          description: 错误类型
+        message:
+          type: string
+          description: 错误详细信息
+    CleaningTask:
+      type: object
+      required:
+        - id
+        - name
+        - status
+        - createdAt
+        - startedAt
+      properties:
+        id:
+          type: string
+          description: 任务唯一标识符
+        name:
+          type: string
+          description: 任务名称
+        description:
+          type: string
+          description: 任务描述
+        srcDatasetId:
+          type: string
+          description: 源数据集id
+        srcDatasetName:
+          type: string
+          description: 源数据集名称
+        destDatasetId:
+          type: string
+          description: 目标数据集id
+        destDatasetName:
+          type: string
+          description: 目标数据集名称
+        status:
+          type: string
+          description: 任务当前状态
+          enum:
+            - pending
+            - running
+            - completed
+            - failed
+        templateId:
+          type: string
+          description: 关联的模板ID（如果基于模板创建）
+        instance:
+          type: array
+          items: *ref_4
+          description: 任务的具体配置（如果非模板创建，则直接定义）
+        progress:
+          $ref: '#/components/schemas/CleaningProcess'
+        createdAt:
+          type: string
+          description: 任务创建时间
+          format: date-time
+        startedAt:
+          type: string
+          format: date-time
+          description: 任务开始时间
+        finishedAt:
+          type: string
+          format: date-time
+          description: 任务最后更新时间
+    securitySchemes: { }

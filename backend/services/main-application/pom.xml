@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.datamate</groupId>
+        <artifactId>data-mate-platform</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+        <relativePath>../../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>main-application</artifactId>
+    <packaging>jar</packaging>
+    <name>Data Mate Platform - Main Application</name>
+    <description>主启动应用，集成所有服务模</description>
+
+    <dependencies>
+        <!-- Spring Boot Starters -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
+        <dependency>
+          <groupId>jakarta.persistence</groupId>
+          <artifactId>jakarta.persistence-api</artifactId>
+        </dependency>
+
+      <!-- 共享库依赖 -->
+        <dependency>
+            <groupId>com.datamate</groupId>
+            <artifactId>domain-common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.datamate</groupId>
+            <artifactId>security-common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+          <groupId>org.apache.commons</groupId>
+          <artifactId>commons-compress</artifactId>
+          <version>1.26.1</version>
+        </dependency>
+
+        <!-- 核心服务依赖 -->
+        <dependency>
+            <groupId>com.datamate</groupId>
+            <artifactId>data-management-service</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.datamate</groupId>
+            <artifactId>data-collection-service</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.datamate</groupId>
+            <artifactId>operator-market-service</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.datamate</groupId>
+            <artifactId>data-cleaning-service</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.datamate</groupId>
+            <artifactId>data-synthesis-service</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.datamate</groupId>
+            <artifactId>data-annotation-service</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.datamate</groupId>
+            <artifactId>data-evaluation-service</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.datamate</groupId>
+            <artifactId>pipeline-orchestration-service</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.datamate</groupId>
+            <artifactId>execution-engine-service</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <!-- RAG服务依赖 -->
+        <dependency>
+            <groupId>com.datamate</groupId>
+            <artifactId>rag-indexer-service</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.datamate</groupId>
+            <artifactId>rag-query-service</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <!-- MyBatis Dependencies -->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-spring-boot3-starter</artifactId>
+        </dependency>
+
+        <!-- Database -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.33</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!-- 测试依赖 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.11.0</version>
+                <configuration>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
+                    <compilerArgs>
+                        <arg>-parameters</arg>
+                    </compilerArgs>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring-boot.version}</version>
+                <configuration>
+                    <finalName>data-mate</finalName>
+                    <mainClass>com.datamate.main.DataMatePlatformApplication</mainClass>
+                </configuration>
+                <executions>
+                  <execution>
+                    <goals>
+                      <goal>repackage</goal>
+                    </goals>
+                  </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
+

@@ -1,0 +1,86 @@
+services:
+  # 1) backend
+  backend:
+    container_name: backend
+    image: backend
+    restart: on-failure
+    privileged: true
+    ports:
+      - "8080:8080"
+    volumes:
+      - dataset_volume:/dataset
+      - flow_volume:/flow
+      - log_volume:/var/log/data-mate
+    networks: [ edatamate ]
+    depends_on:
+      - mysql
+
+  # 2) frontend（NodePort 30000）
+  frontend:
+    container_name: frontend
+    image: frontend
+    restart: on-failure
+    ports:
+      - "30000:80"            # nodePort → hostPort
+    volumes:
+      - log_volume:/var/log/data-mate
+    networks: [ edatamate ]
+    depends_on:
+      - backend
+
+  # 3) mysql
+  mysql:
+    container_name: mysql
+    image: mysql:8
+    restart: on-failure
+    environment:
+      MYSQL_ROOT_PASSWORD: Huawei@123
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_volume:/var/lib/mysql
+      - ../../../scripts/db:/docker-entrypoint-initdb.d
+      - ./utf8.cnf:/etc/mysql/conf.d/utf8.cnf
+      - log_volume:/var/log/data-mate
+    networks: [ edatamate ]
+
+  runtime:
+    container_name: runtime
+    image: runtime
+    restart: on-failure
+    environment:
+      RAY_DEDUP_LOGS: "0"
+      RAY_TQDM_PATCH_PRINT: "0"
+      MYSQL_HOST: "mysql"
+      MYSQL_PORT: "3306"
+      MYSQL_USER: "root"
+      MYSQL_PASSWORD: "Huawei@123"
+      MYSQL_DATABASE: "datamate"
+    ports:
+      - "8081:8081"
+    command:
+      - python
+      - /opt/runtime/datamate/operator_runtime.py
+      - --port
+      - "8081"
+    volumes:
+      - ray_log_volume:/tmp/ray
+      - log_volume:/var/log/data-mate
+      - dataset_volume:/dataset
+      - flow_volume:/flow
+
+volumes:
+  dataset_volume:
+    name: data-mate-dataset-volume
+  flow_volume:
+    name: data-mate-flow-volume
+  log_volume:
+    name: data-mate-log-volume
+  mysql_volume:
+    name: data-mate-mysql-volume
+  ray_log_volume:
+    name: data-mate-ray-log-volume
+
+networks:
+  edatamate:
+    driver: bridge
