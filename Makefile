@@ -81,6 +81,10 @@ frontend-docker-build:
 runtime-docker-build:
 	docker build -t runtime:$(VERSION) . -f scripts/images/runtime/Dockerfile
 
+.PHONY: label-studio-adapter-docker-build
+label-studio-adapter-docker-build:
+	docker build -t label-studio-adapter:$(VERSION) . -f scripts/images/label-studio-adapter/Dockerfile
+
 .PHONY: backend-docker-install
 backend-docker-install:
 	cd deployment/docker/data-mate && docker-compose up -d backend
