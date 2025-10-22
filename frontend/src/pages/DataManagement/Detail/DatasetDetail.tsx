@@ -121,7 +121,7 @@ export default function DatasetDetail() {
     {
       icon: <Clock className="text-blue-400 w-4 h-4" />,
       key: "time",
-      value: dataset?.createdAt,
+      value: dataset?.updatedAt,
     },
   ];
 
