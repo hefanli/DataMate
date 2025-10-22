@@ -30,7 +30,7 @@ function CustomTag({
   return (
     <div
       key={tag.id}
-      className="flex items-center justify-between px-4 py-2 border border-gray-100 rounded-md hover:bg-gray-50"
+      className="flex items-center justify-between px-4 py-2 border-card hover:bg-gray-50"
     >
       {editingTag?.id === tag.id ? (
         <div className="flex gap-2 flex-1">
@@ -199,7 +199,7 @@ const TagManager: React.FC = ({
         title="标签管理"
         width={500}
       >
-        <div className="space-y-4 flex flex-col overflow-y-auto h-full">
+        <div className="space-y-4 flex-overflow">
           {/* Add New Tag */}
           <div className="flex gap-2">
             <Input
@@ -223,7 +223,7 @@ const TagManager: React.FC = ({
             </Button>
           </div>
 
-          <div className="flex-1 overflow-auto">
+          <div className="flex-overflow">
             <div className="overflow-auto grid grid-cols-2 gap-2">
               {tags.map((tag) => (
                 <CustomTag
