@@ -22,7 +22,7 @@ import { ColumnType } from "antd/es/table";
 import DevelopmentInProgress from "@/components/DevelopmentInProgress";
 
 export default function DataAnnotation() {
-  return <DevelopmentInProgress />;
+  return <DevelopmentInProgress showTime="2025.10.30" />;
   const navigate = useNavigate();
   const [viewMode, setViewMode] = useState<"list" | "card">("list");
   const [showCreateDialog, setShowCreateDialog] = useState(false);
