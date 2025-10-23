@@ -186,7 +186,7 @@ export const datasetStatusMap = {
 
 export const dataSourceMap: Record<string, { label: string; value: string }> = {
   [DataSource.UPLOAD]: { label: "本地上传", value: DataSource.UPLOAD },
-  [DataSource.COLLECTION]: { label: "本地归集 ", value: DataSource.COLLECTION },
+  // [DataSource.COLLECTION]: { label: "本地归集 ", value: DataSource.COLLECTION },
   // [DataSource.DATABASE]: { label: "数据库导入", value: DataSource.DATABASE },
   // [DataSource.NAS]: { label: "NAS导入", value: DataSource.NAS },
   // [DataSource.OBS]: { label: "OBS导入", value: DataSource.OBS },

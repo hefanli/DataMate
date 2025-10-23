@@ -61,16 +61,8 @@ export function uploadDatasetFileUsingPost(id: string | number, data: any) {
   return post(`/api/data-management/datasets/${id}/files`, data);
 }
 
-export function downloadFile(
-  id: string | number,
-  fileId: string | number,
-  filename?: string
-) {
-  return download(
-    `/api/data-management/datasets/${id}/files/download`,
-    null,
-    filename
-  );
+export function downloadFile(id: string | number) {
+  return download(`/api/data-management/datasets/${id}/files/download`);
 }
 
 // 删除数据集文件

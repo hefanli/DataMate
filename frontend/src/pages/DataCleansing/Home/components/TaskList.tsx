@@ -65,7 +65,7 @@ export default function TaskList() {
     fetchData();
   };
 
-  const taskOperations = (record) => {
+  const taskOperations = (record: CleansingTask) => {
     const isRunning = record.status?.value === TaskStatus.RUNNING;
     const showStart = [
       TaskStatus.PENDING,
@@ -91,7 +91,8 @@ export default function TaskList() {
       {
         key: "delete",
         label: "删除",
-        icon: <DeleteOutlined style={{ color: "#f5222d" }} />,
+        danger: true,
+        icon: <DeleteOutlined />,
         onClick: deleteTask, // implement delete logic
       },
     ];
@@ -103,6 +104,13 @@ export default function TaskList() {
       dataIndex: "name",
       key: "name",
       fixed: "left",
+      width: 150,
+      ellipsis: true,
+    },
+    {
+      title: "任务ID",
+      dataIndex: "id",
+      key: "id",
       width: 150,
       ellipsis: true,
     },
@@ -231,6 +239,7 @@ export default function TaskList() {
                 <Button
                   type="text"
                   icon={op.icon}
+                  danger={op?.danger}
                   onClick={() => op.onClick(record)}
                 />
               </Tooltip>

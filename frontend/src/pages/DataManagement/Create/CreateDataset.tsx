@@ -27,9 +27,9 @@ export default function DatasetCreate() {
       files: undefined,
     };
     try {
-      await createDatasetUsingPost(params);
+      const { data } = await createDatasetUsingPost(params);
       message.success(`数据集创建成功`);
-      navigate("/data/management");
+      navigate("/data/management/detail/" + data.id);
     } catch (error) {
       console.error(error);
       message.error("数据集创建失败，请重试");

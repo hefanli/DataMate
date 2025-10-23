@@ -4,6 +4,7 @@ import {
   EditOutlined,
   DeleteOutlined,
   PlusOutlined,
+  UploadOutlined,
 } from "@ant-design/icons";
 import TagManager from "@/components/TagManagement";
 import { Link, useNavigate } from "react-router";
@@ -25,6 +26,7 @@ import {
 } from "../dataset.api";
 import { formatBytes } from "@/utils/unit";
 import EditDataset from "../Create/EditDataset";
+import ImportConfiguration from "../Detail/components/ImportConfiguration";
 
 export default function DatasetManagementPage() {
   const navigate = useNavigate();
@@ -32,7 +34,7 @@ export default function DatasetManagementPage() {
   const [viewMode, setViewMode] = useState<"card" | "list">("card");
   const [editDatasetOpen, setEditDatasetOpen] = useState(false);
   const [currentDataset, setCurrentDataset] = useState<Dataset | null>(null);
-
+  const [showUploadDialog, setShowUploadDialog] = useState(false);
   const [statisticsData, setStatisticsData] = useState<any>({
     count: {},
     size: {},
@@ -131,6 +133,11 @@ export default function DatasetManagementPage() {
     message.success("数据删除成功");
   };
 
+  const handleImportData = (dataset: Dataset) => {
+    setCurrentDataset(dataset);
+    setShowUploadDialog(true);
+  };
+
   useEffect(() => {
     fetchStatistics();
   }, []);
@@ -141,9 +148,16 @@ export default function DatasetManagementPage() {
       label: "编辑",
       icon: <EditOutlined />,
       onClick: (item: Dataset) => {
-        console.log(item);
         setCurrentDataset(item);
         setEditDatasetOpen(true);
+      },
+    },
+    {
+      key: "import",
+      label: "导入",
+      icon: <UploadOutlined />,
+      onClick: (item: Dataset) => {
+        handleImportData(item);
       },
     },
     {
@@ -343,7 +357,19 @@ export default function DatasetManagementPage() {
       <EditDataset
         open={editDatasetOpen}
         data={currentDataset}
-        onClose={() => setEditDatasetOpen(false)}
+        onClose={() => {
+          setCurrentDataset(null);
+          setEditDatasetOpen(false);
+        }}
+        onRefresh={fetchData}
+      />
+      <ImportConfiguration
+        data={currentDataset}
+        open={showUploadDialog}
+        onClose={() => {
+          setCurrentDataset(null);
+          setShowUploadDialog(false);
+        }}
         onRefresh={fetchData}
       />
     </div>

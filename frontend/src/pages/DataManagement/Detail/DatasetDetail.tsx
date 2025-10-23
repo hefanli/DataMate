@@ -5,6 +5,7 @@ import {
   DownloadOutlined,
   UploadOutlined,
   EditOutlined,
+  DeleteOutlined,
 } from "@ant-design/icons";
 import DetailHeader from "@/components/DetailHeader";
 import { mapDataset, datasetTypeMap } from "../dataset.const";
@@ -77,8 +78,8 @@ export default function DatasetDetail() {
     if (showMessage) message.success({ content: "数据刷新成功" });
   };
 
-  const handleExportFormat = async ({ type }) => {
-    await downloadFile(dataset.id, type, `${dataset.name}-${type}.zip`);
+  const handleDownload = async () => {
+    await downloadFile(dataset.id);
     message.success("文件下载成功");
   };
 
@@ -153,7 +154,7 @@ export default function DatasetDetail() {
       //   { key: "csv", label: "CSV 格式", icon: <FileTextOutlined /> },
       //   { key: "coco", label: "COCO 格式", icon: <FileImageOutlined /> },
       // ],
-      onMenuClick: handleExportFormat,
+      onClick: () => handleDownload(),
     },
     {
       key: "refresh",
@@ -161,6 +162,15 @@ export default function DatasetDetail() {
       icon: <ReloadOutlined />,
       onClick: handleRefresh,
     },
+    {
+      key: "delete",
+      label: "删除",
+      danger: true,
+      icon: <DeleteOutlined />,
+      onClick: () => {
+        console.log("delete dataset");
+      },
+    }
   ];
 
   return (

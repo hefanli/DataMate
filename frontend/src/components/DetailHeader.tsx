@@ -103,8 +103,8 @@ function DetailHeader<T>({
                 <Dropdown
                   key={op.key}
                   menu={{
-                    items: op.items as ItemType[],
-                    onClick: op.onMenuClick,
+                    items: op?.items as ItemType[],
+                    onClick: op?.onMenuClick,
                   }}
                 >
                   <Tooltip title={op.label}>
@@ -115,16 +115,7 @@ function DetailHeader<T>({
             }
             return (
               <Tooltip key={op.key} title={op.label}>
-                <Button
-                  key={op.key}
-                  onClick={op.onClick}
-                  className={
-                    op.danger
-                      ? "text-red-600 border-red-200 bg-transparent"
-                      : ""
-                  }
-                  icon={op.icon}
-                />
+                <Button {...op} />
               </Tooltip>
             );
           })}
