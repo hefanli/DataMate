@@ -202,7 +202,7 @@ class Request {
       try {
         const errorData = await processedResponse.json();
         error.data = errorData;
-        message.error(`请求失败，错误信息: ${processedResponse.statusText}`);
+        // message.error(`请求失败，错误信息: ${processedResponse.statusText}`);
       } catch {
         // 忽略JSON解析错误
       }

@@ -1,14 +1,32 @@
 // 首页数据获取
-import { useState } from "react";
+// 支持轮询功能，使用示例：
+// const { fetchData, startPolling, stopPolling, isPolling } = useFetchData(
+//   fetchFunction,
+//   mapFunction,
+//   5000 // 5秒轮询一次，默认30秒
+//   false // 是否自动开始轮询，默认 true
+// );
+//
+// startPolling(); // 开始轮询
+// stopPolling();  // 停止轮询
+// 手动调用 fetchData() 时，如果正在轮询，会重新开始轮询计时
+import { useState, useRef, useEffect, useCallback } from "react";
 import { useDebouncedEffect } from "./useDebouncedEffect";
 import Loading from "@/utils/loading";
 import { App } from "antd";
 
 export default function useFetchData<T>(
   fetchFunc: (params?: any) => Promise<any>,
-  mapDataFunc: (data: any) => T = (data) => data as T
+  mapDataFunc: (data: any) => T = (data) => data as T,
+  pollingInterval: number = 30000, // 默认30秒轮询一次
+  autoRefresh: boolean = true
 ) {
   const { message } = App.useApp();
+
+  // 轮询相关状态
+  const [isPolling, setIsPolling] = useState(false);
+  const pollingTimerRef = useRef<NodeJS.Timeout | null>(null);
+
   // 表格数据
   const [tableData, setTableData] = useState<T[]>([]);
   // 设置加载状态
@@ -55,39 +73,108 @@ export default function useFetchData<T>(
     return arr[0];
   }
 
-  async function fetchData(extraParams = {}) {
-    const { keyword, filter, current, pageSize } = searchParams;
-    Loading.show();
-    setLoading(true);
-    try {
-      const { data } = await fetchFunc({
-        ...filter,
-        ...extraParams,
-        keyword,
-        type: getFirstOfArray(filter?.type) || undefined,
-        status: getFirstOfArray(filter?.status) || undefined,
-        tags: filter?.tags?.length ? filter.tags.join(",") : undefined,
-        page: current - 1,
-        size: pageSize,
-      });
-      setPagination((prev) => ({
-        ...prev,
-        total: data?.totalElements || 0,
-      }));
-      let result = [];
-      if (mapDataFunc) {
-        result = data?.content.map(mapDataFunc) ?? [];
-      }
-      setTableData(result);
-    } catch (error) {
-      console.error(error)
-      message.error("数据获取失败，请稍后重试");
-    } finally {
-      Loading.hide();
-      setLoading(false);
+  // 清除轮询定时器
+  const clearPollingTimer = useCallback(() => {
+    if (pollingTimerRef.current) {
+      clearTimeout(pollingTimerRef.current);
+      pollingTimerRef.current = null;
     }
-  }
+  }, []);
 
+  const fetchData = useCallback(
+    async (extraParams = {}, skipPollingRestart = false) => {
+      const { keyword, filter, current, pageSize } = searchParams;
+
+      if (!skipPollingRestart) {
+        Loading.show();
+        setLoading(true);
+      }
+
+      // 如果正在轮询且不是轮询触发的调用，先停止当前轮询
+      const wasPolling = isPolling && !skipPollingRestart;
+      if (wasPolling) {
+        clearPollingTimer();
+      }
+
+      try {
+        const { data } = await fetchFunc({
+          ...filter,
+          ...extraParams,
+          keyword,
+          type: getFirstOfArray(filter?.type) || undefined,
+          status: getFirstOfArray(filter?.status) || undefined,
+          tags: filter?.tags?.length ? filter.tags.join(",") : undefined,
+          page: current - 1,
+          size: pageSize,
+        });
+        setPagination((prev) => ({
+          ...prev,
+          total: data?.totalElements || 0,
+        }));
+        let result = [];
+        if (mapDataFunc) {
+          result = data?.content.map(mapDataFunc) ?? [];
+        }
+        setTableData(result);
+
+        // 如果之前正在轮询且不是轮询触发的调用，重新开始轮询
+        if (wasPolling) {
+          const poll = () => {
+            pollingTimerRef.current = setTimeout(() => {
+              fetchData({}, true).then(() => {
+                if (pollingTimerRef.current) {
+                  poll();
+                }
+              });
+            }, pollingInterval);
+          };
+          poll();
+        }
+      } catch (error) {
+        console.error(error);
+        message.error("数据获取失败，请稍后重试");
+      } finally {
+        Loading.hide();
+        setLoading(false);
+      }
+    },
+    [
+      searchParams,
+      fetchFunc,
+      mapDataFunc,
+      isPolling,
+      clearPollingTimer,
+      pollingInterval,
+      message,
+    ]
+  );
+
+  // 开始轮询
+  const startPolling = useCallback(() => {
+    clearPollingTimer();
+    setIsPolling(true);
+
+    const poll = () => {
+      pollingTimerRef.current = setTimeout(() => {
+        fetchData({}, true).then(() => {
+          if (pollingTimerRef.current) {
+            poll();
+          }
+        });
+      }, pollingInterval);
+    };
+
+    poll();
+  }, [pollingInterval, clearPollingTimer, fetchData]);
+
+  // 停止轮询
+  const stopPolling = useCallback(() => {
+    clearPollingTimer();
+    setIsPolling(false);
+  }, [clearPollingTimer]);
+
+  // 搜索参数变化时，自动刷新数据
+  // keyword 变化时，防抖500ms后刷新
   useDebouncedEffect(
     () => {
       fetchData();
@@ -95,6 +182,16 @@ export default function useFetchData<T>(
     [searchParams],
     searchParams?.keyword ? 500 : 0
   );
+
+  // 组件卸载时清理轮询
+  useEffect(() => {
+    if (autoRefresh) {
+      startPolling();
+    }
+    return () => {
+      clearPollingTimer();
+    };
+  }, [clearPollingTimer]);
 
   return {
     loading,
@@ -109,5 +206,8 @@ export default function useFetchData<T>(
     setPagination,
     handleFiltersChange,
     fetchData,
+    isPolling,
+    startPolling,
+    stopPolling,
   };
 }

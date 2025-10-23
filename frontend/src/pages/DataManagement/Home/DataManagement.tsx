@@ -158,6 +158,7 @@ export default function DatasetManagementPage() {
     {
       key: "delete",
       label: "删除",
+      danger: true,
       icon: <DeleteOutlined />,
       onClick: (item: Dataset) => handleDeleteDataset(item.id),
     },
