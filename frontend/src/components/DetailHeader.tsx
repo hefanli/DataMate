@@ -1,8 +1,9 @@
 import React from "react";
 import { Database } from "lucide-react";
-import { Card, Dropdown, Button, Tag, Tooltip } from "antd";
+import { Card, Button, Tag, Tooltip, Popconfirm } from "antd";
 import type { ItemType } from "antd/es/menu/interface";
 import AddTagPopover from "./AddTagPopover";
+import ActionDropdown from "./ActionDropdown";
 
 interface StatisticItem {
   icon: React.ReactNode;
@@ -100,22 +101,39 @@ function DetailHeader<T>({
           {operations.map((op) => {
             if (op.isDropdown) {
               return (
-                <Dropdown
-                  key={op.key}
-                  menu={{
-                    items: op?.items as ItemType[],
-                    onClick: op?.onMenuClick,
-                  }}
-                >
-                  <Tooltip title={op.label}>
-                    <Button icon={op.icon} />
-                  </Tooltip>
-                </Dropdown>
+                <ActionDropdown
+                  actions={op?.items}
+                  onAction={op?.onMenuClick}
+                />
+              );
+            }
+            if (op.confirm) {
+              return (
+                <Tooltip key={op.key} title={op.label}>
+                  <Popconfirm
+                    key={op.key}
+                    title={op.confirm.title}
+                    description={op.confirm.description}
+                    onConfirm={() => {
+                      op?.onClick();
+                    }}
+                    okText={op.confirm.okText || "确定"}
+                    cancelText={op.confirm.cancelText || "取消"}
+                    okType={op.danger ? "danger" : "primary"}
+                    overlayStyle={{ zIndex: 9999 }}
+                  >
+                    <Button icon={op.icon} danger={op.danger} />
+                  </Popconfirm>
+                </Tooltip>
               );
             }
             return (
               <Tooltip key={op.key} title={op.label}>
-                <Button {...op} />
+                <Button
+                  icon={op.icon}
+                  danger={op.danger}
+                  onClick={op.onClick}
+                />
               </Tooltip>
             );
           })}

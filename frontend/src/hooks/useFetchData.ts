@@ -3,23 +3,27 @@
 // const { fetchData, startPolling, stopPolling, isPolling } = useFetchData(
 //   fetchFunction,
 //   mapFunction,
-//   5000 // 5秒轮询一次，默认30秒
-//   false // 是否自动开始轮询，默认 true
+//   5000, // 5秒轮询一次，默认30秒
+//   true, // 是否自动开始轮询，默认 true
+//   [fetchStatistics, fetchOtherData] // 额外的轮询函数数组
 // );
 //
 // startPolling(); // 开始轮询
 // stopPolling();  // 停止轮询
 // 手动调用 fetchData() 时，如果正在轮询，会重新开始轮询计时
+// 轮询时会同时执行主要的 fetchFunction 和所有额外的轮询函数
 import { useState, useRef, useEffect, useCallback } from "react";
 import { useDebouncedEffect } from "./useDebouncedEffect";
 import Loading from "@/utils/loading";
 import { App } from "antd";
+import { AnyObject } from "antd/es/_util/type";
 
 export default function useFetchData<T>(
   fetchFunc: (params?: any) => Promise<any>,
-  mapDataFunc: (data: any) => T = (data) => data as T,
+  mapDataFunc: (data: AnyObject) => T = (data) => data as T,
   pollingInterval: number = 30000, // 默认30秒轮询一次
-  autoRefresh: boolean = true
+  autoRefresh: boolean = true,
+  additionalPollingFuncs: (() => Promise<any>)[] = [] // 额外的轮询函数
 ) {
   const { message } = App.useApp();
 
@@ -97,16 +101,24 @@ export default function useFetchData<T>(
       }
 
       try {
-        const { data } = await fetchFunc({
-          ...filter,
-          ...extraParams,
-          keyword,
-          type: getFirstOfArray(filter?.type) || undefined,
-          status: getFirstOfArray(filter?.status) || undefined,
-          tags: filter?.tags?.length ? filter.tags.join(",") : undefined,
-          page: current - 1,
-          size: pageSize,
-        });
+        // 同时执行主要数据获取和额外的轮询函数
+        const promises = [
+          fetchFunc({
+            ...filter,
+            ...extraParams,
+            keyword,
+            type: getFirstOfArray(filter?.type) || undefined,
+            status: getFirstOfArray(filter?.status) || undefined,
+            tags: filter?.tags?.length ? filter.tags.join(",") : undefined,
+            page: current - 1,
+            size: pageSize,
+          }),
+          ...additionalPollingFuncs.map((func) => func()),
+        ];
+
+        const results = await Promise.all(promises);
+        const { data } = results[0]; // 主要数据结果
+
         setPagination((prev) => ({
           ...prev,
           total: data?.totalElements || 0,
@@ -146,6 +158,7 @@ export default function useFetchData<T>(
       clearPollingTimer,
       pollingInterval,
       message,
+      additionalPollingFuncs,
     ]
   );
 

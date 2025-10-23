@@ -1,12 +1,17 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Tag, Pagination, Dropdown, Tooltip, Empty, Popover } from "antd";
 import {
-  EllipsisOutlined,
-  ClockCircleOutlined,
-  StarFilled,
-} from "@ant-design/icons";
+  Tag,
+  Pagination,
+  Tooltip,
+  Empty,
+  Popover,
+  Menu,
+  Popconfirm,
+} from "antd";
+import { ClockCircleOutlined, StarFilled } from "@ant-design/icons";
 import type { ItemType } from "antd/es/menu/interface";
 import { formatDateTime } from "@/utils/unit";
+import ActionDropdown from "./ActionDropdown";
 
 interface BaseCardDataType {
   id: string | number;
@@ -168,6 +173,48 @@ function CardView<T extends BaseCardDataType>(props: CardViewProps<T>) {
 
   const ops = (item) =>
     typeof operations === "function" ? operations(item) : operations;
+
+  const menu = (item) => {
+    const ops =
+      typeof operations === "function" ? operations(item) : operations;
+    <Menu>
+      {ops.map((op) => {
+        if (op?.danger) {
+          return (
+            <Menu.Item key={op?.key} disabled icon={op?.icon}>
+              <Popconfirm
+                title="确定删除吗？"
+                description="此操作不可撤销"
+                onConfirm={op.onClick ? () => op.onClick(item) : undefined}
+                okText="确定"
+                cancelText="取消"
+                // 阻止事件冒泡，避免 Dropdown 关闭
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div
+                  style={{
+                    display: "block",
+                    width: "100%",
+                    color: "inherit",
+                  }}
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  {op.icon}
+                  {op.label}
+                </div>
+              </Popconfirm>
+            </Menu.Item>
+          );
+        } else {
+          return (
+            <Menu.Item key={op?.key} onClick={op?.onClick} icon={op?.icon}>
+              {op?.label}
+            </Menu.Item>
+          );
+        }
+      })}
+    </Menu>;
+  };
   return (
     <div className="flex-overflow-hidden">
       <div className="overflow-auto grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
@@ -261,24 +308,15 @@ function CardView<T extends BaseCardDataType>(props: CardViewProps<T>) {
                   </div>
                 </div>
                 {operations && (
-                  <Dropdown
-                    trigger={["click"]}
-                    menu={{
-                      items: ops(item),
-                      onClick: ({ key }) => {
-                        const operation = ops(item).find(
-                          (op) => op.key === key
-                        );
-                        if (operation?.onClick) {
-                          operation.onClick(item);
-                        }
-                      },
+                  <ActionDropdown
+                    actions={ops(item)}
+                    onAction={(key) => {
+                      const operation = ops(item).find((op) => op.key === key);
+                      if (operation?.onClick) {
+                        operation.onClick(item);
+                      }
                     }}
-                  >
-                    <div className="cursor-pointer">
-                      <EllipsisOutlined style={{ fontSize: 24 }} />
-                    </div>
-                  </Dropdown>
+                  />
                 )}
               </div>
             </div>

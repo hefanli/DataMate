@@ -64,6 +64,7 @@ export default function AddTagPopover({
         open={showPopover}
         trigger="click"
         placement="bottom"
+        onOpenChange={setShowPopover}
         content={
           <div className="space-y-4 w-[300px]">
             <h4 className="font-medium border-b pb-2 border-gray-100">

@@ -119,7 +119,13 @@ export default function DatasetManagementPage() {
     fetchData,
     setSearchParams,
     handleFiltersChange,
-  } = useFetchData(queryDatasetsUsingGet, mapDataset);
+  } = useFetchData<Dataset>(
+    queryDatasetsUsingGet,
+    mapDataset,
+    30000, // 30秒轮询间隔
+    true, // 自动刷新
+    [fetchStatistics] // 额外的轮询函数
+  );
 
   const handleDownloadDataset = async (dataset: Dataset) => {
     await downloadDatasetUsingGet(dataset.id, dataset.name);
@@ -138,9 +144,12 @@ export default function DatasetManagementPage() {
     setShowUploadDialog(true);
   };
 
-  useEffect(() => {
-    fetchStatistics();
-  }, []);
+  const handleRefresh = async (showMessage = true) => {
+    await fetchData();
+    if (showMessage) {
+      message.success("数据已刷新");
+    }
+  };
 
   const operations = [
     {
@@ -173,6 +182,13 @@ export default function DatasetManagementPage() {
       key: "delete",
       label: "删除",
       danger: true,
+      confirm: {
+        title: "确认删除该数据集？",
+        description: "删除后该数据集将无法恢复，请谨慎操作。",
+        okText: "删除",
+        cancelText: "取消",
+        okType: "danger",
+      },
       icon: <DeleteOutlined />,
       onClick: (item: Dataset) => handleDeleteDataset(item.id),
     },
@@ -306,7 +322,7 @@ export default function DatasetManagementPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <h1 className="text-xl font-bold">数据管理</h1>
-        <div className="flex gap-2">
+        <div className="flex gap-2 items-center">
           {/* tasks */}
           <TagManager
             onCreate={createDatasetTagUsingPost}
@@ -351,7 +367,7 @@ export default function DatasetManagementPage() {
         viewMode={viewMode}
         onViewModeChange={setViewMode}
         showViewToggle
-        onReload={fetchData}
+        onReload={handleRefresh}
       />
       {viewMode === "card" ? renderCardView() : renderListView()}
       <EditDataset
@@ -361,7 +377,7 @@ export default function DatasetManagementPage() {
           setCurrentDataset(null);
           setEditDatasetOpen(false);
         }}
-        onRefresh={fetchData}
+        onRefresh={handleRefresh}
       />
       <ImportConfiguration
         data={currentDataset}
@@ -370,7 +386,7 @@ export default function DatasetManagementPage() {
           setCurrentDataset(null);
           setShowUploadDialog(false);
         }}
-        onRefresh={fetchData}
+        onRefresh={handleRefresh}
       />
     </div>
   );

@@ -10,11 +10,12 @@ import {
 import DetailHeader from "@/components/DetailHeader";
 import { mapDataset, datasetTypeMap } from "../dataset.const";
 import type { Dataset } from "@/pages/DataManagement/dataset.model";
-import { Link, useParams } from "react-router";
-import { useFilesOperation } from "../hooks";
+import { Link, useNavigate, useParams } from "react-router";
+import { useFilesOperation } from "./useFilesOperation";
 import {
   createDatasetTagUsingPost,
-  downloadFile,
+  deleteDatasetByIdUsingDelete,
+  downloadDatasetUsingGet,
   queryDatasetByIdUsingGet,
   queryDatasetTagsUsingGet,
   updateDatasetByIdUsingPut,
@@ -43,6 +44,7 @@ const tabList = [
 
 export default function DatasetDetail() {
   const { id } = useParams(); // 获取动态路由参数
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("overview");
   const { message } = App.useApp();
   const [showEditDialog, setShowEditDialog] = useState(false);
@@ -79,8 +81,14 @@ export default function DatasetDetail() {
   };
 
   const handleDownload = async () => {
-    await downloadFile(dataset.id);
+    await downloadDatasetUsingGet(dataset.id);
     message.success("文件下载成功");
+  };
+
+  const handleDeleteDataset = async () => {
+    await deleteDatasetByIdUsingDelete(dataset.id);
+    navigate("/data/management");
+    message.success("数据集删除成功");
   };
 
   useEffect(() => {
@@ -166,11 +174,16 @@ export default function DatasetDetail() {
       key: "delete",
       label: "删除",
       danger: true,
-      icon: <DeleteOutlined />,
-      onClick: () => {
-        console.log("delete dataset");
+      confirm: {
+        title: "确认删除该数据集？",
+        description: "删除后该数据集将无法恢复，请谨慎操作。",
+        okText: "删除",
+        cancelText: "取消",
+        okType: "danger",
       },
-    }
+      icon: <DeleteOutlined />,
+      onClick: handleDeleteDataset,
+    },
   ];
 
   return (

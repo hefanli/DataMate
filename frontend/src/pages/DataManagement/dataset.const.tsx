@@ -12,6 +12,7 @@ import {
   CloseCircleOutlined,
   FileOutlined,
 } from "@ant-design/icons";
+import { AnyObject } from "antd/es/_util/type";
 import {
   FileImage,
   FileText,
@@ -194,7 +195,7 @@ export const dataSourceMap: Record<string, { label: string; value: string }> = {
 
 export const dataSourceOptions = Object.values(dataSourceMap);
 
-export function mapDataset(dataset: Dataset) {
+export function mapDataset(dataset: AnyObject): Dataset {
   const { icon: IconComponent, iconColor } =
     datasetTypeMap[dataset?.datasetType] || {};
   return {
