@@ -1,4 +1,4 @@
-package com.datamate.cleaning.domain.model;
+package com.datamate.cleaning.common.enums;
 
 import lombok.Getter;
 
