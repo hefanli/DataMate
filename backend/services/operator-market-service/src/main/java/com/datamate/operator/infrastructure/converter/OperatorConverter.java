@@ -1,7 +1,8 @@
-package com.datamate.operator.domain.converter;
+package com.datamate.operator.infrastructure.converter;
 
-import com.datamate.operator.domain.modal.Operator;
-import com.datamate.operator.interfaces.dto.OperatorResponse;
+import com.datamate.operator.domain.model.Operator;
+import com.datamate.operator.domain.model.OperatorView;
+import com.datamate.operator.interfaces.dto.OperatorDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
@@ -16,7 +17,7 @@ public interface OperatorConverter {
     OperatorConverter INSTANCE = Mappers.getMapper(OperatorConverter.class);
 
     @Mapping(target = "categories", source = "categories", qualifiedByName = "stringToList")
-    OperatorResponse operatorToResponse(Operator operator);
+    OperatorDto fromEntityToDto(OperatorView operator);
 
     @Named("stringToList")
     static List<Integer> stringToList(String input) {
@@ -25,4 +26,6 @@ public interface OperatorConverter {
         }
         return Arrays.stream(input.split(",")).map(Integer::valueOf).toList();
     }
+
+    Operator fromDtoToEntity(OperatorDto operator);
 }

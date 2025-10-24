@@ -1,12 +1,10 @@
-package com.datamate.operator.interfaces.api;
+package com.datamate.operator.interfaces.rest;
 
 import com.datamate.common.infrastructure.common.Response;
 import com.datamate.common.interfaces.PagedResponse;
 import com.datamate.operator.application.OperatorService;
-import com.datamate.operator.interfaces.dto.CreateOperatorRequest;
-import com.datamate.operator.interfaces.dto.OperatorResponse;
+import com.datamate.operator.interfaces.dto.OperatorDto;
 import com.datamate.operator.interfaces.dto.OperatorsListPostRequest;
-import com.datamate.operator.interfaces.dto.UpdateOperatorRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,8 +19,8 @@ public class OperatorController {
     private final OperatorService operatorService;
 
     @PostMapping("/list")
-    public ResponseEntity<Response<PagedResponse<OperatorResponse>>> operatorsListPost(@RequestBody OperatorsListPostRequest request) {
-        List<OperatorResponse> responses = operatorService.getOperators(request.getPage(), request.getSize(),
+    public ResponseEntity<Response<PagedResponse<OperatorDto>>> operatorsListPost(@RequestBody OperatorsListPostRequest request) {
+        List<OperatorDto> responses = operatorService.getOperators(request.getPage(), request.getSize(),
                 request.getCategories(), request.getOperatorName(), request.getIsStar());
         int count = operatorService.getOperatorsCount(request.getCategories(), request.getOperatorName(),
                 request.getIsStar());
@@ -31,24 +29,24 @@ public class OperatorController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Response<OperatorResponse>> operatorsIdGet(@PathVariable("id") String id) {
+    public ResponseEntity<Response<OperatorDto>> operatorsIdGet(@PathVariable("id") String id) {
         return ResponseEntity.ok(Response.ok(operatorService.getOperatorById(id)));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Response<OperatorResponse>> operatorsIdPut(@PathVariable("id") String id,
-                                                                     @RequestBody UpdateOperatorRequest updateOperatorRequest) {
+    public ResponseEntity<Response<OperatorDto>> operatorsIdPut(@PathVariable("id") String id,
+                                                                @RequestBody OperatorDto updateOperatorRequest) {
         return ResponseEntity.ok(Response.ok(operatorService.updateOperator(id, updateOperatorRequest)));
     }
 
     @PostMapping("/create")
-    public ResponseEntity<Response<OperatorResponse>> operatorsCreatePost(@RequestBody CreateOperatorRequest createOperatorRequest) {
+    public ResponseEntity<Response<OperatorDto>> operatorsCreatePost(@RequestBody OperatorDto createOperatorRequest) {
         return ResponseEntity.ok(Response.ok(operatorService.createOperator(createOperatorRequest)));
     }
 
     @PostMapping("/upload")
-    public ResponseEntity<Response<OperatorResponse>> operatorsUploadPost(@RequestPart(value = "file") MultipartFile file,
-                                                                          @RequestParam(value = "description") String description) {
+    public ResponseEntity<Response<OperatorDto>> operatorsUploadPost(@RequestPart(value = "file") MultipartFile file,
+                                                                     @RequestParam(value = "description") String description) {
         return ResponseEntity.ok(Response.ok(operatorService.uploadOperator(file, description)));
     }
 }
