@@ -1,4 +1,4 @@
-package com.datamate.operator.interfaces.api;
+package com.datamate.operator.interfaces.rest;
 
 import com.datamate.common.infrastructure.common.Response;
 import com.datamate.common.interfaces.PagedResponse;

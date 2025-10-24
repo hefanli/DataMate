@@ -8,12 +8,12 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 /**
- * OperatorResponse
+ * OperatorDto
  */
 
 @Getter
 @Setter
-public class OperatorResponse {
+public class OperatorDto {
   private String id;
 
   private String name;
@@ -31,6 +31,8 @@ public class OperatorResponse {
   private String runtime;
 
   private String settings;
+
+  private String fileName;
 
   private Boolean isStar;
 
