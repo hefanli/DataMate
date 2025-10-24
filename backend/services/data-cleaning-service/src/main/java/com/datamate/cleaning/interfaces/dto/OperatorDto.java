@@ -7,12 +7,12 @@ import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 /**
- * OperatorResponse
+ * OperatorDto
  */
 
 @Getter
 @Setter
-public class OperatorResponse {
+public class OperatorDto {
 
     private String id;
 

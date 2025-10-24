@@ -14,7 +14,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 @Getter
 @Setter
-public class CleaningTemplate {
+public class CleaningTemplateDto {
 
     private String id;
 
@@ -22,7 +22,7 @@ public class CleaningTemplate {
 
     private String description;
 
-    private List<OperatorResponse> instance = new ArrayList<>();
+    private List<OperatorDto> instance = new ArrayList<>();
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime createdAt;

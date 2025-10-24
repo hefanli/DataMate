@@ -1,7 +1,7 @@
-package com.datamate.cleaning.interfaces.api;
+package com.datamate.cleaning.interfaces.rest;
 
-import com.datamate.cleaning.application.service.CleaningTaskService;
-import com.datamate.cleaning.interfaces.dto.CleaningTask;
+import com.datamate.cleaning.application.CleaningTaskService;
+import com.datamate.cleaning.interfaces.dto.CleaningTaskDto;
 import com.datamate.cleaning.interfaces.dto.CreateCleaningTaskRequest;
 import com.datamate.common.infrastructure.common.Response;
 import com.datamate.common.interfaces.PagedResponse;
@@ -19,18 +19,18 @@ public class CleaningTaskController {
     private final CleaningTaskService cleaningTaskService;
 
     @GetMapping
-    public ResponseEntity<Response<PagedResponse<CleaningTask>>> cleaningTasksGet(
+    public ResponseEntity<Response<PagedResponse<CleaningTaskDto>>> cleaningTasksGet(
             @RequestParam("page") Integer page,
             @RequestParam("size") Integer size, @RequestParam(value = "status", required = false) String status,
             @RequestParam(value = "keywords", required = false) String keywords) {
-        List<CleaningTask> tasks = cleaningTaskService.getTasks(status, keywords, page, size);
+        List<CleaningTaskDto> tasks = cleaningTaskService.getTasks(status, keywords, page, size);
         int count = cleaningTaskService.countTasks(status, keywords);
         int totalPages = (count + size + 1) / size;
         return ResponseEntity.ok(Response.ok(PagedResponse.of(tasks, page, count, totalPages)));
     }
 
     @PostMapping
-    public ResponseEntity<Response<CleaningTask>> cleaningTasksPost(@RequestBody CreateCleaningTaskRequest request) {
+    public ResponseEntity<Response<CleaningTaskDto>> cleaningTasksPost(@RequestBody CreateCleaningTaskRequest request) {
         return ResponseEntity.ok(Response.ok(cleaningTaskService.createTask(request)));
     }
 
@@ -47,7 +47,7 @@ public class CleaningTaskController {
     }
 
     @GetMapping("/{taskId}")
-    public ResponseEntity<Response<CleaningTask>> cleaningTasksTaskIdGet(@PathVariable("taskId") String taskId) {
+    public ResponseEntity<Response<CleaningTaskDto>> cleaningTasksTaskIdGet(@PathVariable("taskId") String taskId) {
         return ResponseEntity.ok(Response.ok(cleaningTaskService.getTask(taskId)));
     }
 

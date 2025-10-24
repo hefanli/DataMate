@@ -1,29 +1,34 @@
-package com.datamate.cleaning.application.service;
+package com.datamate.cleaning.application;
 
 
-import com.datamate.cleaning.application.httpclient.DatasetClient;
 import com.datamate.cleaning.application.scheduler.CleaningTaskScheduler;
-import com.datamate.cleaning.domain.converter.OperatorInstanceConverter;
-import com.datamate.cleaning.domain.model.DatasetResponse;
-import com.datamate.cleaning.domain.model.ExecutorType;
-import com.datamate.cleaning.domain.model.OperatorInstancePo;
-import com.datamate.cleaning.domain.model.PagedDatasetFileResponse;
+import com.datamate.cleaning.common.enums.CleaningTaskStatusEnum;
+import com.datamate.cleaning.common.enums.ExecutorType;
+
 import com.datamate.cleaning.domain.model.TaskProcess;
-import com.datamate.cleaning.infrastructure.persistence.mapper.CleaningResultMapper;
-import com.datamate.cleaning.infrastructure.persistence.mapper.CleaningTaskMapper;
-import com.datamate.cleaning.infrastructure.persistence.mapper.OperatorInstanceMapper;
+import com.datamate.cleaning.domain.repository.CleaningResultRepository;
+import com.datamate.cleaning.domain.repository.CleaningTaskRepository;
+import com.datamate.cleaning.domain.repository.OperatorInstanceRepository;
+
 import com.datamate.cleaning.interfaces.dto.CleaningProcess;
-import com.datamate.cleaning.interfaces.dto.CleaningTask;
+import com.datamate.cleaning.interfaces.dto.CleaningTaskDto;
 import com.datamate.cleaning.interfaces.dto.CreateCleaningTaskRequest;
-import com.datamate.cleaning.interfaces.dto.OperatorInstance;
+import com.datamate.cleaning.interfaces.dto.OperatorInstanceDto;
 import com.datamate.common.infrastructure.exception.BusinessException;
 import com.datamate.common.infrastructure.exception.SystemErrorCode;
+import com.datamate.datamanagement.application.DatasetApplicationService;
+import com.datamate.datamanagement.application.DatasetFileApplicationService;
+import com.datamate.datamanagement.common.enums.DatasetType;
+import com.datamate.datamanagement.domain.model.dataset.Dataset;
+import com.datamate.datamanagement.domain.model.dataset.DatasetFile;
+import com.datamate.datamanagement.interfaces.dto.CreateDatasetRequest;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,58 +47,61 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class CleaningTaskService {
-    private final CleaningTaskMapper cleaningTaskMapper;
+    private final CleaningTaskRepository CleaningTaskRepo;
 
-    private final OperatorInstanceMapper operatorInstanceMapper;
+    private final OperatorInstanceRepository operatorInstanceRepo;
 
-    private final CleaningResultMapper cleaningResultMapper;
+    private final CleaningResultRepository cleaningResultRepo;
 
     private final CleaningTaskScheduler taskScheduler;
+
+    private final DatasetApplicationService datasetService;
+
+    private final DatasetFileApplicationService datasetFileService;
 
     private final String DATASET_PATH = "/dataset";
 
     private final String FLOW_PATH = "/flow";
 
-    public List<CleaningTask> getTasks(String status, String keywords, Integer page, Integer size) {
-        Integer offset = page * size;
-        List<CleaningTask> tasks = cleaningTaskMapper.findTasks(status, keywords, size, offset);
+    public List<CleaningTaskDto> getTasks(String status, String keywords, Integer page, Integer size) {
+        List<CleaningTaskDto> tasks = CleaningTaskRepo.findTasks(status, keywords, page, size);
         tasks.forEach(this::setProcess);
         return tasks;
     }
 
-    private void setProcess(CleaningTask task) {
-        int count = cleaningResultMapper.countByInstanceId(task.getId());
+    private void setProcess(CleaningTaskDto task) {
+        int count = cleaningResultRepo.countByInstanceId(task.getId());
         task.setProgress(CleaningProcess.of(task.getFileCount(), count));
     }
 
     public int countTasks(String status, String keywords) {
-        return cleaningTaskMapper.findTasks(status, keywords, null, null).size();
+        return CleaningTaskRepo.findTasks(status, keywords, null, null).size();
     }
 
     @Transactional
-    public CleaningTask createTask(CreateCleaningTaskRequest request) {
-        DatasetResponse destDataset = DatasetClient.createDataset(request.getDestDatasetName(),
-                request.getDestDatasetType());
+    public CleaningTaskDto createTask(CreateCleaningTaskRequest request) {
+        CreateDatasetRequest createDatasetRequest = new CreateDatasetRequest();
+        createDatasetRequest.setName(request.getDestDatasetName());
+        createDatasetRequest.setDatasetType(DatasetType.valueOf(request.getDestDatasetType()));
+        Dataset destDataset = datasetService.createDataset(createDatasetRequest);
 
-        DatasetResponse srcDataset = DatasetClient.getDataset(request.getSrcDatasetId());
+        Dataset srcDataset = datasetService.getDataset(request.getSrcDatasetId());
 
-        CleaningTask task = new CleaningTask();
+        CleaningTaskDto task = new CleaningTaskDto();
         task.setName(request.getName());
         task.setDescription(request.getDescription());
-        task.setStatus(CleaningTask.StatusEnum.PENDING);
+        task.setStatus(CleaningTaskStatusEnum.PENDING);
         String taskId = UUID.randomUUID().toString();
         task.setId(taskId);
         task.setSrcDatasetId(request.getSrcDatasetId());
         task.setSrcDatasetName(request.getSrcDatasetName());
         task.setDestDatasetId(destDataset.getId());
         task.setDestDatasetName(destDataset.getName());
-        task.setBeforeSize(srcDataset.getTotalSize());
-        task.setFileCount(srcDataset.getFileCount());
-        cleaningTaskMapper.insertTask(task);
+        task.setBeforeSize(srcDataset.getSizeBytes());
+        task.setFileCount(srcDataset.getFileCount().intValue());
+        CleaningTaskRepo.insertTask(task);
 
-        List<OperatorInstancePo> instancePos = request.getInstance().stream()
-                .map(OperatorInstanceConverter.INSTANCE::operatorToDo).toList();
-        operatorInstanceMapper.insertInstance(taskId, instancePos);
+        operatorInstanceRepo.insertInstance(taskId, request.getInstance());
 
         prepareTask(task, request.getInstance());
         scanDataset(taskId, request.getSrcDatasetId());
@@ -101,24 +109,24 @@ public class CleaningTaskService {
         return task;
     }
 
-    public CleaningTask getTask(String taskId) {
-        CleaningTask task = cleaningTaskMapper.findTaskById(taskId);
+    public CleaningTaskDto getTask(String taskId) {
+        CleaningTaskDto task = CleaningTaskRepo.findTaskById(taskId);
         setProcess(task);
         return task;
     }
 
     @Transactional
     public void deleteTask(String taskId) {
-        cleaningTaskMapper.deleteTask(taskId);
-        operatorInstanceMapper.deleteByInstanceId(taskId);
-        cleaningResultMapper.deleteByInstanceId(taskId);
+        CleaningTaskRepo.deleteTaskById(taskId);
+        operatorInstanceRepo.deleteByInstanceId(taskId);
+        cleaningResultRepo.deleteByInstanceId(taskId);
     }
 
     public void executeTask(String taskId) {
         taskScheduler.executeTask(taskId);
     }
 
-    private void prepareTask(CleaningTask task, List<OperatorInstance> instances) {
+    private void prepareTask(CleaningTaskDto task, List<OperatorInstanceDto> instances) {
         TaskProcess process = new TaskProcess();
         process.setInstanceId(task.getId());
         process.setDatasetId(task.getDestDatasetId());
@@ -153,13 +161,13 @@ public class CleaningTaskService {
         int pageNumber = 0;
         int pageSize = 500;
         PageRequest pageRequest = PageRequest.of(pageNumber, pageSize);
-        PagedDatasetFileResponse datasetFile;
+        Page<DatasetFile> datasetFiles;
         do {
-            datasetFile = DatasetClient.getDatasetFile(srcDatasetId, pageRequest);
-            if (datasetFile.getContent() != null && datasetFile.getContent().isEmpty()) {
+            datasetFiles = datasetFileService.getDatasetFiles(srcDatasetId, null, null, pageRequest);
+            if (datasetFiles.getContent().isEmpty()) {
                 break;
             }
-            List<Map<String, Object>> files = datasetFile.getContent().stream()
+            List<Map<String, Object>> files = datasetFiles.getContent().stream()
                     .map(content -> Map.of("fileName", (Object) content.getFileName(),
                             "fileSize", content.getFileSize(),
                             "filePath", content.getFilePath(),
@@ -168,7 +176,7 @@ public class CleaningTaskService {
                     .toList();
             writeListMapToJsonlFile(files, FLOW_PATH + "/" + taskId + "/dataset.jsonl");
             pageNumber += 1;
-        } while (pageNumber < datasetFile.getTotalPages());
+        } while (pageNumber < datasetFiles.getTotalPages());
     }
 
     private void writeListMapToJsonlFile(List<Map<String, Object>> mapList, String fileName) {

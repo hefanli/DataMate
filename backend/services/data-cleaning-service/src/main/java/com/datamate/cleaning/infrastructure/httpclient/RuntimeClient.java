@@ -1,4 +1,4 @@
-package com.datamate.cleaning.application.httpclient;
+package com.datamate.cleaning.infrastructure.httpclient;
 
 import com.datamate.common.infrastructure.exception.BusinessException;
 import com.datamate.common.infrastructure.exception.SystemErrorCode;

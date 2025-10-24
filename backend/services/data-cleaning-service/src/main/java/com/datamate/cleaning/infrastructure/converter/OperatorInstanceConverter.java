@@ -1,8 +1,10 @@
-package com.datamate.cleaning.domain.converter;
+package com.datamate.cleaning.infrastructure.converter;
 
 
-import com.datamate.cleaning.domain.model.OperatorInstancePo;
-import com.datamate.cleaning.interfaces.dto.OperatorInstance;
+import com.datamate.cleaning.domain.model.entity.OperatorInstance;
+import com.datamate.cleaning.domain.model.entity.Operator;
+import com.datamate.cleaning.interfaces.dto.OperatorDto;
+import com.datamate.cleaning.interfaces.dto.OperatorInstanceDto;
 import com.datamate.common.infrastructure.exception.BusinessException;
 import com.datamate.common.infrastructure.exception.SystemErrorCode;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -12,17 +14,19 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
 
+import java.util.List;
 import java.util.Map;
 
 @Mapper
 public interface OperatorInstanceConverter {
     OperatorInstanceConverter INSTANCE = Mappers.getMapper(OperatorInstanceConverter.class);
 
-    @Mapping(target = "overrides", source = "overrides", qualifiedByName = "mapToJson")
-    OperatorInstancePo operatorToDo(OperatorInstance instance);
+    @Mapping(target = "settingsOverride", source = "overrides", qualifiedByName = "mapToString")
+    @Mapping(target = "operatorId", source = "id")
+    OperatorInstance fromDtoToEntity(OperatorInstanceDto instance);
 
-    @Named("mapToJson")
-    static String mapToJson(Map<String, Object> objects) {
+    @Named("mapToString")
+    static String mapToString(Map<String, Object> objects) {
          ObjectMapper objectMapper = new ObjectMapper();
          try {
              return objectMapper.writeValueAsString(objects);
@@ -30,4 +34,6 @@ public interface OperatorInstanceConverter {
              throw BusinessException.of(SystemErrorCode.UNKNOWN_ERROR);
          }
     }
+
+    List<OperatorDto> fromEntityToDto(List<Operator> operator);
 }
