@@ -41,6 +41,8 @@ RUN dos2unix /opt/backend/start.sh \
     && chmod +x /opt/backend/start.sh \
     && ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 
+EXPOSE 8080
+
 ENTRYPOINT ["/opt/backend/start.sh"]
 
 CMD ["java", "-Duser.timezone=Asia/Shanghai", "-jar", "/opt/backend/data-mate.jar"]
