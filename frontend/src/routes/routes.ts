@@ -37,9 +37,9 @@ import RatioTasksPage from "@/pages/RatioTask/Home/RatioTask.tsx";
 import CreateRatioTask from "@/pages/RatioTask/Create/CreateRatioTask.tsx";
 import OrchestrationPage from "@/pages/Orchestration/Orchestration";
 import WorkflowEditor from "@/pages/Orchestration/WorkflowEditor";
-import SettingsPage from "@/pages/SettingsPage/SettingsPage";
 import { withErrorBoundary } from "@/components/ErrorBoundary";
 import AgentPage from "@/pages/Agent/Agent.tsx";
+import RatioTaskDetail from "@/pages/RatioTask/Detail/RatioTaskDetail";
 
 const router = createBrowserRouter([
   {
@@ -165,6 +165,10 @@ const router = createBrowserRouter([
             path: "create",
             Component: CreateRatioTask,
           },
+          {
+            path: "detail/:id",
+            Component: RatioTaskDetail,
+          }
         ],
       },
       {
@@ -224,10 +228,6 @@ const router = createBrowserRouter([
             Component: OperatorPluginDetail,
           },
         ],
-      },
-      {
-        path: "settings",
-        Component: SettingsPage,
       },
     ],
   },
