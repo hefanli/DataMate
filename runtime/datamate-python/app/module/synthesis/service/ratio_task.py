@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import List, Optional, Dict, Any
 import random
 import json
@@ -173,7 +174,7 @@ class RatioTaskService:
     @staticmethod
     async def handle_selected_file(existing_paths: set[Any], f, session, target_ds: Dataset):
         src_path = f.file_path
-        dst_prefix = f"/dataset/{target_ds.id}"
+        dst_prefix = f"/dataset/{target_ds.id}/"
         file_name = RatioTaskService.get_new_file_name(dst_prefix, existing_paths, f)
 
         new_path = dst_prefix + file_name
@@ -181,18 +182,20 @@ class RatioTaskService:
         await asyncio.to_thread(os.makedirs, dst_dir, exist_ok=True)
         await asyncio.to_thread(shutil.copy2, src_path, new_path)
 
-        new_file = DatasetFiles(
-            dataset_id=target_ds.id,  # type: ignore
-            file_name=file_name,
-            file_path=new_path,
-            file_type=f.file_type,
-            file_size=f.file_size,
-            check_sum=f.check_sum,
-            tags=f.tags,
-            dataset_filemetadata=f.dataset_filemetadata,
-            status="ACTIVE",
-        )
-        session.add(new_file)
+        file_data = {
+            "dataset_id": target_ds.id,  # type: ignore
+            "file_name": file_name,
+            "file_path": new_path,
+            "file_type": f.file_type,
+            "file_size": f.file_size,
+            "check_sum": f.check_sum,
+            "tags": f.tags,
+            "tags_updated_at": datetime.now(),
+            "dataset_filemetadata": f.dataset_filemetadata,
+            "status": "ACTIVE",
+        }
+        file_record = {k: v for k, v in file_data.items() if v is not None}
+        session.add(DatasetFiles(**file_record))
         existing_paths.add(new_path)
 
     @staticmethod
