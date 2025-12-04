@@ -1,5 +1,6 @@
 import asyncio
 import uuid
+import math
 import json
 from typing import Optional
 from fastapi import APIRouter, Depends, HTTPException, Query, BackgroundTasks
@@ -171,7 +172,7 @@ async def list_evaluation_tasks(
 
         # 转换为响应模型
         items = [_map_to_task_detail_response(task) for task in tasks]
-        total_pages = (total + size - 1) // size if size > 0 else 0
+        total_pages = math.ceil(total / size) if total > 0 else 0
 
         return StandardResponse(
             code=200,
@@ -217,7 +218,7 @@ async def list_evaluation_items(
         count_query = select(func.count()).select_from(query.subquery())
         total = (await db.execute(count_query)).scalar_one()
         files = (await db.execute(query.offset(offset).limit(size))).scalars().all()
-        total_pages = (total + size - 1) // size if size > 0 else 0
+        total_pages = math.ceil(total / size) if total > 0 else 0
         file_responses = [
             EvaluationFileResponse(
                 taskId=file.task_id,
@@ -298,7 +299,7 @@ async def list_evaluation_items(
                 taskId=item.task_id,
                 itemId=item.item_id,
                 fileId=item.file_id,
-                evalContent=json.loads(item.eval_content),
+                evalContent=json.loads(item.eval_content) if item.eval_content else None,
                 evalScore=float(item.eval_score) if item.eval_score else None,
                 evalResult=json.loads(item.eval_result),
                 status=item.status
@@ -306,7 +307,7 @@ async def list_evaluation_items(
             for item in items
         ]
 
-        total_pages = (total + size - 1) // size if size > 0 else 0
+        total_pages = math.ceil(total / size) if total > 0 else 0
 
         return StandardResponse(
             code=200,
@@ -387,6 +388,12 @@ async def delete_eval_tasks(
             .where(EvaluationItem.task_id == task_id)
         )
 
+        # 删除评估文件
+        await db.execute(
+            EvaluationFile.__table__.delete()
+            .where(EvaluationFile.task_id == task_id)
+        )
+
         # 删除任务
         await db.delete(task)
         await db.commit()
@@ -419,6 +426,7 @@ def _map_to_task_detail_response(
         sourceId=task.source_id,
         sourceName=task.source_name,
         status=task.status,
+        evalMethod=task.eval_method,
         evalProcess=task.eval_process,
         evalPrompt=task.eval_prompt,
         evalConfig=json.loads(task.eval_config),
