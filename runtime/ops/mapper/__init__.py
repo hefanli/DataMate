@@ -23,7 +23,6 @@ def _import_operators():
     from . import garble_characters_cleaner
     from . import html_tag_cleaner
     from . import id_number_cleaner
-    from . import img_watermark_remove
     from . import invisible_characters_cleaner
     from . import ip_address_cleaner
     from . import legend_cleaner
@@ -47,6 +46,7 @@ def _import_operators():
     from . import img_resize
     from . import remove_duplicate_sentences
     from . import knowledge_relation_slice
+    from . import pii_ner_detection
 
 
 _import_operators()
