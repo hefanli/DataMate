@@ -1,6 +1,7 @@
 package com.datamate.datamanagement.application;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.datamate.common.domain.model.ChunkUploadPreRequest;
 import com.datamate.common.domain.model.FileUploadResult;
 import com.datamate.common.domain.service.FileService;
@@ -29,6 +30,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
+import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -37,7 +41,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -45,14 +48,15 @@ import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
+import java.util.stream.Stream;
 
 /**
  * 数据集文件应用服务
@@ -85,9 +89,75 @@ public class DatasetFileApplicationService {
      */
     @Transactional(readOnly = true)
     public PagedResponse<DatasetFile> getDatasetFiles(String datasetId, String fileType, String status, String name, PagingQuery pagingQuery) {
-        IPage<DatasetFile> page = new com.baomidou.mybatisplus.extension.plugins.pagination.Page<>(pagingQuery.getPage(), pagingQuery.getSize());
+        IPage<DatasetFile> page = new Page<>(pagingQuery.getPage(), pagingQuery.getSize());
         IPage<DatasetFile> files = datasetFileRepository.findByCriteria(datasetId, fileType, status, name, page);
         return PagedResponse.of(files);
+    }
+
+    /**
+     * 获取数据集文件列表
+     */
+    @Transactional(readOnly = true)
+    public PagedResponse<DatasetFile> getDatasetFilesWithDirectory(String datasetId, String prefix, PagingQuery pagingQuery) {
+        Dataset dataset = datasetRepository.getById(datasetId);
+        int page = Math.max(pagingQuery.getPage(), 1);
+        int size = pagingQuery.getSize() == null || pagingQuery.getSize() < 0 ? 20 : pagingQuery.getSize();
+        if (dataset == null) {
+            return PagedResponse.of(new Page<>(page, size));
+        }
+        String datasetPath = dataset.getPath();
+        Path queryPath = Path.of(dataset.getPath() + File.separator + prefix);
+        Map<String, DatasetFile> datasetFilesMap = datasetFileRepository.findAllByDatasetId(datasetId)
+            .stream().collect(Collectors.toMap(DatasetFile::getFilePath, Function.identity()));
+        try (Stream<Path> pathStream = Files.list(queryPath)) {
+            List<Path> allFiles = pathStream
+                .filter(path -> path.toString().startsWith(datasetPath))
+                .sorted(Comparator
+                    .comparing((Path path) -> !Files.isDirectory(path))
+                    .thenComparing(path -> path.getFileName().toString()))
+                .collect(Collectors.toList());
+
+            // 计算分页
+            int total = allFiles.size();
+            int totalPages = (int) Math.ceil((double) total / size);
+
+            // 获取当前页数据
+            int fromIndex = (page - 1) * size;
+            fromIndex = Math.max(fromIndex, 0);
+            int toIndex = Math.min(fromIndex + size, total);
+
+            List<Path> pageData = new ArrayList<>();
+            if (fromIndex < total) {
+                pageData = allFiles.subList(fromIndex, toIndex);
+            }
+            List<DatasetFile> datasetFiles = pageData.stream().map(path -> getDatasetFile(path, datasetFilesMap)).toList();
+
+            return new PagedResponse<>(page, size, total, totalPages, datasetFiles);
+        } catch (IOException e) {
+            log.error("list dataset path error", e);
+            return PagedResponse.of(new Page<>(page, size));
+        }
+    }
+
+    private DatasetFile getDatasetFile(Path path, Map<String, DatasetFile> datasetFilesMap) {
+        DatasetFile datasetFile = new DatasetFile();
+        LocalDateTime localDateTime = LocalDateTime.now();
+        try {
+            localDateTime = Files.getLastModifiedTime(path).toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+        } catch (IOException e) {
+            log.error("get last modified time error", e);
+        }
+        datasetFile.setFileName(path.getFileName().toString());
+        datasetFile.setUploadTime(localDateTime);
+        if (Files.isDirectory(path)) {
+            datasetFile.setId("directory-" + datasetFile.getFileName());
+        } else if (Objects.isNull(datasetFilesMap.get(path.toString()))) {
+            datasetFile.setId("file-" + datasetFile.getFileName());
+            datasetFile.setFileSize(path.toFile().length());
+        } else {
+            datasetFile = datasetFilesMap.get(path.toString());
+        }
+        return datasetFile;
     }
 
     /**
@@ -151,15 +221,26 @@ public class DatasetFileApplicationService {
      */
     @Transactional(readOnly = true)
     public void downloadDatasetFileAsZip(String datasetId, HttpServletResponse response) {
+        Dataset dataset = datasetRepository.getById(datasetId);
+        if (Objects.isNull(dataset)) {
+            throw BusinessException.of(DataManagementErrorCode.DATASET_NOT_FOUND);
+        }
         List<DatasetFile> allByDatasetId = datasetFileRepository.findAllByDatasetId(datasetId);
-        fileRename(allByDatasetId);
+        Set<String> filePaths = allByDatasetId.stream().map(DatasetFile::getFilePath).collect(Collectors.toSet());
+        String datasetPath = dataset.getPath();
+        Path downloadPath = Path.of(datasetPath);
         response.setContentType("application/zip");
         String zipName = String.format("dataset_%s.zip",
                 LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")));
         response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + zipName);
-        try (ZipOutputStream zos = new ZipOutputStream(response.getOutputStream())) {
-            for (DatasetFile file : allByDatasetId) {
-                addToZipFile(file, zos);
+        try (ZipArchiveOutputStream zos = new ZipArchiveOutputStream(response.getOutputStream())) {
+            try (Stream<Path> pathStream = Files.walk(downloadPath)) {
+                List<Path> allPaths = pathStream.filter(path -> path.toString().startsWith(datasetPath))
+                    .filter(path -> filePaths.stream().anyMatch(filePath -> filePath.startsWith(path.toString())))
+                    .toList();
+                for (Path path : allPaths) {
+                    addToZipFile(path, downloadPath, zos);
+                }
             }
         } catch (IOException e) {
             log.error("Failed to download files in batches.", e);
@@ -167,42 +248,34 @@ public class DatasetFileApplicationService {
         }
     }
 
-    private void fileRename(List<DatasetFile> files) {
-        Set<String> uniqueFilenames = new HashSet<>();
-        for (DatasetFile file : files) {
-            String originalFilename = file.getFileName();
-            if (!uniqueFilenames.add(originalFilename)) {
-                String newFilename;
-                int counter = 1;
-                do {
-                    newFilename = generateNewFilename(originalFilename, counter);
-                    counter++;
-                } while (!uniqueFilenames.add(newFilename));
-                file.setFileName(newFilename);
-            }
-        }
-    }
+    private void addToZipFile(Path path, Path basePath, ZipArchiveOutputStream zos) throws IOException {
+        String entryName = basePath.relativize(path)
+            .toString()
+            .replace(File.separator, "/");
 
-    private String generateNewFilename(String oldFilename, int counter) {
-        int dotIndex = oldFilename.lastIndexOf(".");
-        return oldFilename.substring(0, dotIndex) + "-(" + counter + ")" + oldFilename.substring(dotIndex);
-    }
-
-    private void addToZipFile(DatasetFile file, ZipOutputStream zos) throws IOException {
-        if (file.getFilePath() == null || !Files.exists(Paths.get(file.getFilePath()))) {
-            log.warn("The file hasn't been found on filesystem, id: {}", file.getId());
-            return;
-        }
-        try (InputStream fis = Files.newInputStream(Paths.get(file.getFilePath()));
-             BufferedInputStream bis = new BufferedInputStream(fis)) {
-            ZipEntry zipEntry = new ZipEntry(file.getFileName());
-            zos.putNextEntry(zipEntry);
-            byte[] buffer = new byte[8192];
-            int length;
-            while ((length = bis.read(buffer)) >= 0) {
-                zos.write(buffer, 0, length);
+        // 处理目录
+        if (Files.isDirectory(path)) {
+            if (!entryName.isEmpty()) {
+                entryName += "/";
+                ZipArchiveEntry dirEntry = new ZipArchiveEntry(entryName);
+                zos.putArchiveEntry(dirEntry);
+                zos.closeArchiveEntry();
             }
-            zos.closeEntry();
+        } else {
+            // 处理文件
+            ZipArchiveEntry fileEntry = new ZipArchiveEntry(path.toFile(), entryName);
+
+            // 设置更多属性
+            BasicFileAttributes attrs = Files.readAttributes(path, BasicFileAttributes.class);
+            fileEntry.setSize(attrs.size());
+            fileEntry.setLastModifiedTime(attrs.lastModifiedTime());
+
+            zos.putArchiveEntry(fileEntry);
+
+            try (InputStream is = Files.newInputStream(path)) {
+                IOUtils.copy(is, zos);
+            }
+            zos.closeArchiveEntry();
         }
     }
 
