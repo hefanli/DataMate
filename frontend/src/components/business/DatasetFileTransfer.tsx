@@ -245,11 +245,47 @@ const DatasetFileTransfer: React.FC<DatasetFileTransferProps> = ({
             rowSelection={{
               type: "checkbox",
               selectedRowKeys: Object.keys(selectedFilesMap),
-              onSelect: toggleSelectFile,
+
+              // 单选
+              onSelect: (record: DatasetFile, selected: boolean) => {
+                toggleSelectFile(record);
+              },
+
+              // 全选
+              onSelectAll: (selected, selectedRows: DatasetFile[]) => {
+                if (selected) {
+                  // ✔ 全选 -> 将 files 列表全部加入 selectedFilesMap
+                  const newMap: Record<string, DatasetFile> = {};
+                  selectedRows.forEach((f) => {
+                    newMap[f.id] = f;
+                  });
+                  onSelectedFilesChange(newMap);
+                } else {
+                  // ✘ 取消全选 -> 清空 map
+                  const newMap = { ...selectedFilesMap };
+                  Object.keys(newMap).forEach((id) => {
+                    if (files.find((f) => f.id === id)) {
+                      // 仅移除当前页对应文件
+                      delete newMap[id];
+                    }
+                  });
+                  onSelectedFilesChange(newMap);
+                }
+              },
+
               getCheckboxProps: (record: DatasetFile) => ({
                 name: record.fileName,
               }),
             }}
+
+            // rowSelection={{
+            //   type: "checkbox",
+            //   selectedRowKeys: Object.keys(selectedFilesMap),
+            //   onSelect: toggleSelectFile,
+            //   getCheckboxProps: (record: DatasetFile) => ({
+            //     name: record.fileName,
+            //   }),
+            // }}
           />
         </div>
       </div>
