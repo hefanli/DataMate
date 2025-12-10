@@ -78,7 +78,7 @@ const DatasetFileTransfer: React.FC<DatasetFileTransferProps> = ({
 
   const fetchDatasets = async () => {
     const { data } = await queryDatasetsUsingGet({
-      page: datasetPagination.current - 1,
+      page: datasetPagination.current,
       size: datasetPagination.pageSize,
       keyword: datasetSearch,
       type: DatasetType.TEXT,
