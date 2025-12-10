@@ -1,17 +1,9 @@
 import { useState } from 'react';
-import { Descriptions, Empty, DescriptionsProps, Table, Button, message } from 'antd';
-import { CheckCircle, XCircle, Clock as ClockIcon } from 'lucide-react';
+import { Descriptions, Empty, DescriptionsProps, Table, Button } from 'antd';
 import { EyeOutlined } from '@ant-design/icons';
-import { EvaluationStatus } from '../../evaluation.model';
 import PreviewPromptModal from "@/pages/DataEvaluation/Create/PreviewPrompt.tsx";
-
-const statusMap = {
-  [EvaluationStatus.PENDING]: { color: 'blue', text: '待处理', icon: <ClockIcon className="mr-1" size={14} /> },
-  [EvaluationStatus.RUNNING]: { color: 'processing', text: '进行中', icon: <ClockIcon className="mr-1" size={14} /> },
-  [EvaluationStatus.COMPLETED]: { color: 'success', text: '已完成', icon: <CheckCircle className="mr-1" size={14} /> },
-  [EvaluationStatus.FAILED]: { color: 'error', text: '失败', icon: <XCircle className="mr-1" size={14} /> },
-  [EvaluationStatus.PAUSED]: { color: 'warning', text: '已暂停', icon: <ClockIcon className="mr-1" size={14} /> },
-};
+import { formatDateTime } from "@/utils/unit.ts";
+import { evalTaskStatusMap, getEvalMethod, getEvalType, getSource } from "@/pages/DataEvaluation/evaluation.const.tsx";
 
 const Overview = ({ task }) => {
   const [previewVisible, setPreviewVisible] = useState(false);
@@ -22,8 +14,6 @@ const Overview = ({ task }) => {
   const generateEvaluationPrompt = () => {
     setPreviewVisible(true);
   };
-
-  const statusInfo = statusMap[task.status] || { color: 'default', text: '未知状态' };
 
   // 基本信息
   const items: DescriptionsProps["items"] = [
@@ -38,9 +28,29 @@ const Overview = ({ task }) => {
       children: task.name,
     },
     {
+      key: "evalType",
+      label: "评估类型",
+      children: getEvalType(task.taskType),
+    },
+    {
+      key: "evalMethod",
+      label: "评估方式",
+      children: getEvalMethod(task.evalMethod),
+    },
+    {
       key: "status",
       label: "状态",
-      children: statusInfo.text || "未知",
+      children: evalTaskStatusMap[task.status]?.label || "未知",
+    },
+    {
+      key: "source",
+      label: "评估数据",
+      children: getSource(task.sourceType) + task.sourceName,
+    },
+    {
+      key: "evalConfig.modelName",
+      label: "模型",
+      children: task.evalConfig?.modelName || task.evalConfig?.modelId,
     },
     {
       key: "createdBy",
@@ -50,12 +60,12 @@ const Overview = ({ task }) => {
     {
       key: "createdAt",
       label: "创建时间",
-      children: task.createdAt,
+      children: formatDateTime(task.createdAt),
     },
     {
       key: "updatedAt",
       label: "更新时间",
-      children: task.updatedAt,
+      children: formatDateTime(task.updatedAt),
     },
     {
       key: "description",

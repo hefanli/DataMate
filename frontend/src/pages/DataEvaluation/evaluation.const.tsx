@@ -1,6 +1,34 @@
-import { formatDate } from "@/utils/unit";
+import { formatDateTime } from "@/utils/unit";
 import { BarChart3 } from "lucide-react";
 import { EvaluationStatus, EvaluationTask } from "@/pages/DataEvaluation/evaluation.model.ts";
+
+export const TASK_TYPES = [
+  { label: 'QA评估', value: 'QA' },
+  { label: 'COT评估', value: 'COT' },
+];
+
+export const EVAL_METHODS = [
+  { label: '模型自动评估', value: 'AUTO' },
+];
+
+export const getEvalType = (type: string) => {
+  return TASK_TYPES.find((item) => item.value === type)?.label;
+};
+
+export const getEvalMethod = (type: string) => {
+  return EVAL_METHODS.find((item) => item.value === type)?.label;
+};
+
+export const getSource = (type: string) => {
+  switch (type) {
+    case "DATASET":
+      return "数据集 - ";
+    case "SYNTHESIS":
+      return "合成任务 - ";
+    default:
+      return "-";
+  }
+};
 
 export const evalTaskStatusMap: Record<
   string,
@@ -41,8 +69,8 @@ export function mapEvaluationTask(task: Partial<EvaluationTask>): EvaluationTask
   return {
     ...task,
     status: evalTaskStatusMap[task.status || EvaluationStatus.PENDING],
-    createdAt: formatDate(task.createdAt),
-    updatedAt: formatDate(task.updatedAt),
+    createdAt: formatDateTime(task.createdAt),
+    updatedAt: formatDateTime(task.updatedAt),
     description: task.description,
     icon: <BarChart3 />,
     iconColor: task.ratio_method === "DATASET" ? "bg-blue-100" : "bg-green-100",
