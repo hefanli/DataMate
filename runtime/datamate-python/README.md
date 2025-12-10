@@ -30,13 +30,6 @@ cd runtime/datamate-python
 ```bash
 poetry install
 ```
-
-3. 安装依赖
-由于项目使用poetry管理依赖，你可以使用以下命令安装：
-
-```bash
-poetry install
-```
 或者直接使用pip安装（如果poetry不可用）：
 
 ```bash
@@ -62,7 +55,7 @@ alembic upgrade head
 - 本地开发（默认 host/port，自动重载）：
 
 ```bash
-set -a && source .env && set +a && poetry run uvicorn app.main:app --port 18000 --reload
+set -a && source .env && set +a && poetry run uvicorn app.main:app --port 18000 --log-level debug --reload
 ```
 或者
 ```bash
