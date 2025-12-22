@@ -49,7 +49,7 @@ class GenerationService:
     def __init__(self, db: AsyncSession):
         self.db = db
         # 全局并发信号量：保证任意时刻最多 10 次模型调用
-        self.question_semaphore = asyncio.Semaphore(10)
+        self.question_semaphore = asyncio.Semaphore(20)
         self.answer_semaphore = asyncio.Semaphore(100)
 
     async def process_task(self, task_id: str):
@@ -175,7 +175,7 @@ class GenerationService:
         answer_chat = get_chat_client(answer_model)
 
         # 分批次从 DB 读取并处理 chunk
-        batch_size = 20
+        batch_size = 100
         current_index = 1
 
         while current_index <= total_chunks:
