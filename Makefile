@@ -238,7 +238,7 @@ endif
 # ========== Docker Install/Uninstall Targets ==========
 
 # Valid service targets for docker install/uninstall
-VALID_SERVICE_TARGETS := datamate backend frontend runtime mineru "deer-flow" milvus "label-studio"
+VALID_SERVICE_TARGETS := datamate backend frontend runtime mineru "deer-flow" milvus "label-studio" "data-juicer" dj
 
 # Generic docker service install target
 .PHONY: %-docker-install
@@ -263,6 +263,8 @@ VALID_SERVICE_TARGETS := datamate backend frontend runtime mineru "deer-flow" mi
 		REGISTRY=$(REGISTRY) docker compose -f deployment/docker/deer-flow/docker-compose.yml up -d; \
 	elif [ "$*" = "milvus" ]; then \
 		docker compose -f deployment/docker/milvus/docker-compose.yml up -d; \
+	elif [ "$*" = "data-juicer" ] || [ "$*" = "dj" ]; then \
+		REGISTRY=$(REGISTRY) && docker compose -f deployment/docker/datamate/docker-compose.yml up -d datamate-data-juicer; \
 	else \
 		$(call docker-compose-service,$*,up -d,deployment/docker/datamate); \
 	fi
@@ -300,6 +302,8 @@ VALID_SERVICE_TARGETS := datamate backend frontend runtime mineru "deer-flow" mi
 		else \
 			docker compose -f deployment/docker/milvus/docker-compose.yml down; \
 		fi; \
+	elif [ "$*" = "data-juicer" ] || [ "$*" = "dj" ]; then \
+		$(call docker-compose-service,datamate-data-juicer,down,deployment/docker/datamate); \
 	else \
 		$(call docker-compose-service,$*,down,deployment/docker/datamate); \
 	fi
@@ -307,7 +311,7 @@ VALID_SERVICE_TARGETS := datamate backend frontend runtime mineru "deer-flow" mi
 # ========== Kubernetes Install/Uninstall Targets ==========
 
 # Valid k8s targets
-VALID_K8S_TARGETS := mineru datamate deer-flow milvus label-studio
+VALID_K8S_TARGETS := mineru datamate deer-flow milvus label-studio data-juicer dj
 
 # Generic k8s install target
 .PHONY: %-k8s-install
@@ -334,6 +338,8 @@ VALID_K8S_TARGETS := mineru datamate deer-flow milvus label-studio
 		helm upgrade milvus deployment/helm/milvus -n $(NAMESPACE) --install; \
 	elif [ "$*" = "label-studio" ]; then \
 		helm upgrade label-studio deployment/helm/label-studio -n $(NAMESPACE) --install; \
+	elif [ "$*" = "data-juicer" ] || [ "$*" = "dj" ]; then \
+		kubectl apply -f deployment/kubernetes/data-juicer/deploy.yaml -n $(NAMESPACE); \
 	fi
 
 # Generic k8s uninstall target
@@ -357,6 +363,8 @@ VALID_K8S_TARGETS := mineru datamate deer-flow milvus label-studio
 		helm uninstall milvus -n $(NAMESPACE) --ignore-not-found; \
 	elif [ "$*" = "label-studio" ]; then \
 		helm uninstall label-studio -n $(NAMESPACE) --ignore-not-found; \
+	elif [ "$*" = "data-juicer" ] || [ "$*" = "dj" ]; then \
+		kubectl delete -f deployment/kubernetes/data-juicer/deploy.yaml -n $(NAMESPACE); \
 	fi
 
 # ========== Upgrade Targets ==========
