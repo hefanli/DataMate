@@ -1,5 +1,4 @@
 FROM maven:3-eclipse-temurin-21 AS builder
-
 COPY backend/ /opt/backend
 
 RUN cd /opt/backend/services && \
