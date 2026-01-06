@@ -138,8 +138,8 @@ const DatasetFileTransfer: React.FC<DatasetFileTransferProps> = ({
     // 当数据集变化时，重置文件分页并拉取第一页文件，避免额外的循环请求
     if (selectedDataset) {
       setFilesPagination({ current: 1, pageSize: 10, total: 0 });
-      // 后端 page 参数为 0-based，这里传 0 获取第一页
-      fetchFiles({ page: 0, pageSize: 10 }).catch(() => {});
+      // 与其它页面保持一致，后端使用 1-based page 参数，这里传 1 获取第一页
+      fetchFiles({ page: 1, pageSize: 10 }).catch(() => {});
     } else {
       setFiles([]);
       setFilesPagination({ current: 1, pageSize: 10, total: 0 });
@@ -162,7 +162,7 @@ const DatasetFileTransfer: React.FC<DatasetFileTransferProps> = ({
       setSelectingAll(true);
 
       const pageSize = 1000; // 分批拉取，避免后端单页限制
-      let page = 0; // 后端 page 参数为 0-based，从 0 开始
+      let page = 1; // 与其它页面保持一致，使用 1-based page 参数
       let total = 0;
       const allFiles: DatasetFile[] = [];
 
@@ -351,8 +351,8 @@ const DatasetFileTransfer: React.FC<DatasetFileTransferProps> = ({
                   current: page,
                   pageSize: nextPageSize,
                 }));
-                // 前端分页是 1-based，后端是 0-based，所以这里传 page - 1
-                fetchFiles({ page: page - 1, pageSize: nextPageSize }).catch(() => {});
+                // 前端分页与后端统一使用 1-based page 参数
+                fetchFiles({ page, pageSize: nextPageSize }).catch(() => {});
               },
             }}
             onRow={(record: DatasetFile) => ({
