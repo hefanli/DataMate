@@ -58,18 +58,13 @@ services:
     image: ${REGISTRY:-}datamate-database
     restart: on-failure
     environment:
-      MYSQL_ROOT_PASSWORD: password
-    command: |
-      sh -c "
-        chown mysql:mysql /var/log/datamate/database &&
-        chmod 755 /var/log/datamate/database &&
-        exec docker-entrypoint.sh mysqld
-      "
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
     volumes:
-      - mysql_volume:/var/lib/mysql
+      - postgresql_volume:/var/lib/postgresql/data
       - database_log_volume:/var/log/datamate/database
     ports:
-      - "3306:3306"
+      - "5432:5432"
     networks: [ datamate ]
 
   datamate-runtime:
@@ -79,11 +74,11 @@ services:
     environment:
       RAY_DEDUP_LOGS: "0"
       RAY_TQDM_PATCH_PRINT: "0"
-      MYSQL_HOST: "datamate-database"
-      MYSQL_PORT: "3306"
-      MYSQL_USER: "root"
-      MYSQL_PASSWORD: "password"
-      MYSQL_DATABASE: "datamate"
+      PG_HOST: "datamate-database"
+      PG_PORT: "5432"
+      PG_USER: "postgres"
+      PG_PASSWORD: "password"
+      PG_DATABASE: "datamate"
     command:
       - python
       - /opt/runtime/datamate/operator_runtime.py
@@ -207,14 +202,14 @@ services:
     ports:
       - "30001:8000"
     depends_on:
-      - pg-db
+      - datamate-database
     environment:
       - DJANGO_DB=default
-      - POSTGRE_NAME=postgres
+      - POSTGRE_NAME=labelstudio
       - POSTGRE_USER=postgres
-      - POSTGRE_PASSWORD=
+      - POSTGRE_PASSWORD=password
       - POSTGRE_PORT=5432
-      - POSTGRE_HOST=db
+      - POSTGRE_HOST=datamate-database
       - LABEL_STUDIO_HOST=${LABEL_STUDIO_HOST:-}
       - LOCAL_FILES_SERVING_ENABLED=true
       - LOCAL_FILES_DOCUMENT_ROOT=/label-studio/local
@@ -230,20 +225,6 @@ services:
     networks:
       - datamate
     command: label-studio-uwsgi
-    profiles: [ label-studio ]
-
-  pg-db:
-    container_name: pg-db
-    image: pgautoupgrade/pgautoupgrade:13-alpine
-    hostname: db
-    restart: unless-stopped
-    environment:
-      - POSTGRES_HOST_AUTH_METHOD=trust
-      - POSTGRES_USER=postgres
-    volumes:
-      - label-studio-db:/var/lib/postgresql/data
-    networks:
-      - datamate
     profiles: [ label-studio ]
 
   # ==============================
@@ -332,8 +313,8 @@ volumes:
     name: datamate-flow-volume
   log_volume:
     name: datamate-log-volume
-  mysql_volume:
-    name: datamate-mysql-volume
+  postgresql_volume:
+    name: datamate-postgresql-volume
   ray_log_volume:
     name: datamate-ray-log-volume
   frontend_log_volume:
