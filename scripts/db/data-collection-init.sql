@@ -209,7 +209,19 @@ INSERT INTO t_dc_collection_templates (
           TRUE,
           'system',
           'system'
-      )
+      ),
+      (
+          '5',
+          'GlusterFS归集模板',
+          '将GlusterFS分布式文件系统上的文件归集到DataMate平台上。',
+          'glusterfsreader',
+          'glusterfsreader',
+          'glusterfswriter',
+          'glusterfswriter',
+          '{"parameter": {"ip": {"name": "服务器地址","description": "GlusterFS服务器的IP地址或域名。","type": "input", "required": true, "index": 1}, "volume": {"name": "卷名称","description": "GlusterFS卷名称。","type": "input", "required": true, "index": 2}, "path": {"name": "子路径","description": "卷内的子目录路径（可选）。","type": "input", "required": false, "index": 3}, "files": {"name": "文件列表","description": "指定文件列表进行归集。","type": "selectTag", "required": false, "index": 4}}, "reader": {}, "writer": {}}',
+          TRUE,
+          'system',
+          'system')
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
     description = EXCLUDED.description,

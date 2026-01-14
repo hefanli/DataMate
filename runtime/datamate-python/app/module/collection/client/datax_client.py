@@ -61,7 +61,11 @@ class DataxClient:
                 "fileName": "collection_result",
                 "writeMode": "truncate"
             }
-        elif template.target_type == "nfswriter" or template.target_type == "obswriter":
+        elif template.target_type == "nfswriter":
+            dest_parameter = {
+                "destPath": target_path
+            }
+        elif template.target_type == "s3writer" or template.target_type == "glusterfswriter" or template.target_type == "localwriter":
             dest_parameter = {
                 "destPath": target_path
             }
