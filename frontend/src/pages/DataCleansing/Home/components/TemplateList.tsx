@@ -1,4 +1,5 @@
 import {DeleteOutlined, EditOutlined} from "@ant-design/icons";
+import { useTranslation } from "react-i18next";
 import CardView from "@/components/CardView";
 import {
   deleteCleaningTemplateByIdUsingDelete, queryCleaningTemplatesUsingGet,
@@ -12,6 +13,7 @@ import {useNavigate} from "react-router";
 import {useState} from "react";
 
 export default function TemplateList() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { message } = App.useApp();
   const [viewMode, setViewMode] = useState<"card" | "list">("card");
@@ -31,13 +33,13 @@ export default function TemplateList() {
     return [
       {
         key: "update",
-        label: "编辑",
+        label: t("dataCleansing.actions.edit"),
         icon: <EditOutlined />,
         onClick: (template: CleansingTemplate) => navigate(`/data/cleansing/update-template/${template.id}`)
       },
       {
         key: "delete",
-        label: "删除",
+        label: t("dataCleansing.actions.deleteTemplate"),
         danger: true,
         icon: <DeleteOutlined />,
         onClick: deleteTemplate, // implement delete logic
@@ -47,7 +49,7 @@ export default function TemplateList() {
 
   const templateColumns = [
     {
-      title: "模板名称",
+      title: t("dataCleansing.template.columns.templateName"),
       dataIndex: "name",
       key: "name",
       fixed: "left",
@@ -66,14 +68,14 @@ export default function TemplateList() {
         );
       }},
       {
-          title: "模板ID",
+          title: t("dataCleansing.template.columns.templateId"),
           dataIndex: "id",
           key: "id",
           fixed: "left",
           width: 150,
       },
       {
-        title: "算子数量",
+        title: t("dataCleansing.template.columns.operatorCount"),
         dataIndex: "num",
         key: "num",
         width: 100,
@@ -83,7 +85,7 @@ export default function TemplateList() {
         },
       },
       {
-        title: "操作",
+        title: t("dataCleansing.actions.actions"),
         key: "action",
         fixed: "right",
         width: 20,
@@ -113,7 +115,7 @@ export default function TemplateList() {
     // 实现删除逻辑
     await deleteCleaningTemplateByIdUsingDelete(template.id);
     fetchData();
-    message.success("模板删除成功");
+    message.success(t("dataCleansing.template.messages.templateDeleted"));
   };
 
   return (
@@ -122,7 +124,7 @@ export default function TemplateList() {
       <SearchControls
         searchTerm={searchParams.keyword}
         onSearchChange={handleKeywordChange}
-        searchPlaceholder="搜索模板名称、描述"
+        searchPlaceholder={t("dataCleansing.placeholders.searchTemplateName")}
         onFiltersChange={handleFiltersChange}
         viewMode={viewMode}
         onViewModeChange={setViewMode}

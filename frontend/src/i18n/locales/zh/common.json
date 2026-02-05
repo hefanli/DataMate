@@ -1267,5 +1267,221 @@
         "reviewCount": "待复核"
       }
     }
+  },
+  "dataCleansing": {
+    "title": "数据处理",
+    "tabs": {
+      "taskList": "任务列表",
+      "templateManagement": "模板管理"
+    },
+    "actions": {
+      "createTask": "创建任务",
+      "createTemplate": "创建模板",
+      "updateTask": "执行任务",
+      "updateTemplate": "更新模板",
+      "startTask": "执行任务",
+      "pauseTask": "暂停任务",
+      "deleteTask": "删除任务",
+      "deleteTemplate": "删除模板",
+      "refreshTask": "更新任务",
+      "refreshTemplate": "更新模板",
+      "cancel": "取消",
+      "confirm": "确定",
+      "back": "返回",
+      "previous": "上一步",
+      "next": "下一步",
+      "clear": "清空",
+      "save": "保存",
+      "start": "启动",
+      "pause": "暂停",
+      "compare": "对比",
+      "download": "下载",
+      "batchDownload": "批量下载",
+      "edit": "编辑",
+      "selectAll": "全选",
+      "search": "搜索",
+      "reset": "重置",
+      "config": "参数配置",
+      "selectOperatorConfig": "请选择一个算子进行参数配置"
+    },
+    "steps": {
+      "basicInfo": "基本信息",
+      "operatorOrchestration": "算子编排"
+    },
+    "task": {
+      "columns": {
+        "taskName": "任务名称",
+        "taskId": "任务ID",
+        "srcDataset": "源数据集",
+        "destDataset": "目标数据集",
+        "status": "状态",
+        "progress": "进度",
+        "processedFiles": "已处理文件数",
+        "totalFiles": "总文件数",
+        "duration": "执行耗时",
+        "startTime": "开始时间",
+        "endTime": "结束时间",
+        "createdAt": "创建时间",
+        "dataSizeChange": "数据量变化"
+      },
+      "form": {
+        "name": "名称",
+        "namePlaceholder": "输入任务名称",
+        "description": "描述",
+        "descriptionPlaceholder": "描述任务的目标和要求",
+        "srcDataset": "源数据集",
+        "srcDatasetPlaceholder": "请选择源数据集",
+        "destDatasetName": "目标数据集名称",
+        "destDatasetNamePlaceholder": "输入或选择目标数据集名称",
+        "destDatasetType": "目标数据集类型",
+        "destDatasetTypeRequired": "请选择目标数据集类型"
+      },
+      "sections": {
+        "taskInfo": "任务信息",
+        "dataSourceSelection": "数据源选择"
+      },
+      "messages": {
+        "taskCreated": "任务已创建",
+        "taskStarted": "任务已启动",
+        "taskPaused": "任务已暂停",
+        "taskDeleted": "任务已删除",
+        "taskDetailFailed": "获取任务详情失败",
+        "fetchTaskResultFailed": "获取数据处理结果失败",
+        "fetchTaskLogFailed": "获取数据处理日志失败"
+      }
+    },
+    "template": {
+      "columns": {
+        "templateName": "模板名称",
+        "templateId": "模板ID",
+        "operatorCount": "算子数量"
+      },
+      "form": {
+        "name": "模板名称",
+        "namePlaceholder": "输入模板名称",
+        "nameRequired": "请输入模板名称",
+        "description": "模板描述",
+        "descriptionPlaceholder": "描述模板的用途和特点"
+      },
+      "messages": {
+        "templateCreated": "模板创建成功",
+        "templateUpdated": "模板更新成功",
+        "templateDeleted": "模板已删除",
+        "templateDetailFailed": "获取任务详情失败"
+      }
+    },
+    "detail": {
+      "tabs": {
+        "basicInfo": "基本信息",
+        "operators": "处理算子",
+        "files": "处理文件",
+        "logs": "运行日志"
+      },
+      "statistics": {
+        "totalDuration": "总耗时",
+        "successFiles": "成功文件",
+        "failedFiles": "失败文件",
+        "successRate": "成功率",
+        "operatorCount": "算子数量"
+      },
+      "fileTable": {
+        "fileName": "文件名",
+        "processedFileName": "处理后文件名",
+        "fileType": "文件类型",
+        "processedFileType": "处理后文件类型",
+        "beforeSize": "处理前大小",
+        "afterSize": "处理后大小",
+        "status": "状态",
+        "actions": "操作",
+        "searchFileName": "搜索文件名",
+        "selectFiles": "已选择 {count} 个文件",
+        "notCompleted": "未完成",
+        "downloadNotAvailable": "暂未开放",
+        "compareDialogTitle": "文件对比 - {fileName}",
+        "beforeProcessing": "处理前",
+        "afterProcessing": "处理后",
+        "originalFilePreview": "原始文件预览",
+        "processedFilePreview": "处理后文件预览",
+        "size": "大小",
+        "fileFormat": "文件格式",
+        "processingEffect": "处理效果对比",
+        "sizeOptimization": "文件大小优化",
+        "reduced": "减少了 {percent}%"
+      },
+      "logTable": {
+        "selectRun": "选择运行轮次",
+        "currentDisplay": "当前展示: 第 {num} 次",
+        "nthRun": "第 {num} 次",
+        "noLogs": "当前任务无可用日志"
+      },
+      "operatorTable": {
+        "serialNumber": "序号",
+        "operatorName": "算子名称",
+        "startTime": "开始时间",
+        "endTime": "结束时间",
+        "duration": "执行时长",
+        "processedFiles": "处理文件数",
+        "successRate": "成功率",
+        "status": "状态",
+        "searchOperatorName": "搜索算子名称",
+        "completed": "已完成",
+        "failed": "失败",
+        "running": "运行中",
+        "title": "算子执行报告",
+        "description": "每个算子的详细执行情况"
+      },
+      "basicInfo": {
+        "executionSummary": "执行摘要",
+        "basicInformation": "基本信息",
+        "processingProgress": "处理进度",
+        "taskId": "任务ID",
+        "taskName": "任务名称",
+        "srcDataset": "源数据集",
+        "destDataset": "目标数据集",
+        "startTime": "开始时间",
+        "description": "任务描述",
+        "endTime": "结束时间",
+        "retryCount": "重试次数",
+        "completed": "已完成: {count}",
+        "processing": "处理中: {count}",
+        "failed": "失败: {count}"
+      },
+      "breadcrumb": {
+        "dataProcessing": "数据处理",
+        "taskDetail": "任务详情",
+        "templateDetail": "模板详情"
+      }
+    },
+    "operatorLibrary": {
+      "title": "算子库",
+      "searchPlaceholder": "搜索算子名称...",
+      "selectCategory": "选择分类",
+      "showFavoritesOnly": "只看收藏",
+      "selectAll": "全选",
+      "noMatchFound": "未找到匹配的算子"
+    },
+    "operatorOrchestration": {
+      "title": "算子编排",
+      "clear": "清空",
+      "selectTemplate": "选择模板",
+      "startBuilding": "开始构建您的算子流程",
+      "dragTip": "从左侧算子库拖拽算子到此处，或点击算子添加"
+    },
+    "placeholders": {
+      "searchTaskName": "搜索任务名称、描述",
+      "searchTemplateName": "搜索模板名称、描述"
+    },
+    "processFlow": {
+      "start": "开始",
+      "selectDataset": "选择数据集",
+      "complete": "完成"
+    },
+    "status": {
+      "completed": "已完成",
+      "failed": "失败",
+      "running": "运行中",
+      "pending": "等待中",
+      "stopped": "已停止"
+    }
   }
 }
