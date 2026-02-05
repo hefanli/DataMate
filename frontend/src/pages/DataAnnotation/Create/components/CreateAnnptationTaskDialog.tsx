@@ -80,12 +80,12 @@ export default function CreateAnnotationTask({
       };
 
       await createAnnotationTaskUsingPost(requestData);
-      message?.success?.("创建标注任务成功");
+      message?.success?.(t("dataAnnotation.create.messages.createSuccess"));
       onClose();
       onRefresh();
     } catch (err: any) {
       console.error("Create annotation task failed", err);
-      const msg = err?.message || err?.data?.message || "创建失败，请稍后重试";
+      const msg = err?.message || err?.data?.message || t("dataAnnotation.create.messages.createFailed");
       (message as any)?.error?.(msg);
     } finally {
       setSubmitting(false);
@@ -96,29 +96,28 @@ export default function CreateAnnotationTask({
     <Modal
       open={open}
       onCancel={onClose}
-      title="创建标注任务"
+      title={t("dataAnnotation.create.title")}
       footer={
         <>
           <Button onClick={onClose} disabled={submitting}>
-            取消
+            {t("dataAnnotation.create.cancel")}
           </Button>
           <Button type="primary" onClick={handleSubmit} loading={submitting}>
-            确定
+            {t("dataAnnotation.create.ok")}
           </Button>
         </>
       }
       width={800}
     >
       <Form form={form} layout="vertical">
-        {/* 数据集 与 标注工程名称 并排显示（数据集在左） */}
         <div className="grid grid-cols-2 gap-4">
           <Form.Item
-            label="数据集"
+            label={t("dataAnnotation.create.form.dataset")}
             name="datasetId"
-            rules={[{ required: true, message: "请选择数据集" }]}
+            rules={[{ required: true, message: t("dataAnnotation.create.form.datasetRequired") }]}
           >
             <Select
-              placeholder="请选择数据集"
+              placeholder={t("dataAnnotation.create.form.datasetRequired")}
               options={datasets.map((dataset) => {
                 return {
                   label: (
@@ -146,33 +145,31 @@ export default function CreateAnnotationTask({
           </Form.Item>
 
           <Form.Item
-            label="标注工程名称"
+            label={t("dataAnnotation.create.form.name")}
             name="name"
-            rules={[{ required: true, message: "请输入任务名称" }]}
+            rules={[{ required: true, message: t("dataAnnotation.create.form.nameRequired") }]}
           >
             <Input
-              placeholder="输入标注工程名称"
+              placeholder={t("dataAnnotation.create.form.namePlaceholder")}
               onChange={() => setNameManuallyEdited(true)}
             />
           </Form.Item>
         </div>
 
-        {/* 描述变为可选 */}
-        <Form.Item label="描述" name="description">
-          <TextArea placeholder="（可选）详细描述标注任务的要求和目标" rows={3} />
+        <Form.Item label={t("dataAnnotation.create.form.description")} name="description">
+          <TextArea placeholder={t("dataAnnotation.create.form.descriptionPlaceholder")} rows={3} />
         </Form.Item>
 
-        {/* 标注模板选择 */}
         <Form.Item
-          label="标注模板"
+          label={t("dataAnnotation.create.form.template")}
           name="templateId"
-          rules={[{ required: true, message: "请选择标注模板" }]}
+          rules={[{ required: true, message: t("dataAnnotation.create.form.templateRequired") }]}
         >
           <Select
-            placeholder={templates.length === 0 ? "暂无可用模板，请先创建模板" : "请选择标注模板"}
+            placeholder={templates.length === 0 ? t("dataAnnotation.create.form.noTemplatesAvailable") : t("dataAnnotation.create.form.selectTemplate")}
             showSearch
             optionFilterProp="label"
-            notFoundContent={templates.length === 0 ? "暂无模板，请前往「标注模板」页面创建" : "未找到匹配的模板"}
+            notFoundContent={templates.length === 0 ? t("dataAnnotation.create.form.noTemplatesFound") : t("dataAnnotation.create.form.noTemplatesAvailable")}
             options={templates.map((template) => ({
               label: template.name,
               value: template.id,
