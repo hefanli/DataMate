@@ -69,19 +69,19 @@ export default function CreateTaskStepOne({
       initialValues={taskConfig}
       onValuesChange={handleValuesChange}
     >
-      <h2 className="font-medium text-gray-900 text-base mb-2">任务信息</h2>
-      <Form.Item label="名称" name="name" required>
-        <Input placeholder="输入任务名称" />
+      <h2 className="font-medium text-gray-900 text-base mb-2">{t("dataCleansing.task.sections.taskInfo")}</h2>
+      <Form.Item label={t("dataCleansing.task.form.name")} name="name" required>
+        <Input placeholder={t("dataCleansing.task.form.namePlaceholder")} />
       </Form.Item>
-      <Form.Item label="描述" name="description">
-        <TextArea placeholder="描述任务的目标和要求" rows={4} />
+      <Form.Item label={t("dataCleansing.task.form.description")} name="description">
+        <TextArea placeholder={t("dataCleansing.task.form.descriptionPlaceholder")} rows={4} />
       </Form.Item>
       <h2 className="font-medium text-gray-900 pt-6 mb-2 text-base">
-        数据源选择
+        {t("dataCleansing.task.sections.dataSourceSelection")}
       </h2>
-      <Form.Item label="源数据集" name="srcDatasetId" required>
+      <Form.Item label={t("dataCleansing.task.form.srcDataset")} name="srcDatasetId" required>
         <Select
-          placeholder="请选择源数据集"
+          placeholder={t("dataCleansing.task.form.srcDatasetPlaceholder")}
           options={datasets.map((dataset) => {
             return {
               label: (
@@ -98,7 +98,7 @@ export default function CreateTaskStepOne({
           })}
         />
       </Form.Item>
-      <Form.Item label="目标数据集名称" name="destDatasetName" required>
+      <Form.Item label={t("dataCleansing.task.form.destDatasetName")} name="destDatasetName" required>
         <AutoComplete
           options={datasets.map((dataset) => {
             return {
@@ -117,13 +117,13 @@ export default function CreateTaskStepOne({
           filterOption={(inputValue, option) => {
             return option.value.toLowerCase().startsWith(inputValue.toLowerCase());
           }}
-          placeholder="输入或选择目标数据集名称"
+          placeholder={t("dataCleansing.task.form.destDatasetNamePlaceholder")}
         />
       </Form.Item>
       <Form.Item
-        label="目标数据集类型"
+        label={t("dataCleansing.task.form.destDatasetType")}
         name="destDatasetType"
-        rules={[{ required: true, message: "请选择目标数据集类型" }]}
+        rules={[{ required: true, message: t("dataCleansing.task.form.destDatasetTypeRequired") }]}
       >
         <RadioCard
           options={datasetTypes}
