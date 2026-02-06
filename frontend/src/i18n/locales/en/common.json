@@ -1743,5 +1743,172 @@
         "fileSize": "Size"
       }
     }
+  },
+  "operatorMarket": {
+    "title": "Operator Market",
+    "home": {
+      "title": "Operator Market",
+      "actions": {
+        "downloadExample": "Download Example Operator",
+        "upload": "Upload Operator"
+      },
+      "filters": {
+        "title": "Filters",
+        "hide": "Hide Filters",
+        "clear": "Clear",
+        "selectAll": "Select All",
+        "starStatus": "Favorite Status",
+        "starred": "Favorited"
+      },
+      "search": {
+        "placeholder": "Search operator name, description..."
+      },
+      "empty": {
+        "title": "No matching operators found",
+        "subtitle": "Try adjusting filters or search keywords"
+      },
+      "operations": {
+        "update": "Update",
+        "delete": "Delete",
+        "confirm": {
+          "title": "Confirm Delete",
+          "description": "This action cannot be undone. Continue?",
+          "okText": "Delete",
+          "cancelText": "Cancel"
+        },
+        "messages": {
+          "deleteSuccess": "Operator deleted successfully",
+          "deleteFailed": "Operator deletion failed",
+          "downloadSuccess": "File downloaded successfully"
+        }
+      }
+    },
+    "detail": {
+      "breadcrumb": {
+        "market": "Operator Market"
+      },
+      "tabs": {
+        "overview": "Overview",
+        "requirement": "System Requirements",
+        "documentation": "Documentation",
+        "changeLog": "Change Log"
+      },
+      "operations": {
+        "favorite": "Favorite",
+        "update": "Update",
+        "delete": "Delete",
+        "confirm": {
+          "title": "Confirm delete current operator?",
+          "description": "The operator cannot be recovered after deletion. Please proceed with caution.",
+          "okText": "Delete",
+          "cancelText": "Cancel"
+        },
+        "messages": {
+          "deleteSuccess": "Operator deleted successfully"
+        }
+      },
+      "overview": {
+        "title": "Basic Information",
+        "version": "Version",
+        "category": "Category",
+        "description": "Description",
+        "inputs": "Input Types",
+        "outputs": "Output Types",
+        "createdAt": "Created At",
+        "lastModified": "Last Modified",
+        "performance": "Performance Metrics",
+        "advancedConfiguration": "Advanced Configuration",
+        "supportedFormats": "Supported Formats",
+        "inputFormats": "Input Formats",
+        "outputFormats": "Output Formats"
+      },
+      "documentation": {
+        "title": "Documentation"
+      },
+      "changeLog": {
+        "title": "Version",
+        "latestVersion": "Latest Version",
+        "noReleases": "No version release information",
+        "initialize": "Click to initialize"
+      }
+    },
+    "create": {
+      "title": "Upload Operator",
+      "updateTitle": "Update Operator",
+      "steps": {
+        "uploadFile": "Upload File",
+        "parseFile": "Parse File",
+        "configure": "Configure Information",
+        "publish": "Publish Complete"
+      },
+      "upload": {
+        "title": "Upload Operator File",
+        "description": "Supports multiple operator file formats, system will automatically parse configuration information",
+        "supportedFormats": "Supported File Formats",
+        "formats": {
+          "zip": "Archive File",
+          "tar": "Archive File"
+        },
+        "uploadArea": {
+          "dragDrop": "Drag files here or click to select files",
+          "onlySingle": "Only single file upload is supported",
+          "uploading": "Uploading file..."
+        }
+      },
+      "parse": {
+        "title": "Parsing operator file",
+        "description": "System is automatically analyzing your operator file and extracting configuration information...",
+        "uploadedFiles": "Uploaded Files",
+        "progress": "Parsing Progress"
+      },
+      "configure": {
+        "title": "Configure Information",
+        "basicInfo": "Basic Information",
+        "labels": {
+          "id": "ID",
+          "name": "Name",
+          "version": "Version",
+          "description": "Description",
+          "inputs": "Input Types",
+          "outputs": "Output Types"
+        },
+        "changeLog": {
+          "title": "Change Log",
+          "addLine": "Add a change log line",
+          "deleteLine": "Delete this line"
+        },
+        "performance": "Performance Metrics"
+      },
+      "preview": {
+        "title": "Publish Successful!",
+        "description": "Your operator has been successfully published to the operator market",
+        "continueUpload": "Continue Upload",
+        "backToHome": "Back to Home"
+      },
+      "actions": {
+        "reupload": "Re-upload",
+        "publish": "Publish Operator",
+        "update": "Update Operator"
+      },
+      "messages": {
+        "parseError": "Issues found during parsing",
+        "publishFailed": "Operator publication failed",
+        "fileParseFailed": "File parsing failed"
+      }
+    },
+    "const": {
+      "modal": {
+        "multimodal": "Multimodal",
+        "text": "Text",
+        "image": "Image",
+        "video": "Video",
+        "audio": "Audio"
+      },
+      "usageCount": "Usage Count",
+      "type": "Type",
+      "size": "Size",
+      "language": "Language",
+      "function": "Function"
+    }
   }
 }
