@@ -1863,5 +1863,155 @@
       "language": "Language",
       "function": "Function"
     }
+  },
+  "settings": {
+    "title": "Settings",
+    "tabs": {
+      "modelAccess": "Model Access",
+      "systemConfig": "System Config",
+      "webhook": "Webhook",
+      "notAvailable": "Not available yet"
+    },
+    "modelAccess": {
+      "title": "Model Access",
+      "addModel": "Add Model",
+      "searchPlaceholder": "Search model description...",
+      "columns": {
+        "modelName": "Model Name",
+        "createdAt": "Created At",
+        "updatedAt": "Updated At",
+        "provider": "Provider",
+        "type": "Type"
+      },
+      "filters": {
+        "provider": "Provider",
+        "type": "Type",
+        "all": "All"
+      },
+      "modal": {
+        "titleAdd": "Add Model",
+        "titleEdit": "Edit Model",
+        "form": {
+          "provider": "Service Provider",
+          "providerPlaceholder": "Select service provider",
+          "providerRequired": "Please select service provider",
+          "baseUrl": "API Endpoint",
+          "baseUrlPlaceholder": "Enter API endpoint, e.g.: https://api.openai.com",
+          "baseUrlRequired": "Please enter API endpoint",
+          "baseUrlInvalid": "Please enter a valid URL, must start with http:// or https://",
+          "modelName": "Model Name",
+          "modelNamePlaceholder": "Enter model name",
+          "modelNameRequired": "Please enter model name",
+          "modelNameTooltip": "Please enter model name",
+          "apiKey": "API Key",
+          "apiKeyPlaceholder": "Enter or generate API key",
+          "apiKeyRequired": "Please enter API key",
+          "type": "Model Type",
+          "typePlaceholder": "Select model type",
+          "typeRequired": "Please select model type",
+          "isDefault": "Set as Default",
+          "isDefaultTooltip": "When there is only one model service under the model type, it will be automatically set as default value."
+        }
+      },
+      "messages": {
+        "addSuccess": "Model added successfully",
+        "error": "{message}: {detail}"
+      }
+    },
+    "systemConfig": {
+      "title": "System Configuration",
+      "refresh": "Refresh",
+      "columns": {
+        "paramName": "Parameter Name",
+        "paramValue": "Parameter Value",
+        "description": "Description",
+        "isEnabled": "Enabled"
+      },
+      "placeholders": {
+        "selectValue": "Please select value"
+      }
+    },
+    "webhook": {
+      "title": "Webhook Configuration",
+      "addWebhook": "Add Webhook",
+      "events": {
+        "projectManagement": "Project Management",
+        "taskManagement": "Task Management",
+        "annotationManagement": "Annotation Management",
+        "modelManagement": "Model Management",
+        "predictionManagement": "Prediction Management"
+      },
+      "eventTypes": {
+        "projectCreated": {
+          "name": "Project Created",
+          "description": "Triggered when a new project is created"
+        },
+        "projectUpdated": {
+          "name": "Project Updated",
+          "description": "Triggered when project information is modified"
+        },
+        "projectDeleted": {
+          "name": "Project Deleted",
+          "description": "Triggered when a project is deleted"
+        },
+        "taskCreated": {
+          "name": "Task Created",
+          "description": "Triggered when a new task is created"
+        },
+        "taskUpdated": {
+          "name": "Task Updated",
+          "description": "Triggered when task status or content is updated"
+        },
+        "taskCompleted": {
+          "name": "Task Completed",
+          "description": "Triggered when a task is marked as completed"
+        },
+        "annotationCreated": {
+          "name": "Annotation Created",
+          "description": "Triggered when a new annotation is created"
+        },
+        "annotationUpdated": {
+          "name": "Annotation Updated",
+          "description": "Triggered when an annotation is modified"
+        },
+        "annotationDeleted": {
+          "name": "Annotation Deleted",
+          "description": "Triggered when an annotation is deleted"
+        },
+        "modelTrained": {
+          "name": "Model Training Completed",
+          "description": "Triggered when model training task is completed"
+        },
+        "predictionCreated": {
+          "name": "Prediction Generated",
+          "description": "Triggered when a new prediction result is generated"
+        }
+      },
+      "status": {
+        "active": "Active",
+        "inactive": "Disabled"
+      },
+      "details": {
+        "events": "Events:",
+        "secret": "Secret:",
+        "retry": "Retry:"
+      },
+      "modal": {
+        "title": "Add Webhook",
+        "form": {
+          "name": "Webhook Name",
+          "namePlaceholder": "Enter webhook name",
+          "retryCount": "Retry Count",
+          "url": "Webhook URL",
+          "urlPlaceholder": "https://your-domain.com/webhook",
+          "secret": "Secret Key",
+          "secretPlaceholder": "Key for verifying webhook requests",
+          "selectEvents": "Select Events"
+        }
+      },
+      "buttons": {
+        "create": "Create Webhook"
+      }
+    }
   }
 }

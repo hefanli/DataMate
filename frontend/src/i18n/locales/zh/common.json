@@ -1863,5 +1863,155 @@
       "language": "语言",
       "function": "功能"
     }
+  },
+  "settings": {
+    "title": "设置",
+    "tabs": {
+      "modelAccess": "模型接入",
+      "systemConfig": "参数配置",
+      "webhook": "Webhook",
+      "notAvailable": "暂未开放"
+    },
+    "modelAccess": {
+      "title": "模型接入",
+      "addModel": "添加模型",
+      "searchPlaceholder": "搜索模型描述...",
+      "columns": {
+        "modelName": "模型名称",
+        "createdAt": "创建时间",
+        "updatedAt": "更新时间",
+        "provider": "模型提供商",
+        "type": "模型类型"
+      },
+      "filters": {
+        "provider": "模型提供商",
+        "type": "模型类型",
+        "all": "全部"
+      },
+      "modal": {
+        "titleAdd": "添加模型",
+        "titleEdit": "编辑模型",
+        "form": {
+          "provider": "服务提供商",
+          "providerPlaceholder": "选择服务提供商",
+          "providerRequired": "请选择服务提供商",
+          "baseUrl": "接口地址",
+          "baseUrlPlaceholder": "输入接口地址，如：https://api.openai.com",
+          "baseUrlRequired": "请输入接口地址",
+          "baseUrlInvalid": "请输入有效的URL地址，必须以http://或https://开头",
+          "modelName": "模型名称",
+          "modelNamePlaceholder": "输入模型名称",
+          "modelNameRequired": "请输入模型名称",
+          "modelNameTooltip": "请输入模型名称",
+          "apiKey": "API密钥",
+          "apiKeyPlaceholder": "输入或生成API密钥",
+          "apiKeyRequired": "请输入API密钥",
+          "type": "模型类型",
+          "typePlaceholder": "选择模型类型",
+          "typeRequired": "请选择模型类型",
+          "isDefault": "设为默认",
+          "isDefaultTooltip": "当模型类型下仅有一个模型服务时，自动将其设为默认值。"
+        }
+      },
+      "messages": {
+        "addSuccess": "模型添加成功",
+        "error": "{message}：{detail}"
+      }
+    },
+    "systemConfig": {
+      "title": "系统参数配置",
+      "refresh": "刷新",
+      "columns": {
+        "paramName": "参数名",
+        "paramValue": "参数值",
+        "description": "描述",
+        "isEnabled": "是否启用"
+      },
+      "placeholders": {
+        "selectValue": "请选择值"
+      }
+    },
+    "webhook": {
+      "title": "Webhook 配置",
+      "addWebhook": "新增Webhook",
+      "events": {
+        "projectManagement": "项目管理",
+        "taskManagement": "任务管理",
+        "annotationManagement": "标注管理",
+        "modelManagement": "模型管理",
+        "predictionManagement": "预测管理"
+      },
+      "eventTypes": {
+        "projectCreated": {
+          "name": "项目创建",
+          "description": "新项目被创建时触发"
+        },
+        "projectUpdated": {
+          "name": "项目更新",
+          "description": "项目信息被修改时触发"
+        },
+        "projectDeleted": {
+          "name": "项目删除",
+          "description": "项目被删除时触发"
+        },
+        "taskCreated": {
+          "name": "任务创建",
+          "description": "新任务被创建时触发"
+        },
+        "taskUpdated": {
+          "name": "任务更新",
+          "description": "任务状态或内容被更新时触发"
+        },
+        "taskCompleted": {
+          "name": "任务完成",
+          "description": "任务被标记为完成时触发"
+        },
+        "annotationCreated": {
+          "name": "标注创建",
+          "description": "新标注被创建时触发"
+        },
+        "annotationUpdated": {
+          "name": "标注更新",
+          "description": "标注被修改时触发"
+        },
+        "annotationDeleted": {
+          "name": "标注删除",
+          "description": "标注被删除时触发"
+        },
+        "modelTrained": {
+          "name": "模型训练完成",
+          "description": "模型训练任务完成时触发"
+        },
+        "predictionCreated": {
+          "name": "预测生成",
+          "description": "新预测结果生成时触发"
+        }
+      },
+      "status": {
+        "active": "启用",
+        "inactive": "禁用"
+      },
+      "details": {
+        "events": "事件:",
+        "secret": "Secret:",
+        "retry": "重试:"
+      },
+      "modal": {
+        "title": "新增 Webhook",
+        "form": {
+          "name": "Webhook名称",
+          "namePlaceholder": "输入Webhook名称",
+          "retryCount": "重试次数",
+          "url": "Webhook URL",
+          "urlPlaceholder": "https://your-domain.com/webhook",
+          "secret": "Secret Key",
+          "secretPlaceholder": "用于验证Webhook请求的密钥",
+          "selectEvents": "选择事件"
+        }
+      },
+      "buttons": {
+        "create": "创建Webhook"
+      }
+    }
   }
 }
