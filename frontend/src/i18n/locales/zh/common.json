@@ -1486,5 +1486,262 @@
       "pending": "等待中",
       "stopped": "已停止"
     }
+  },
+  "knowledgeBase": {
+    "title": "知识生成",
+    "home": {
+      "columns": {
+        "name": "知识库",
+        "createdAt": "创建时间",
+        "updatedAt": "更新时间",
+        "description": "描述",
+        "actions": "操作"
+      },
+      "actions": {
+        "edit": "编辑",
+        "delete": "删除"
+      },
+      "confirm": {
+        "deleteTitle": "确认删除",
+        "deleteDescription": "此操作不可撤销，是否继续？",
+        "okText": "删除",
+        "cancelText": "取消"
+      },
+      "messages": {
+        "deleteSuccess": "知识库删除成功",
+        "deleteFailed": "知识库删除失败"
+      },
+      "searchPlaceholder": "搜索知识库..."
+    },
+    "detail": {
+      "tabs": {
+        "fileList": "文件列表",
+        "recallTest": "召回测试"
+      },
+      "columns": {
+        "fileName": "文件名",
+        "status": "状态",
+        "chunkCount": "分块数",
+        "createdAt": "创建时间",
+        "updatedAt": "更新时间",
+        "actions": "操作"
+      },
+      "actions": {
+        "edit": "编辑知识库",
+        "refresh": "刷新知识库",
+        "delete": "删除知识库",
+        "deleteFile": "删除文件"
+      },
+      "confirm": {
+        "deleteTitle": "确认删除该知识库吗？",
+        "deleteDescription": "删除后将无法恢复，请谨慎操作。",
+        "okText": "删除",
+        "cancelText": "取消"
+      },
+      "messages": {
+        "fileDeleted": "文件已删除",
+        "fileDeleteFailed": "文件删除失败",
+        "kbDeleted": "知识库已删除"
+      },
+      "recallTest": {
+        "description": "基于语义文本检索和全文检索后的加权平均结果",
+        "placeholder": "请输入召回测试问题",
+        "searchButton": "检索",
+        "noResult": "暂无召回结果",
+        "scoreLabel": "得分：",
+        "metadataLabel": "metadata:"
+      },
+      "graph": {
+        "title": "知识图谱",
+        "refresh": "刷新",
+        "close": "关闭",
+        "nodeDetail": "节点详情",
+        "edgeDetail": "边详情",
+        "typeLabel": "类型",
+        "sourceNode": "源节点",
+        "targetNode": "目标节点",
+        "labelLabel": "标签",
+        "noProperties": "暂无属性"
+      },
+      "breadcrumb": {
+        "kbList": "知识库"
+      },
+      "searchPlaceholder": "搜索文件名..."
+    },
+    "fileDetail": {
+      "columns": {
+        "position": "位置",
+        "tokens": "Token",
+        "page": "页码",
+        "section": "章节"
+      },
+      "actions": {
+        "download": "下载",
+        "save": "保存",
+        "cancel": "取消"
+      },
+      "messages": {
+        "noChunks": "暂无分块数据",
+        "chunkCount": "个分块",
+        "ready": "就绪",
+        "previousPage": "上一页",
+        "nextPage": "下一页",
+        "chunkLabel": "分块",
+        "loadFailed": "加载失败"
+      },
+      "modal": {
+        "sliceTraceTitle": "知识切片回溯",
+        "sliceProcessTitle": "切片处理流程",
+        "originalDocImport": "原始文档导入",
+        "fileLabel": "文件",
+        "completed": "完成",
+        "chunkDetailTitle": "分块详细信息 - 分块",
+        "contentDetail": "内容详情",
+        "chunkContent": "分块内容",
+        "metadata": "元数据",
+        "position": "位置",
+        "tokenCount": "Token数量",
+        "pageNumber": "页码",
+        "chapter": "章节"
+      },
+      "breadcrumb": {
+        "kbList": "知识库",
+        "kbDetail": "知识库详情"
+      }
+    },
+    "create": {
+      "title": "创建知识库",
+      "editTitle": "编辑知识库",
+      "okText": "确定",
+      "cancelText": "取消",
+      "form": {
+        "typeLabel": "知识库类型",
+        "typeRequired": "请选择知识库类型",
+        "nameLabel": "知识库名称",
+        "namePlaceholder": "请输入知识库名称",
+        "nameRequired": "请输入知识库名称",
+        "descriptionLabel": "描述",
+        "descriptionPlaceholder": "请输入知识库描述（可选）",
+        "embeddingModelLabel": "索引模型",
+        "embeddingModelRequired": "请选择索引模型",
+        "embeddingModelPlaceholder": "请选择索引模型",
+        "chatModelLabel": "文本理解模型",
+        "chatModelRequired": "请选择文本理解模型",
+        "chatModelPlaceholder": "请选择文本理解模型",
+        "entityLabel": "识别实体（可多选）",
+        "entityPlaceholder": "输入实体名称并按回车添加，如 人物、组织、事件",
+        "entityTooltip": "实体信息将作为图谱节点，支持多维关系追踪",
+        "addModel": "添加模型"
+      },
+      "type": {
+        "document": "向量知识库",
+        "documentDesc": "适用于文档类知识，支持召回+生成",
+        "graph": "知识图谱",
+        "graphDesc": "自定义实体/关系，强化结构化推理"
+      },
+      "messages": {
+        "updateSuccess": "知识库更新成功",
+        "createSuccess": "知识库创建成功",
+        "operationFailed": "操作失败："
+      }
+    },
+    "addData": {
+      "title": "添加数据",
+      "confirmUpload": "确认上传",
+      "steps": {
+        "selectFiles": {
+          "title": "选择数据集文件",
+          "description": "从多个数据集中选择文件"
+        },
+        "configParams": {
+          "title": "配置参数",
+          "description": "设置数据处理参数"
+        },
+        "confirmUpload": {
+          "title": "确认上传",
+          "description": "确认信息并上传"
+        }
+      },
+      "form": {
+        "sliceMethodLabel": "分块方式",
+        "chunkSizeLabel": "分块大小",
+        "chunkSizePlaceholder": "请输入分块大小",
+        "overlapLabel": "重叠长度",
+        "overlapPlaceholder": "请输入重叠长度",
+        "delimiterLabel": "分隔符",
+        "delimiterPlaceholder": "请输入分隔符",
+        "delimiterHint": "输入分隔符，如 \\n\\n"
+      },
+      "confirm": {
+        "uploadConfirmTitle": "上传信息确认",
+        "uploadHint": "提示：上传后系统将自动处理文件，请耐心等待",
+        "kbName": "知识库名称",
+        "dataSource": "数据来源",
+        "dataset": "数据集",
+        "totalFiles": "文件总数",
+        "sliceMethod": "分块方式",
+        "chunkSize": "分块大小",
+        "overlapSize": "重叠长度",
+        "delimiter": "分隔符",
+        "fileList": "文件列表",
+        "previous": "上一步",
+        "next": "下一步",
+        "cancel": "取消"
+      },
+      "messages": {
+        "selectOneFile": "请至少选择一个文件",
+        "selectSliceMethod": "请选择分块方式",
+        "validChunkSize": "请输入有效的分块大小",
+        "validOverlapSize": "请输入有效的重叠长度",
+        "inputDelimiter": "请输入分隔符",
+        "addSuccess": "数据添加成功",
+        "addFailed": "数据添加失败，请重试"
+      },
+      "placeholders": {
+        "chunkSize": "请输入分块大小",
+        "overlapSize": "请输入重叠长度",
+        "delimiter": "输入分隔符，如 \\n\\n"
+      }
+    },
+    "const": {
+      "type": {
+        "vector": "向量知识库",
+        "vectorDesc": "面向非结构化文档的检索问答",
+        "graph": "知识图谱",
+        "graphDesc": "管理实体与关系的图谱知识"
+      },
+      "status": {
+        "ready": "就绪",
+        "processing": "处理中",
+        "vectorizing": "向量化中",
+        "importing": "导入中",
+        "error": "错误",
+        "disabled": "已禁用",
+        "completed": "已完成",
+        "processed": "已处理",
+        "processFailed": "处理失败",
+        "unprocessed": "未处理",
+        "unknown": "未知状态"
+      },
+      "sliceMethod": {
+        "default": "默认分块",
+        "chapter": "按章节分块",
+        "paragraph": "按段落分块",
+        "fixedLength": "固定长度分块",
+        "customSeparator": "自定义分隔符分块"
+      },
+      "statistics": {
+        "embeddingModel": "索引模型",
+        "chatModel": "文本理解模型",
+        "fileCount": "文件数",
+        "chunkCount": "分块数",
+        "none": "无"
+      },
+      "fileColumns": {
+        "dataset": "所属数据集",
+        "fileName": "文件名",
+        "fileSize": "大小"
+      }
+    }
   }
 }

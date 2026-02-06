@@ -1486,5 +1486,262 @@
       "pending": "Pending",
       "stopped": "Stopped"
     }
+  },
+  "knowledgeBase": {
+    "title": "Knowledge Generation",
+    "home": {
+      "columns": {
+        "name": "Knowledge Base",
+        "createdAt": "Created At",
+        "updatedAt": "Updated At",
+        "description": "Description",
+        "actions": "Actions"
+      },
+      "actions": {
+        "edit": "Edit",
+        "delete": "Delete"
+      },
+      "confirm": {
+        "deleteTitle": "Confirm Delete",
+        "deleteDescription": "This action cannot be undone. Continue?",
+        "okText": "Delete",
+        "cancelText": "Cancel"
+      },
+      "messages": {
+        "deleteSuccess": "Knowledge base deleted successfully",
+        "deleteFailed": "Failed to delete knowledge base"
+      },
+      "searchPlaceholder": "Search knowledge base..."
+    },
+    "detail": {
+      "tabs": {
+        "fileList": "File List",
+        "recallTest": "Recall Test"
+      },
+      "columns": {
+        "fileName": "File Name",
+        "status": "Status",
+        "chunkCount": "Chunk Count",
+        "createdAt": "Created At",
+        "updatedAt": "Updated At",
+        "actions": "Actions"
+      },
+      "actions": {
+        "edit": "Edit Knowledge Base",
+        "refresh": "Refresh Knowledge Base",
+        "delete": "Delete Knowledge Base",
+        "deleteFile": "Delete File"
+      },
+      "confirm": {
+        "deleteTitle": "Confirm deletion of this knowledge base?",
+        "deleteDescription": "It cannot be recovered after deletion. Please operate with caution.",
+        "okText": "Delete",
+        "cancelText": "Cancel"
+      },
+      "messages": {
+        "fileDeleted": "File deleted",
+        "fileDeleteFailed": "Failed to delete file",
+        "kbDeleted": "Knowledge base deleted"
+      },
+      "recallTest": {
+        "description": "Weighted average results based on semantic text retrieval and full-text retrieval",
+        "placeholder": "Please enter recall test question",
+        "searchButton": "Retrieve",
+        "noResult": "No recall results",
+        "scoreLabel": "Score:",
+        "metadataLabel": "metadata:"
+      },
+      "graph": {
+        "title": "Knowledge Graph",
+        "refresh": "Refresh",
+        "close": "Close",
+        "nodeDetail": "Node Details",
+        "edgeDetail": "Edge Details",
+        "typeLabel": "Type",
+        "sourceNode": "Source Node",
+        "targetNode": "Target Node",
+        "labelLabel": "Labels",
+        "noProperties": "No properties"
+      },
+      "breadcrumb": {
+        "kbList": "Knowledge Bases"
+      },
+      "searchPlaceholder": "Search file name..."
+    },
+    "fileDetail": {
+      "columns": {
+        "position": "Position",
+        "tokens": "Token",
+        "page": "Page",
+        "section": "Section"
+      },
+      "actions": {
+        "download": "Download",
+        "save": "Save",
+        "cancel": "Cancel"
+      },
+      "messages": {
+        "noChunks": "No chunk data",
+        "chunkCount": "chunks",
+        "ready": "Ready",
+        "previousPage": "Previous Page",
+        "nextPage": "Next Page",
+        "chunkLabel": "Chunk",
+        "loadFailed": "Load failed"
+      },
+      "modal": {
+        "sliceTraceTitle": "Knowledge Slice Trace",
+        "sliceProcessTitle": "Slice Processing Flow",
+        "originalDocImport": "Original Document Import",
+        "fileLabel": "File",
+        "completed": "Completed",
+        "chunkDetailTitle": "Chunk Details - Chunk",
+        "contentDetail": "Content Details",
+        "chunkContent": "Chunk Content",
+        "metadata": "Metadata",
+        "position": "Position",
+        "tokenCount": "Token Count",
+        "pageNumber": "Page Number",
+        "chapter": "Chapter"
+      },
+      "breadcrumb": {
+        "kbList": "Knowledge Bases",
+        "kbDetail": "Knowledge Base Detail"
+      }
+    },
+    "create": {
+      "title": "Create Knowledge Base",
+      "editTitle": "Edit Knowledge Base",
+      "okText": "Confirm",
+      "cancelText": "Cancel",
+      "form": {
+        "typeLabel": "Knowledge Base Type",
+        "typeRequired": "Please select knowledge base type",
+        "nameLabel": "Knowledge Base Name",
+        "namePlaceholder": "Please enter knowledge base name",
+        "nameRequired": "Please enter knowledge base name",
+        "descriptionLabel": "Description",
+        "descriptionPlaceholder": "Please enter knowledge base description (optional)",
+        "embeddingModelLabel": "Embedding Model",
+        "embeddingModelRequired": "Please select embedding model",
+        "embeddingModelPlaceholder": "Please select embedding model",
+        "chatModelLabel": "Chat Model",
+        "chatModelRequired": "Please select chat model",
+        "chatModelPlaceholder": "Please select chat model",
+        "entityLabel": "Recognize Entities (Multiple Selection)",
+        "entityPlaceholder": "Enter entity name and press Enter to add, e.g., Person, Organization, Event",
+        "entityTooltip": "Entity information will serve as graph nodes, supporting multi-dimensional relationship tracking",
+        "addModel": "Add Model"
+      },
+      "type": {
+        "document": "Vector Knowledge Base",
+        "documentDesc": "Suitable for document knowledge, supports retrieval + generation",
+        "graph": "Knowledge Graph",
+        "graphDesc": "Custom entities/relationships, enhance structured reasoning"
+      },
+      "messages": {
+        "updateSuccess": "Knowledge base updated successfully",
+        "createSuccess": "Knowledge base created successfully",
+        "operationFailed": "Operation failed:"
+      }
+    },
+    "addData": {
+      "title": "Add Data",
+      "confirmUpload": "Confirm Upload",
+      "steps": {
+        "selectFiles": {
+          "title": "Select Dataset Files",
+          "description": "Select files from multiple datasets"
+        },
+        "configParams": {
+          "title": "Configure Parameters",
+          "description": "Set data processing parameters"
+        },
+        "confirmUpload": {
+          "title": "Confirm Upload",
+          "description": "Confirm information and upload"
+        }
+      },
+      "form": {
+        "sliceMethodLabel": "Chunking Method",
+        "chunkSizeLabel": "Chunk Size",
+        "chunkSizePlaceholder": "Please enter chunk size",
+        "overlapLabel": "Overlap Length",
+        "overlapPlaceholder": "Please enter overlap length",
+        "delimiterLabel": "Delimiter",
+        "delimiterPlaceholder": "Please enter delimiter",
+        "delimiterHint": "Enter delimiter, e.g., \\n\\n"
+      },
+      "confirm": {
+        "uploadConfirmTitle": "Upload Confirmation",
+        "uploadHint": "Tip: The system will automatically process files after upload, please wait patiently",
+        "kbName": "Knowledge Base Name",
+        "dataSource": "Data Source",
+        "dataset": "Dataset",
+        "totalFiles": "Total Files",
+        "sliceMethod": "Chunking Method",
+        "chunkSize": "Chunk Size",
+        "overlapSize": "Overlap Length",
+        "delimiter": "Delimiter",
+        "fileList": "File List",
+        "previous": "Previous",
+        "next": "Next",
+        "cancel": "Cancel"
+      },
+      "messages": {
+        "selectOneFile": "Please select at least one file",
+        "selectSliceMethod": "Please select chunking method",
+        "validChunkSize": "Please enter valid chunk size",
+        "validOverlapSize": "Please enter valid overlap length",
+        "inputDelimiter": "Please enter delimiter",
+        "addSuccess": "Data added successfully",
+        "addFailed": "Failed to add data, please try again"
+      },
+      "placeholders": {
+        "chunkSize": "Please enter chunk size",
+        "overlapSize": "Please enter overlap length",
+        "delimiter": "Enter delimiter, e.g., \\n\\n"
+      }
+    },
+    "const": {
+      "type": {
+        "vector": "Vector Knowledge Base",
+        "vectorDesc": "Retrieval Q&A for unstructured documents",
+        "graph": "Knowledge Graph",
+        "graphDesc": "Graph knowledge managing entities and relationships"
+      },
+      "status": {
+        "ready": "Ready",
+        "processing": "Processing",
+        "vectorizing": "Vectorizing",
+        "importing": "Importing",
+        "error": "Error",
+        "disabled": "Disabled",
+        "completed": "Completed",
+        "processed": "Processed",
+        "processFailed": "Process Failed",
+        "unprocessed": "Unprocessed",
+        "unknown": "Unknown Status"
+      },
+      "sliceMethod": {
+        "default": "Default Chunk",
+        "chapter": "Chapter Chunk",
+        "paragraph": "Paragraph Chunk",
+        "fixedLength": "Fixed Length Chunk",
+        "customSeparator": "Custom Separator Chunk"
+      },
+      "statistics": {
+        "embeddingModel": "Embedding Model",
+        "chatModel": "Chat Model",
+        "fileCount": "File Count",
+        "chunkCount": "Chunk Count",
+        "none": "None"
+      },
+      "fileColumns": {
+        "dataset": "Dataset",
+        "fileName": "File Name",
+        "fileSize": "Size"
+      }
+    }
   }
 }
