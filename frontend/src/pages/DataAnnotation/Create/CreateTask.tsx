@@ -36,8 +36,6 @@ export default function AnnotationTaskCreate() {
   const [showCustomTemplateDialog, setShowCustomTemplateDialog] =
     useState(false);
   const [selectedCategory, setSelectedCategory] = useState("Computer Vision");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [datasetFilter, setDatasetFilter] = useState("all");
   const [selectedTemplate, setSelectedTemplate] = useState<Template | null>(
     null
   );
