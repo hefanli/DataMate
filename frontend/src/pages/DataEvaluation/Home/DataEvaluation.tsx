@@ -4,18 +4,15 @@ import {
   Card,
   Table,
   Tag,
-  Space,
   Typography,
   Progress,
   Popconfirm,
   App,
 } from "antd";
-import {
-  PlusOutlined,
-  DeleteOutlined
-} from "@ant-design/icons";
+import { DeleteOutlined } from "@ant-design/icons";
 import { SearchControls } from "@/components/SearchControls";
 import { useNavigate } from "react-router";
+import { Plus } from "lucide-react";
 import { deleteEvaluationTaskUsingGet, getPagedEvaluationTaskUsingGet } from "@/pages/DataEvaluation/evaluation.api";
 import CardView from "@/components/CardView";
 import CreateTaskModal from "@/pages/DataEvaluation/Create/CreateTask.tsx";
@@ -103,12 +100,12 @@ export default function DataEvaluationPage() {
       dataIndex: 'name',
       key: 'name',
       render: (name, record) => (
-        <Button
+        <a
           type="link"
           onClick={() => navigate(`/data/evaluation/detail/${record.id}`)}
         >
           {name}
-        </Button>
+        </a>
       ),
     },
     {
@@ -207,14 +204,12 @@ export default function DataEvaluationPage() {
   ];
 
   return (
-    <div className="p-4">
-      <div className="flex items-center justify-between mb-4">
-        <Title level={4} style={{ margin: 0 }}>
-          {t("dataEvaluation.home.title")}
-        </Title>
+    <div className="h-full flex flex-col gap-4">
+      <div className="flex items-center justify-between">
+        <h2 className="text-xl font-bold">{t("dataEvaluation.home.title")}</h2>
         <Button
           type="primary"
-          icon={<PlusOutlined />}
+          icon={<Plus className="w-4 h-4" />}
           onClick={() => setIsModalVisible(true)}
         >
           {t("dataEvaluation.home.createTask")}
