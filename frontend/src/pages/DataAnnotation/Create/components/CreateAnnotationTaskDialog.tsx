@@ -142,7 +142,7 @@ export default function CreateAnnotationTask({
         });
 
         // The API returns: {code, message, data: {content, total, page, ...}}
-        if (templateResponse.code === 200 && templateResponse.data) {
+        if (templateResponse.data) {
           const fetchedTemplates = templateResponse.data.content || [];
           console.log("Fetched templates:", fetchedTemplates);
           setTemplates(fetchedTemplates);
