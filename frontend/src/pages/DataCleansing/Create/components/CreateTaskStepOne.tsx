@@ -29,11 +29,11 @@ export default function CreateTaskStepOne({
 }) {
   const { t } = useTranslation();
   const [datasets, setDatasets] = useState<Dataset[]>([]);
-  const datasetTypes = getDatasetTypeMap(t);
+  const datasetTypes = [...Object.values(getDatasetTypeMap(t))];
 
   const fetchDatasets = async () => {
     const { data } = await queryDatasetsUsingGet({ page: 1, size: 1000 });
-    setDatasets(data.content.map(mapDataset) || []);
+    setDatasets(data.content.map(dataset => mapDataset(dataset, t)) || []);
   };
 
   useEffect(() => {
