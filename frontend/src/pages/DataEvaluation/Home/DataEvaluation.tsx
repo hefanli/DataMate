@@ -99,6 +99,7 @@ export default function DataEvaluationPage() {
       title: t("dataEvaluation.home.columns.taskName"),
       dataIndex: 'name',
       key: 'name',
+      fixed: "left" as const,
       render: (name, record) => (
         <a
           type="link"
