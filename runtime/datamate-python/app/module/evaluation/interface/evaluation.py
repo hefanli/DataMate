@@ -46,7 +46,7 @@ async def get_prompt_templates():
     return SuccessResponse(data=templates)
 
 
-@router.post("/tasks", response_model=StandardResponse[EvaluationTaskDetailResponse], status_code=201)
+@router.post("/tasks", response_model=StandardResponse[EvaluationTaskDetailResponse])
 async def create_evaluation_task(
     request: CreateEvaluationTaskRequest,
     db: AsyncSession = Depends(get_db)

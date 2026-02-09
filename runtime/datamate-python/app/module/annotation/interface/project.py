@@ -65,7 +65,7 @@ async def list_mappings(
         logger.error(f"Error while logining in LabelStudio: {e}", e)
         raise HTTPException(status_code=500, detail="Internal server error")
 
-@router.post("", response_model=StandardResponse[DatasetMappingCreateResponse], status_code=201)
+@router.post("", response_model=StandardResponse[DatasetMappingCreateResponse])
 async def create_mapping(
     request: DatasetMappingCreateRequest,
     db: AsyncSession = Depends(get_db)

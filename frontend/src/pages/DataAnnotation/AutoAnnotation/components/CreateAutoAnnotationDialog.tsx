@@ -136,7 +136,7 @@ export default function CreateAutoAnnotationDialog({
 			setDatasets(imageDatasets);
 		} catch (error) {
 			console.error("Failed to fetch datasets:", error);
-			message.error("获取数据集列表失败");
+			message.error(t("dataAnnotation.autoAnnotation.messages.fetchTasksFailed"));
 		}
 	};
 
@@ -154,7 +154,7 @@ export default function CreateAutoAnnotationDialog({
 			const values = await form.validateFields();
 
 			if (imageFileCount === 0) {
-				message.error("请至少选择一个图像文件");
+				message.error(t("dataAnnotation.create.messages.selectAtLeastOneImageFile"));
 				return;
 			}
 
@@ -193,12 +193,12 @@ export default function CreateAutoAnnotationDialog({
 			};
 
 			await createAutoAnnotationTaskUsingPost(payload);
-			message.success("自动标注任务创建成功");
+			message.success(t("dataAnnotation.create.messages.autoCreateSuccess"));
 			onSuccess();
 		} catch (error: any) {
 			if (error.errorFields) return;
 			console.error("Failed to create auto annotation task:", error);
-			message.error(error.message || "创建任务失败");
+			message.error(error.message || t("dataAnnotation.create.messages.autoCreateFailed"));
 		} finally {
 			setLoading(false);
 		}
@@ -213,7 +213,7 @@ export default function CreateAutoAnnotationDialog({
 
 	return (
 		<Modal
-			title="创建自动标注任务"
+			title={t("dataAnnotation.autoAnnotation.createTask")}
 			open={visible}
 			onCancel={onCancel}
 			onOk={handleSubmit}
@@ -224,16 +224,16 @@ export default function CreateAutoAnnotationDialog({
 			<Form form={form} layout="vertical" preserve={false}>
 				<Form.Item
 					name="name"
-					label="任务名称"
+					label={t("dataAnnotation.create.form.name")}
 					rules={[
-						{ required: true, message: "请输入任务名称" },
-						{ max: 100, message: "任务名称不能超过100个字符" },
+						{ required: true, message: t("dataAnnotation.create.form.nameRequired") },
+						{ max: 100, message: t("dataAnnotation.create.form.nameMaxLength") },
 					]}
 				>
-					<Input placeholder="请输入任务名称" />
+					<Input placeholder={t("dataAnnotation.create.form.namePlaceholder")} />
 				</Form.Item>
 
-				<Form.Item label="选择数据集和图像文件" required>
+				<Form.Item label={t("dataAnnotation.create.form.selectDatasetAndFiles")} required>
 					<DatasetFileTransfer
 						open
 						selectedFilesMap={selectedFilesMap}
@@ -247,41 +247,40 @@ export default function CreateAutoAnnotationDialog({
 					/>
 					{selectedDataset && (
 						<div className="mt-2 p-2 bg-blue-50 rounded border border-blue-200 text-xs">
-							当前数据集：<span className="font-medium">{selectedDataset.name}</span> - 已选择
-							<span className="font-medium text-blue-600"> {imageFileCount} </span>个图像文件
+							{t("dataAnnotation.create.form.currentDatasetImages", { name: selectedDataset.name, count: imageFileCount })}
 						</div>
 					)}
 				</Form.Item>
 
-				<Form.Item hidden name="datasetId" rules={[{ required: true, message: "请选择数据集" }]}>
+				<Form.Item hidden name="datasetId" rules={[{ required: true, message: t("dataAnnotation.create.form.datasetRequired") }]}>
 					<Input type="hidden" />
 				</Form.Item>
 
-				<Form.Item name="modelSize" label="模型规模" rules={[{ required: true, message: "请选择模型规模" }]}>
+				<Form.Item name="modelSize" label={t("dataAnnotation.create.form.modelSize")} rules={[{ required: true, message: t("dataAnnotation.create.form.modelSizeRequired") }]}>
 					<Select>
-						<Option value="n">YOLOv8n (最快)</Option>
-						<Option value="s">YOLOv8s</Option>
-						<Option value="m">YOLOv8m</Option>
-						<Option value="l">YOLOv8l (推荐)</Option>
-						<Option value="x">YOLOv8x (最精确)</Option>
+						<Option value="n">{t("dataAnnotation.home.autoModelSizeLabels.n")}</Option>
+						<Option value="s">{t("dataAnnotation.home.autoModelSizeLabels.s")}</Option>
+						<Option value="m">{t("dataAnnotation.home.autoModelSizeLabels.m")}</Option>
+						<Option value="l">{t("dataAnnotation.home.autoModelSizeLabels.l")}</Option>
+						<Option value="x">{t("dataAnnotation.home.autoModelSizeLabels.x")}</Option>
 					</Select>
 				</Form.Item>
 
 				<Form.Item
 					name="confThreshold"
-					label="置信度阈值"
-					rules={[{ required: true, message: "请选择置信度阈值" }]}
+					label={t("dataAnnotation.create.form.confThreshold")}
+					rules={[{ required: true, message: t("dataAnnotation.create.form.confThresholdRequired") }]}
 				>
 					<Slider min={0.1} max={0.9} step={0.05} tooltip={{ formatter: (v) => `${(v || 0) * 100}%` }} />
 				</Form.Item>
 
-				<Form.Item label="目标类别">
+				<Form.Item label={t("dataAnnotation.create.form.targetClasses")}>
 					<Checkbox checked={selectAllClasses} onChange={(e) => handleClassSelectionChange(e.target.checked)}>
-						选中所有类别
+						{t("dataAnnotation.create.form.selectAllClasses")}
 					</Checkbox>
 					{!selectAllClasses && (
 						<Form.Item name="targetClasses" noStyle>
-							<Select mode="multiple" placeholder="选择目标类别" style={{ marginTop: 8 }}>
+							<Select mode="multiple" placeholder={t("dataAnnotation.create.form.targetClasses")} style={{ marginTop: 8 }}>
 								{COCO_CLASSES.map((cls) => (
 									<Option key={cls.id} value={cls.id}>
 										{cls.label} ({cls.name})
