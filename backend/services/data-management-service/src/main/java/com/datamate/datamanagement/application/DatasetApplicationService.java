@@ -194,7 +194,7 @@ public class DatasetApplicationService {
     /**
      * 处理标签名称，创建或获取标签
      */
-    private String processTagNames(List<String> tagNames) {
+    private List<Tag> processTagNames(List<String> tagNames) {
         Set<Tag> tags = new HashSet<>();
         for (String tagName : tagNames) {
             Tag tag = tagMapper.findByName(tagName);
@@ -209,16 +209,7 @@ public class DatasetApplicationService {
             tagMapper.updateUsageCount(tag.getId(), tag.getUsageCount());
             tags.add(tag);
         }
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            mapper.registerModule(new JavaTimeModule());
-            // 可选：配置日期时间格式
-            mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-            return mapper.writeValueAsString(tags);
-        } catch (JsonProcessingException e) {
-            log.warn("Parse tags to json error.");
-            return null;
-        }
+        return tags.stream().toList();
     }
 
     /**
