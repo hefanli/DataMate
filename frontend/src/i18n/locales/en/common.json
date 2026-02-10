@@ -55,6 +55,7 @@
   },
   "dataCollection": {
     "title": "Data Collection",
+    "description": "Create, import and manage datasets",
     "tabs": {
       "taskManagement": "Task Management",
       "taskExecution": "Execution Records",
@@ -256,6 +257,7 @@
   },
   "dataManagement": {
     "title": "Data Management",
+    "description": "Create, import and manage datasets",
     "actions": {
       "createDataset": "Create Dataset",
       "edit": "Edit",
@@ -773,6 +775,7 @@
   "dataEvaluation": {
     "home": {
       "title": "Data Evaluation",
+      "description": "Quality analysis, performance evaluation and bias detection",
       "createTask": "Create Evaluation Task",
       "searchPlaceholder": "Search task name...",
       "filters": {
@@ -976,6 +979,7 @@
   "dataAnnotation": {
     "home": {
       "title": "Data Annotation",
+      "description": "Annotate and tag data",
       "tabs": {
         "tasks": "Annotation Tasks",
         "templates": "Annotation Templates"
@@ -1279,6 +1283,7 @@
   },
   "dataCleansing": {
     "title": "Data Processing",
+    "description": "Data cleansing, processing and transformation",
     "tabs": {
       "taskList": "Task List",
       "templateManagement": "Template Management"
@@ -1498,6 +1503,7 @@
   },
   "knowledgeBase": {
     "title": "Knowledge Generation",
+    "description": "RAG-oriented knowledge base construction",
     "home": {
       "columns": {
         "name": "Knowledge Base",
@@ -1755,6 +1761,7 @@
   },
   "operatorMarket": {
     "title": "Operator Market",
+    "description": "Operator upload and management",
     "home": {
       "title": "Operator Market",
       "actions": {
@@ -2072,6 +2079,7 @@
   },
   "synthesisTask": {
     "title": "Data Synthesis",
+    "description": "Intelligent data synthesis and ratio",
     "tabs": {
       "tasks": "Synthesis Tasks",
       "templates": "Instruction Templates"
@@ -2501,6 +2509,81 @@
       "totalItems": "Total",
       "loginRequired": "Please login",
       "fetchFailed": "Failed to fetch data, please try again later"
+    }
+  },
+  "home": {
+    "hero": {
+      "subtitle": "AI Dataset Preparation Tool",
+      "title": "Building High-Quality AI Datasets",
+      "description": "From data management to knowledge generation, one-stop solution for enterprise AI data processing scenarios.",
+      "getStartedButton": "Get Started",
+      "chatAssistantButton": "Chat Assistant",
+      "checkingButton": "Checking...",
+      "dataOrchestrationButton": "Data Orchestration"
+    },
+    "sections": {
+      "featuresTitle": "Feature Modules"
+    },
+    "orchestrationHighlight": {
+      "title": "Data Orchestration - Visual Process Design",
+      "description": "Drag-and-drop design of complex data processing pipelines, making data flow more intuitive and efficient.",
+      "coreFeaturesTitle": "Core Features:",
+      "feature1": "Visual Process Designer",
+      "feature2": "Rich Data Processing Component Library",
+      "feature3": "Real-time Process Execution Monitoring",
+      "smartFeaturesTitle": "Smart Features:",
+      "smartFeature1": "Automatic data flow path optimization",
+      "smartFeature2": "Smart error detection and repair suggestions",
+      "smartFeature3": "Template-based process rapid reuse",
+      "startButton": "Start Orchestration"
+    },
+    "dataAgentHighlight": {
+      "title": "Data Agent - Conversational Business Operations",
+      "description": "Say goodbye to complex interfaces, complete all dataset-related business operations with natural language.",
+      "examplesTitle": "Conversation Examples:",
+      "example1": "Help me create an image classification dataset",
+      "example2": "Analyze data quality and generate a report",
+      "example3": "Start synthesis task with target of 1000 data points",
+      "smartFeaturesTitle": "Smart Features:",
+      "smartFeature1": "Understand complex requirements and execute automatically",
+      "smartFeature2": "Provide professional advice and optimization solutions",
+      "smartFeature3": "Learn usage habits for personalized service",
+      "startButton": "Start Conversation"
+    },
+    "workflowShowcase": {
+      "title": "Complete Data Processing Workflow",
+      "description": "End-to-end solution from raw data to high-quality datasets.",
+      "step1Title": "Data Collection",
+      "step1Description": "Support importing from various data sources including local files, databases, APIs, etc.",
+      "step2Title": "Smart Orchestration",
+      "step2Description": "Visualize data processing workflows, automate complex tasks.",
+      "step3Title": "Smart Processing",
+      "step3Description": "Automated data processing, annotation, and quality assessment workflows.",
+      "step4Title": "Quality Assurance",
+      "step4Description": "Comprehensive quality evaluation and bias detection to ensure dataset reliability.",
+      "startButton": "Start Building Dataset"
+    },
+    "features": {
+      "orchestration": {
+        "title": "Smart Orchestration",
+        "description": "Visual data processing workflow orchestration, drag-and-drop design of complex data processing pipelines"
+      },
+      "chatAssistant": {
+        "title": "Chat Assistant",
+        "description": "Complete complex dataset operations and business processes through natural language conversation"
+      },
+      "evaluation": {
+        "title": "Comprehensive Evaluation",
+        "description": "Multi-dimensional data quality assessment, including statistical analysis, performance testing and bias detection"
+      },
+      "processing": {
+        "title": "Efficient Processing",
+        "description": "Complete data processing pipeline from raw data to usable datasets"
+      },
+      "knowledge": {
+        "title": "Knowledge Management",
+        "description": "Build RAG-oriented knowledge bases, supporting intelligent Q&A and retrieval"
+      }
     }
   },
   "datasetFileTransfer": {
