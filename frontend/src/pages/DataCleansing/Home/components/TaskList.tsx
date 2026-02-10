@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Table, Progress, Badge, Button, Tooltip, Card, App } from "antd";
 import {
   PlayCircleOutlined,
@@ -63,6 +63,10 @@ export default function TaskList() {
     message.success(t("dataCleansing.task.messages.taskDeleted"));
     fetchData();
   };
+
+  useEffect(() => {
+    fetchData();
+  }, [t]);
 
   const taskOperations = (record: CleansingTask) => {
     const isRunning = record.status?.value === TaskStatus.RUNNING;

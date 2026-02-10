@@ -995,20 +995,20 @@
         "moreActions": "更多操作"
       },
       "confirm": {
-        "deleteTaskTitle": "确认删除标注任务「{name}」吗？",
+        "deleteTaskTitle": "确认删除标注任务「{{name}}」吗？",
         "deleteTaskContent1": "删除标注任务不会删除对应数据集。",
         "deleteTaskContent2": "如需保留当前标注结果，请在同步后再删除。",
-        "deleteAutoTaskTitle": "确认删除自动标注任务「{name}」吗？",
+        "deleteAutoTaskTitle": "确认删除自动标注任务「{{name}}」吗？",
         "deleteAutoTaskContent": "删除任务后，已生成的标注结果不会被删除。",
         "deleteOkText": "删除",
         "deleteCancelText": "取消",
-        "syncTitle": "确认同步标注任务「{name}」吗？",
+        "syncTitle": "确认同步标注任务「{{name}}」吗？",
         "syncContent1": "标注工程中文件列表将与数据集保持一致，差异项将会被修正。",
         "syncContent2": "标注工程中的标签与数据集中标签将进行合并，冲突项将以最新一次内容为准。",
         "syncOkText": "同步",
         "syncCancelText": "取消",
-        "batchSyncTitle": "确认同步所选 {count} 个标注任务吗？",
-        "batchDeleteTitle": "确认删除所选 {count} 个标注任务吗？"
+        "batchSyncTitle": "确认同步所选 {{count}} 个标注任务吗？",
+        "batchDeleteTitle": "确认删除所选 {{count}} 个标注任务吗？"
       },
       "messages": {
         "deleteSuccess": "映射删除成功",
@@ -1028,7 +1028,7 @@
         "autoTaskNotFound": "未找到对应的自动标注任务",
         "taskNotFound": "未找到对应的标注任务",
         "fetchAutoTasksFailed": "获取自动标注任务失败",
-        "syncToDbTitle": "确认将「{name}」在 Label Studio 中的标注结果同步到数据库吗？",
+        "syncToDbTitle": "确认将「{{name}}」在 Label Studio 中的标注结果同步到数据库吗？",
         "syncToDbContent1": "此操作会根据 Label Studio 中的任务数据覆盖当前文件标签与标注信息。",
         "syncToDbContent2": "同步完成后，可在数据管理的文件详情中查看最新标签与标注。",
         "syncToDbLoading": "正在从 Label Studio 同步标注到数据库...",
@@ -1057,7 +1057,7 @@
       "manualAnnotation": "手动标注",
       "autoAnnotation": "自动标注",
       "allCategories": "全部类别",
-      "categoriesCount": "{count} 个类别",
+      "categoriesCount": "{{count}} 个类别",
       "editDataset": "编辑任务数据集",
       "editTask": "编辑任务"
     },
@@ -1083,8 +1083,8 @@
         "selectTemplate": "请选择标注模板",
         "noTemplatesFound": "暂无模板，请前往「标注模板」页面创建",
         "selectDatasetAndFiles": "选择数据集和文件",
-        "currentDataset": "当前数据集：{name} - 已选择 {count} 个文件",
-        "currentDatasetImages": "当前数据集：{name} - 已选择 {count} 个图像文件",
+        "currentDataset": "当前数据集：{{name}} - 已选择 {{count}} 个文件",
+        "currentDatasetImages": "当前数据集：{{name}} - 已选择 {{count}} 个图像文件",
         "modelSize": "模型规模",
         "modelSizeRequired": "请选择模型规模",
         "confThreshold": "置信度阈值",
@@ -1186,7 +1186,7 @@
         "moreActions": "更多操作"
       },
       "confirm": {
-        "deleteTitle": "确认删除自动标注任务「{name}」吗？",
+        "deleteTitle": "确认删除自动标注任务「{{name}}」吗？",
         "deleteContent": "删除任务后，已生成的标注结果不会被删除。",
         "deleteOkText": "删除",
         "deleteCancelText": "取消"
@@ -1206,7 +1206,7 @@
       "editDataset": {
         "title": "编辑数据集",
         "description": "修改该任务的数据集文件",
-        "selectedCount": "已选择 {count} 个文件",
+        "selectedCount": "已选择 {{count}} 个文件",
         "cancel": "取消",
         "save": "保存",
         "loading": "保存中...",
@@ -1296,6 +1296,7 @@
       "pause": "暂停",
       "compare": "对比",
       "download": "下载",
+      "delete": "删除",
       "batchDownload": "批量下载",
       "edit": "编辑",
       "selectAll": "全选",
@@ -1322,7 +1323,8 @@
         "startTime": "开始时间",
         "endTime": "结束时间",
         "createdAt": "创建时间",
-        "dataSizeChange": "数据量变化"
+        "dataSizeChange": "数据量变化",
+        "actions": "操作"
       },
       "form": {
         "name": "名称",
@@ -1394,10 +1396,11 @@
         "status": "状态",
         "actions": "操作",
         "searchFileName": "搜索文件名",
-        "selectFiles": "已选择 {count} 个文件",
+        "searchFileType": "搜索文件类型",
+        "selectFiles": "已选择 {{count}} 个文件",
         "notCompleted": "未完成",
         "downloadNotAvailable": "暂未开放",
-        "compareDialogTitle": "文件对比 - {fileName}",
+        "compareDialogTitle": "文件对比 - {{fileName}}",
         "beforeProcessing": "处理前",
         "afterProcessing": "处理后",
         "originalFilePreview": "原始文件预览",
@@ -1406,12 +1409,12 @@
         "fileFormat": "文件格式",
         "processingEffect": "处理效果对比",
         "sizeOptimization": "文件大小优化",
-        "reduced": "减少了 {percent}%"
+        "reduced": "减少了 {{percent}}%"
       },
       "logTable": {
         "selectRun": "选择运行轮次",
-        "currentDisplay": "当前展示: 第 {num} 次",
-        "nthRun": "第 {num} 次",
+        "currentDisplay": "当前展示: 第 {{num}} 次",
+        "nthRun": "第 {{num}} 次",
         "noLogs": "当前任务无可用日志"
       },
       "operatorTable": {
@@ -1442,9 +1445,9 @@
         "description": "任务描述",
         "endTime": "结束时间",
         "retryCount": "重试次数",
-        "completed": "已完成: {count}",
-        "processing": "处理中: {count}",
-        "failed": "失败: {count}"
+        "completed": "已完成: {{count}}",
+        "processing": "处理中: {{count}}",
+        "failed": "失败: {{count}}"
       },
       "breadcrumb": {
         "dataProcessing": "数据处理",

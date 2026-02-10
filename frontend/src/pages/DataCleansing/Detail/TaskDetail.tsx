@@ -25,9 +25,11 @@ import FileTable from "./components/FileTable";
 import LogsTable from "./components/LogsTable";
 import {formatExecutionDuration} from "@/utils/unit.ts";
 import {ReloadOutlined} from "@ant-design/icons";
+import { useTranslation } from "react-i18next";
 
 // 任务详情页面组件
 export default function CleansingTaskDetail() {
+  const { t } = useTranslation();
   const { id = "" } = useParams(); // 获取动态路由参数
   const { message } = App.useApp();
   const navigate = useNavigate();
@@ -38,26 +40,26 @@ export default function CleansingTaskDetail() {
       const { data } = await queryCleaningTaskByIdUsingGet(id);
       setTask(mapTask(data));
     } catch (error) {
-      message.error("获取任务详情失败");
+      message.error(t("dataCleansing.task.messages.taskDetailFailed"));
       navigate("/data/cleansing");
     }
   };
 
   const pauseTask = async () => {
     await stopCleaningTaskUsingPost(id);
-    message.success("任务已暂停");
+    message.success(t("dataCleansing.task.messages.taskPaused"));
     fetchTaskDetail();
   };
 
   const startTask = async () => {
     await executeCleaningTaskUsingPost(id);
-    message.success("任务已启动");
+    message.success(t("dataCleansing.task.messages.taskStarted"));
     fetchTaskDetail();
   };
 
   const deleteTask = async () => {
     await deleteCleaningTaskByIdUsingDelete(id);
-    message.success("任务已删除");
+    message.success(t("dataCleansing.task.messages.taskDeleted"));
     navigate("/data/cleansing");
   };
 
@@ -69,7 +71,7 @@ export default function CleansingTaskDetail() {
       const { data } = await queryCleaningTaskResultByIdUsingGet(id);
       setResult(data);
     } catch (error) {
-      message.error("获取数据处理结果失败");
+      message.error(t("dataCleansing.task.messages.fetchTaskResultFailed"));
       navigate("/data/cleansing/task-detail/" + id);
     }
   };
@@ -82,7 +84,7 @@ export default function CleansingTaskDetail() {
       const { data } = await queryCleaningTaskLogByIdUsingGet(id, retryCount);
       setTaskLog(data);
     } catch (error) {
-      message.error("获取数据处理日志失败");
+      message.error(t("dataCleansing.task.messages.fetchTaskLogFailed"));
       navigate("/data/cleansing/task-detail/" + id);
     }
   };
@@ -111,24 +113,24 @@ export default function CleansingTaskDetail() {
   const statistics = [
     {
       icon: <Clock className="w-4 h-4 text-blue-500" />,
-      label: "总耗时",
+      label: t("dataCleansing.detail.statistics.totalDuration"),
       value: formatExecutionDuration(task?.startedAt, task?.finishedAt) || "--",
     },
     {
       icon: <CheckCircle className="w-4 h-4 text-green-500" />,
-      label: "成功文件",
+      label: t("dataCleansing.detail.statistics.successFiles"),
       value: task?.progress?.succeedFileNum || "0",
     },
     {
       icon: <AlertCircle className="w-4 h-4 text-red-500" />,
-      label: "失败文件",
+      label: t("dataCleansing.detail.statistics.failedFiles"),
       value: (task?.status.value === TaskStatus.RUNNING || task?.status.value === TaskStatus.PENDING)  ?
         task?.progress.failedFileNum :
         task?.progress?.totalFileNum - task?.progress.succeedFileNum,
     },
     {
       icon: <Activity className="w-4 h-4 text-purple-500" />,
-      label: "成功率",
+      label: t("dataCleansing.detail.statistics.successRate"),
       value: task?.progress?.successRate ? task?.progress?.successRate + "%" : "--",
     },
   ];
@@ -138,7 +140,7 @@ export default function CleansingTaskDetail() {
       ? [
           {
             key: "pause",
-            label: "暂停任务",
+            label: t("dataCleansing.actions.pauseTask"),
             icon: <Pause className="w-4 h-4" />,
             onClick: pauseTask,
           },
@@ -148,7 +150,7 @@ export default function CleansingTaskDetail() {
       ? [
           {
             key: "start",
-            label: "执行任务",
+            label: t("dataCleansing.actions.updateTask"),
             icon: <Play className="w-4 h-4" />,
             onClick: startTask,
           },
@@ -156,13 +158,13 @@ export default function CleansingTaskDetail() {
       : []),
     {
       key: "refresh",
-      label: "更新任务",
+      label: t("dataCleansing.actions.refreshTask"),
       icon: <ReloadOutlined className="w-4 h-4" />,
       onClick: handleRefresh,
     },
     {
       key: "delete",
-      label: "删除任务",
+      label: t("dataCleansing.actions.deleteTask"),
       icon: <Trash2 className="w-4 h-4" />,
       danger: true,
       onClick: deleteTask,
@@ -172,28 +174,28 @@ export default function CleansingTaskDetail() {
   const tabList = [
     {
       key: "basic",
-      label: "基本信息",
+      label: t("dataCleansing.detail.tabs.basicInfo"),
     },
     {
       key: "operators",
-      label: "处理算子",
+      label: t("dataCleansing.detail.tabs.operators"),
     },
     {
       key: "files",
-      label: "处理文件",
+      label: t("dataCleansing.detail.tabs.files"),
     },
     {
       key: "logs",
-      label: "运行日志",
+      label: t("dataCleansing.detail.tabs.logs"),
     },
   ];
 
   const breadItems = [
     {
-      title: <Link to="/data/cleansing">数据处理</Link>,
+      title: <Link to="/data/cleansing">{t("dataCleansing.breadcrumb.dataProcessing")}</Link>,
     },
     {
-      title: "任务详情",
+      title: t("dataCleansing.breadcrumb.taskDetail"),
     },
   ];
 

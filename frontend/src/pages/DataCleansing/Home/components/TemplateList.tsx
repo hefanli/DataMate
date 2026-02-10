@@ -10,7 +10,7 @@ import {App, Button, Card, Table, Tooltip} from "antd";
 import {CleansingTemplate} from "../../cleansing.model";
 import {SearchControls} from "@/components/SearchControls.tsx";
 import {useNavigate} from "react-router";
-import {useState} from "react";
+import { useState, useEffect } from "react";
 
 export default function TemplateList() {
   const { t } = useTranslation();
@@ -46,6 +46,10 @@ export default function TemplateList() {
       },
     ];
   };
+
+  useEffect(() => {
+    fetchData();
+  }, [t]);
 
   const templateColumns = [
     {
