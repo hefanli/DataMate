@@ -3,7 +3,7 @@ import { Download } from "lucide-react";
 import {useEffect, useState} from "react";
 import {useParams} from "react-router";
 import {TaskStatus} from "@/pages/DataCleansing/cleansing.model.ts";
-import {TaskStatusMap} from "@/pages/DataCleansing/cleansing.const.tsx";
+import {getTaskStatusMap} from "@/pages/DataCleansing/cleansing.const.tsx";
 import { useTranslation } from "react-i18next";
 
 // 模拟文件列表数据
@@ -278,7 +278,7 @@ export default function FileTable({result, fetchTaskResult}) {
               ? "success"
               : "error"
           }
-          text={TaskStatusMap[status as TaskStatus].label}
+          text={getTaskStatusMap(t)[status as TaskStatus].label}
         />
       ),
     },

@@ -17,7 +17,7 @@ import {
   queryCleaningTaskByIdUsingGet, queryCleaningTaskLogByIdUsingGet, queryCleaningTaskResultByIdUsingGet,
   stopCleaningTaskUsingPost,
 } from "../cleansing.api";
-import {mapTask, TaskStatusMap} from "../cleansing.const";
+import {getTaskStatusMap, mapTask} from "../cleansing.const";
 import {CleansingResult, TaskStatus} from "@/pages/DataCleansing/cleansing.model";
 import BasicInfo from "./components/BasicInfo";
 import OperatorTable from "./components/OperatorTable";
@@ -97,7 +97,7 @@ export default function CleansingTaskDetail() {
 
   useEffect(() => {
     fetchTaskDetail();
-  }, [id]);
+  }, [id, t]);
 
   const [task, setTask] = useState(null);
   const [activeTab, setActiveTab] = useState("basic");
@@ -105,7 +105,7 @@ export default function CleansingTaskDetail() {
   const headerData = {
     ...task,
     icon: <LayoutList className="w-8 h-8" />,
-    status: TaskStatusMap[task?.status],
+    status: getTaskStatusMap(t)[task?.status],
     createdAt: task?.createdAt,
     lastUpdated: task?.updatedAt,
   };

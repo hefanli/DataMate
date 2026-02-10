@@ -2,7 +2,6 @@ import {
   CleansingTask,
   CleansingTemplate,
   TaskStatus,
-  TemplateType,
 } from "@/pages/DataCleansing/cleansing.model";
 import {
   formatBytes,
@@ -17,40 +16,6 @@ import {
   PauseCircleOutlined,
 } from "@ant-design/icons";
 import { BrushCleaning, Layout } from "lucide-react";
-import {DatasetStatus} from "@/pages/DataManagement/dataset.model.ts";
-
-export const TaskStatusMap = {
-  [TaskStatus.PENDING]: {
-    label: "待处理",
-    value: TaskStatus.PENDING,
-    color: "gray",
-    icon: <ClockCircleOutlined />,
-  },
-  [TaskStatus.RUNNING]: {
-    label: "运行中",
-    value: TaskStatus.RUNNING,
-    color: "blue",
-    icon: <PlayCircleOutlined />,
-  },
-  [TaskStatus.COMPLETED]: {
-    label: "已完成",
-    value: TaskStatus.COMPLETED,
-    color: "green",
-    icon: <CheckCircleOutlined />,
-  },
-  [TaskStatus.FAILED]: {
-    label: "失败",
-    value: TaskStatus.FAILED,
-    color: "red",
-    icon: <AlertOutlined />,
-  },
-  [TaskStatus.STOPPED]: {
-    label: "已停止",
-    value: TaskStatus.STOPPED,
-    color: "orange",
-    icon: <PauseCircleOutlined />,
-  },
-};
 
 export function getTaskStatusMap(t: (key: string) => string) {
   return {

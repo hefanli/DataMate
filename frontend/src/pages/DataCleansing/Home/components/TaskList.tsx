@@ -9,7 +9,7 @@ import { useTranslation } from "react-i18next";
 import { SearchControls } from "@/components/SearchControls";
 import CardView from "@/components/CardView";
 import { useNavigate } from "react-router";
-import { mapTask, TaskStatusMap } from "../../cleansing.const";
+import {getTaskStatusMap, mapTask} from "../../cleansing.const";
 import {
   TaskStatus,
   type CleansingTask,
@@ -31,7 +31,7 @@ export default function TaskList() {
     {
       key: "status",
       label: t("dataCleansing.task.columns.status"),
-      options: [...Object.values(TaskStatusMap)],
+      options: [...Object.values(getTaskStatusMap(t))],
     },
   ];
 
