@@ -577,7 +577,8 @@
   },
   "common": {
     "actions": {
-      "createTask": "创建任务"
+      "createTask": "创建任务",
+      "actions": "操作"
     },
     "placeholders": {
       "empty": "-"

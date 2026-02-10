@@ -577,7 +577,8 @@
   },
   "common": {
     "actions": {
-      "createTask": "Create Task"
+      "createTask": "Create Task",
+      "actions": "Actions"
     },
     "placeholders": {
       "empty": "-"
