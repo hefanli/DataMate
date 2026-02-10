@@ -136,7 +136,7 @@ export default function SynthDataDetail() {
     if (!selectedChunkId) return;
     try {
       const res = await deleteChunkWithDataUsingDelete(selectedChunkId);
-      if (res?.data?.code === 200 || res?.code === 200) {
+      if (res?.data) {
         message.success("删除成功");
       } else {
         message.success("删除成功");
