@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, Button, Table, Tooltip, message } from "antd";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { SearchControls } from "@/components/SearchControls";
@@ -33,6 +33,10 @@ export default function KnowledgeBasePage() {
     queryKnowledgeBasesUsingPost,
     (kb) => mapKnowledgeBase(kb, false, t) // 在首页不显示索引模型和文本理解模型字段
   );
+
+  useEffect(() => {
+    fetchData();
+  }, [t])
 
   const handleDeleteKB = async (kb: KnowledgeBaseItem) => {
     try {

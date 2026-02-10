@@ -72,6 +72,10 @@ const KnowledgeBaseDetailPage: React.FC = () => {
   }, [id, t]);
 
   useEffect(() => {
+    fetchFiles()
+  }, [t]);
+
+  useEffect(() => {
     if (!graphVisible) {
       return;
     }

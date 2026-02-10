@@ -86,7 +86,7 @@ const KnowledgeBaseFileDetail: React.FC = () => {
   useEffect(() => {
     fetchChunks(currentPage);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [knowledgeBaseId, ragFileId, currentPage]);
+  }, [knowledgeBaseId, ragFileId, currentPage, t]);
 
   const totalElements = paged?.totalElements ?? 0;
   const totalPages = paged?.totalPages ?? 0;
