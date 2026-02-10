@@ -576,9 +576,17 @@
     }
   },
   "common": {
+    "settings": {
+      "title": "设置"
+    },
+    "taskCenter": {
+      "title": "任务中心"
+    },
     "actions": {
       "createTask": "创建任务",
-      "actions": "操作"
+      "actions": "操作",
+      "openSidebar": "展开侧边栏",
+      "closeSidebar": "收起侧边栏"
     },
     "placeholders": {
       "empty": "-"

@@ -576,9 +576,17 @@
     }
   },
   "common": {
+    "settings": {
+      "title": "Settings"
+    },
+    "taskCenter": {
+      "title": "Task Center"
+    },
     "actions": {
       "createTask": "Create Task",
-      "actions": "Actions"
+      "actions": "Actions",
+      "openSidebar": "Open Sidebar",
+      "closeSidebar": "Close Sidebar"
     },
     "placeholders": {
       "empty": "-"

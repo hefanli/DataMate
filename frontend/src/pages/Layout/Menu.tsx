@@ -18,6 +18,7 @@ export const menuItems = [
   {
     id: "collection",
     title: "数据归集",
+    i18Key: "dataCollection.title",
     icon: Database,
     description: "创建、导入和管理数据集",
     color: "bg-orange-500",
@@ -25,6 +26,7 @@ export const menuItems = [
   {
     id: "management",
     title: "数据管理",
+    i18Key: "dataManagement.title",
     icon: FolderOpen,
     description: "创建、导入和管理数据集",
     color: "bg-blue-500",
@@ -32,6 +34,7 @@ export const menuItems = [
   {
     id: "cleansing",
     title: "数据处理",
+    i18Key: "dataCleansing.title",
     icon: GitBranch,
     description: "数据清洗、处理和转换",
     color: "bg-purple-500",
@@ -39,6 +42,7 @@ export const menuItems = [
   {
     id: "annotation",
     title: "数据标注",
+    i18Key: "dataAnnotation.home.title",
     icon: Tag,
     description: "对数据进行标注和标记",
     color: "bg-green-500",
@@ -46,6 +50,7 @@ export const menuItems = [
   {
     id: "synthesis",
     title: "数据合成",
+    i18Key: "synthesisTask.title",
     icon: Shuffle,
     description: "智能数据合成和配比",
     color: "bg-pink-500",
@@ -53,11 +58,13 @@ export const menuItems = [
       {
         id: "synthesis/task",
         title: "合成任务",
+        i18Key: "synthesisTask.tabs.tasks",
         icon: Merge,
       },
       {
         id: "synthesis/ratio-task",
         title: "配比任务",
+        i18Key: "ratioTask.home.title",
         icon: BarChart3,
       },
     ],
@@ -65,6 +72,7 @@ export const menuItems = [
   {
     id: "evaluation",
     title: "数据评估",
+    i18Key: "dataEvaluation.home.title",
     icon: Target,
     badge: 4,
     description: "质量分析、性能评估和偏见检测",
@@ -73,6 +81,7 @@ export const menuItems = [
   {
     id: "knowledge-base",
     title: "知识生成",
+    i18Key: "knowledgeBase.title",
     icon: BookOpen,
     description: "面向RAG的知识库构建",
     color: "bg-teal-500",
@@ -80,6 +89,7 @@ export const menuItems = [
   {
     id: "operator-market",
     title: "算子市场",
+    i18Key: "operatorMarket.title",
     icon: Store,
     description: "算子上传与管理",
     color: "bg-yellow-500",
