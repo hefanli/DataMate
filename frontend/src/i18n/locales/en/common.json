@@ -2429,5 +2429,104 @@
       "evaluationCreateFailed": "Failed to create evaluation task",
       "fetchModelsFailed": "Failed to fetch model list"
     }
+  },
+  "components": {
+    "errorBoundary": {
+      "title": "An error occurred",
+      "retry": "Retry",
+      "goHome": "Go Home"
+    },
+    "searchControls": {
+      "searchPlaceholder": "Search...",
+      "dateRange": {
+        "start": "Start Date",
+        "end": "End Date",
+        "placeholder": "Select date range"
+      },
+      "filters": {
+        "label": "Filters",
+        "clearAll": "Clear All"
+      }
+    },
+    "tagList": {
+      "addTag": "Add Tag"
+    },
+    "actionDropdown": {
+      "confirm": "Confirm",
+      "cancel": "Cancel"
+    },
+    "developmentInProgress": {
+      "title": "Under Development",
+      "description": "This feature is under development, stay tuned.",
+      "goHome": "Go Home"
+    },
+    "business": {
+      "taskPopover": {
+        "title": "Task Details",
+        "empty": "No task information",
+        "actions": {
+          "viewDetail": "View Details",
+          "delete": "Delete",
+          "archive": "Archive"
+        },
+        "progress": {
+          "label": "Progress",
+          "running": "Running",
+          "completed": "Completed"
+        },
+        "schedule": {
+          "label": "Schedule",
+          "nextRun": "Next Run",
+          "lastRun": "Last Run"
+        },
+        "source": {
+          "label": "Source",
+          "dataset": "Dataset",
+          "collection": "Collection Task"
+        }
+      }
+    }
+  },
+  "hooks": {
+    "tagConfig": {
+      "fetchFailed": "Failed to fetch tag configuration",
+      "loadError": "Error loading tag configuration"
+    },
+    "sliceUpload": {
+      "uploadDataset": "Upload Dataset",
+      "fileModifiedOrDeleted": "File has been modified or deleted, please reselect the file to upload",
+      "uploadFailed": "File upload failed, please try again later"
+    },
+    "fetchData": {
+      "totalItems": "Total",
+      "loginRequired": "Please login",
+      "fetchFailed": "Failed to fetch data, please try again later"
+    }
+  },
+  "datasetFileTransfer": {
+    "columns": {
+      "datasetName": "Dataset",
+      "fileName": "File Name",
+      "fileSize": "Size"
+    },
+    "datasetColumns": {
+      "name": "Dataset Name",
+      "fileCount": "File Count",
+      "totalSize": "Size"
+    },
+    "selectDataset": "Select Dataset",
+    "searchDatasetPlaceholder": "Search dataset name...",
+    "selectFiles": "Select Files",
+    "selectAllCurrentDataset": "Select All in Current Dataset",
+    "searchFilesPlaceholder": "Search file name...",
+    "preview": "Preview",
+    "cancelPreview": "Cancel Preview",
+    "messages": {
+      "pleaseSelectDataset": "Please select a dataset first",
+      "singleDatasetOnlyWarning": "Files can only be selected from one dataset at a time. Please clear selected files before switching datasets",
+      "selectAllSuccess": "Selected all {{count}} files in the current dataset",
+      "noFilesAvailable": "No files available in the current dataset",
+      "selectAllFailed": "Failed to select all files in dataset, please try again later"
+    }
   }
 }

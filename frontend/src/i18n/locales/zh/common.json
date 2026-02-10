@@ -2429,5 +2429,104 @@
       "evaluationCreateFailed": "评估任务创建失败",
       "fetchModelsFailed": "获取模型列表失败"
     }
+  },
+  "components": {
+    "errorBoundary": {
+      "title": "发生错误",
+      "retry": "重试",
+      "goHome": "返回首页"
+    },
+    "searchControls": {
+      "searchPlaceholder": "搜索...",
+      "dateRange": {
+        "start": "开始日期",
+        "end": "结束日期",
+        "placeholder": "选择日期范围"
+      },
+      "filters": {
+        "label": "筛选",
+        "clearAll": "清除所有"
+      }
+    },
+    "tagList": {
+      "addTag": "添加标签"
+    },
+    "actionDropdown": {
+      "confirm": "确认",
+      "cancel": "取消"
+    },
+    "developmentInProgress": {
+      "title": "开发中",
+      "description": "此功能正在开发中，敬请期待。",
+      "goHome": "返回首页"
+    },
+    "business": {
+      "taskPopover": {
+        "title": "任务详情",
+        "empty": "无任务信息",
+        "actions": {
+          "viewDetail": "查看详情",
+          "delete": "删除",
+          "archive": "归档"
+        },
+        "progress": {
+          "label": "进度",
+          "running": "运行中",
+          "completed": "已完成"
+        },
+        "schedule": {
+          "label": "调度",
+          "nextRun": "下次运行",
+          "lastRun": "上次运行"
+        },
+        "source": {
+          "label": "来源",
+          "dataset": "数据集",
+          "collection": "归集任务"
+        }
+      }
+    }
+  },
+  "hooks": {
+    "tagConfig": {
+      "fetchFailed": "获取标签配置失败",
+      "loadError": "加载标签配置时出错"
+    },
+    "sliceUpload": {
+      "uploadDataset": "上传数据集",
+      "fileModifiedOrDeleted": "文件被修改或删除，请重新选择文件上传",
+      "uploadFailed": "文件上传失败，请稍后重试"
+    },
+    "fetchData": {
+      "totalItems": "共",
+      "loginRequired": "请登录",
+      "fetchFailed": "数据获取失败，请稍后重试"
+    }
+  },
+  "datasetFileTransfer": {
+    "columns": {
+      "datasetName": "所属数据集",
+      "fileName": "文件名",
+      "fileSize": "大小"
+    },
+    "datasetColumns": {
+      "name": "数据集名称",
+      "fileCount": "文件数",
+      "totalSize": "大小"
+    },
+    "selectDataset": "选择数据集",
+    "searchDatasetPlaceholder": "搜索数据集名称...",
+    "selectFiles": "选择文件",
+    "selectAllCurrentDataset": "全选当前数据集",
+    "searchFilesPlaceholder": "搜索文件名称...",
+    "preview": "预览",
+    "cancelPreview": "取消预览",
+    "messages": {
+      "pleaseSelectDataset": "请先选择一个数据集",
+      "singleDatasetOnlyWarning": "当前仅支持从一个数据集选择文件，请先清空已选文件后再切换数据集",
+      "selectAllSuccess": "已选中当前数据集的全部 {{count}} 个文件",
+      "noFilesAvailable": "当前数据集下没有可选文件",
+      "selectAllFailed": "全选整个数据集失败，请稍后重试"
+    }
   }
 }
