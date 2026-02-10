@@ -101,7 +101,7 @@ const TemplateList: React.FC = () => {
     const handleDelete = async (templateId: string) => {
         try {
             const response = await deleteAnnotationTemplateByIdUsingDelete(templateId);
-            if (response.code === 200) {
+            if (response.data) {
                 message.success(t('dataAnnotation.template.messages.deleteSuccess'));
                 fetchData();
             } else {

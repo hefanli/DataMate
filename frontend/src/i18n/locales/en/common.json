@@ -422,7 +422,6 @@
       "edgeTypeSynthesis": "Data Synthesis",
       "edgeTypeRatio": "Data Ratio",
       "edgeTypeDefault": "Processing Flow",
-      "edgeTypeDefaultLabel": "Processing Flow",
       "detailBasicInfo": "Basic Information",
       "detailId": "ID:",
       "detailName": "Name:",
@@ -579,9 +578,6 @@
   "common": {
     "actions": {
       "createTask": "Create Task"
-    },
-    "table": {
-      "file": "files"
     },
     "placeholders": {
       "empty": "-"
@@ -999,20 +995,20 @@
         "moreActions": "More Actions"
       },
       "confirm": {
-        "deleteTaskTitle": "Confirm delete annotation task '{name}'?",
+        "deleteTaskTitle": "Confirm delete annotation task '{{name}}'?",
         "deleteTaskContent1": "Deleting the annotation task will not delete the corresponding dataset.",
         "deleteTaskContent2": "If you want to keep current annotation results, please sync before deleting.",
-        "deleteAutoTaskTitle": "Confirm delete auto annotation task '{name}'?",
+        "deleteAutoTaskTitle": "Confirm delete auto annotation task '{{name}}'?",
         "deleteAutoTaskContent": "After deleting the task, the generated annotation results will not be deleted.",
         "deleteOkText": "Delete",
         "deleteCancelText": "Cancel",
-        "syncTitle": "Confirm sync annotation task '{name}'?",
+        "syncTitle": "Confirm sync annotation task '{{name}}'?",
         "syncContent1": "The file list in the annotation project will be consistent with the dataset, and differences will be corrected.",
         "syncContent2": "Labels in the annotation project will be merged with labels in the dataset, conflicts will be based on the latest content.",
         "syncOkText": "Sync",
         "syncCancelText": "Cancel",
-        "batchSyncTitle": "Confirm sync {count} selected annotation tasks?",
-        "batchDeleteTitle": "Confirm delete {count} selected annotation tasks?"
+        "batchSyncTitle": "Confirm sync {{count}} selected annotation tasks?",
+        "batchDeleteTitle": "Confirm delete {{count}} selected annotation tasks?"
       },
       "messages": {
         "deleteSuccess": "Mapping deleted successfully",
@@ -1032,7 +1028,7 @@
         "autoTaskNotFound": "Corresponding auto annotation task not found",
         "taskNotFound": "Corresponding annotation task not found",
         "fetchAutoTasksFailed": "Failed to fetch auto annotation tasks",
-        "syncToDbTitle": "Confirm sync '{name}' annotations from Label Studio to database?",
+        "syncToDbTitle": "Confirm sync '{{name}}' annotations from Label Studio to database?",
         "syncToDbContent1": "This operation will override current file tags and annotation information based on task data in Label Studio.",
         "syncToDbContent2": "After sync, you can view latest tags and annotations in dataset file details.",
         "syncToDbLoading": "Syncing annotations from Label Studio to database...",
@@ -1061,7 +1057,7 @@
       "manualAnnotation": "Manual Annotation",
       "autoAnnotation": "Auto Annotation",
       "allCategories": "All Categories",
-      "categoriesCount": "{count} categories",
+      "categoriesCount": "{{count}} categories",
       "editDataset": "Edit Dataset",
       "editTask": "Edit Task"
     },
@@ -1087,8 +1083,8 @@
         "selectTemplate": "Please select annotation template",
         "noTemplatesFound": "No matching templates found, please create templates in 'Annotation Templates' page",
         "selectDatasetAndFiles": "Select Dataset and Files",
-        "currentDataset": "Current dataset: {name} - Selected {count} files",
-        "currentDatasetImages": "Current dataset: {name} - Selected {count} image files",
+        "currentDataset": "Current dataset: {{name}} - Selected {{count}} files",
+        "currentDatasetImages": "Current dataset: {{name}} - Selected {{count}} image files",
         "modelSize": "Model Size",
         "modelSizeRequired": "Please select model size",
         "confThreshold": "Confidence Threshold",
@@ -1190,7 +1186,7 @@
         "moreActions": "More Actions"
       },
       "confirm": {
-        "deleteTitle": "Confirm delete auto annotation task '{name}'?",
+        "deleteTitle": "Confirm delete auto annotation task '{{name}}'?",
         "deleteContent": "After deleting the task, the generated annotation results will not be deleted.",
         "deleteOkText": "Delete",
         "deleteCancelText": "Cancel"
@@ -1210,7 +1206,7 @@
       "editDataset": {
         "title": "Edit Dataset",
         "description": "Modify dataset files for this task",
-        "selectedCount": "Selected {count} files",
+        "selectedCount": "Selected {{count}} files",
         "cancel": "Cancel",
         "save": "Save",
         "loading": "Saving...",
@@ -1270,6 +1266,225 @@
         "averageTime": "Average Time",
         "reviewCount": "Pending Review"
       }
+    }
+  },
+  "dataCleansing": {
+    "title": "Data Processing",
+    "tabs": {
+      "taskList": "Task List",
+      "templateManagement": "Template Management"
+    },
+    "actions": {
+      "createTask": "Create Task",
+      "createTemplate": "Create Template",
+      "updateTask": "Execute Task",
+      "updateTemplate": "Update Template",
+      "startTask": "Execute Task",
+      "pauseTask": "Pause Task",
+      "deleteTask": "Delete Task",
+      "deleteTemplate": "Delete Template",
+      "refreshTask": "Refresh Task",
+      "refreshTemplate": "Refresh Template",
+      "cancel": "Cancel",
+      "confirm": "Confirm",
+      "back": "Back",
+      "previous": "Previous",
+      "next": "Next",
+      "clear": "Clear",
+      "save": "Save",
+      "start": "Start",
+      "pause": "Pause",
+      "compare": "Compare",
+      "download": "Download",
+      "delete": "Delete",
+      "batchDownload": "Batch Download",
+      "edit": "Edit",
+      "selectAll": "Select All",
+      "search": "Search",
+      "reset": "Reset",
+      "config": "Parameter Configuration",
+      "selectOperatorConfig": "Please select an operator for parameter configuration"
+    },
+    "steps": {
+      "basicInfo": "Basic Info",
+      "operatorOrchestration": "Operator Orchestration"
+    },
+    "task": {
+      "columns": {
+        "taskName": "Task Name",
+        "taskId": "Task ID",
+        "srcDataset": "Source Dataset",
+        "destDataset": "Target Dataset",
+        "status": "Status",
+        "progress": "Progress",
+        "processedFiles": "Processed Files",
+        "totalFiles": "Total Files",
+        "duration": "Duration",
+        "startTime": "Start Time",
+        "endTime": "End Time",
+        "createdAt": "Created At",
+        "dataSizeChange": "Data Size Change",
+        "actions": "Actions"
+      },
+      "form": {
+        "name": "Name",
+        "namePlaceholder": "Enter task name",
+        "description": "Description",
+        "descriptionPlaceholder": "Describe the task goals and requirements",
+        "srcDataset": "Source Dataset",
+        "srcDatasetPlaceholder": "Please select source dataset",
+        "destDatasetName": "Target Dataset Name",
+        "destDatasetNamePlaceholder": "Enter or select target dataset name",
+        "destDatasetType": "Target Dataset Type",
+        "destDatasetTypeRequired": "Please select target dataset type"
+      },
+      "sections": {
+        "taskInfo": "Task Info",
+        "dataSourceSelection": "Data Source Selection"
+      },
+      "messages": {
+        "taskCreated": "Task created successfully",
+        "taskStarted": "Task started successfully",
+        "taskPaused": "Task paused successfully",
+        "taskDeleted": "Task deleted successfully",
+        "taskDetailFailed": "Failed to fetch task details",
+        "fetchTaskResultFailed": "Failed to fetch task results",
+        "fetchTaskLogFailed": "Failed to fetch task logs"
+      }
+    },
+    "template": {
+      "columns": {
+        "templateName": "Template Name",
+        "templateId": "Template ID",
+        "operatorCount": "Operator Count"
+      },
+      "form": {
+        "name": "Template Name",
+        "namePlaceholder": "Enter template name",
+        "nameRequired": "Please enter template name",
+        "description": "Template Description",
+        "descriptionPlaceholder": "Describe the template purpose and features"
+      },
+      "messages": {
+        "templateCreated": "Template created successfully",
+        "templateUpdated": "Template updated successfully",
+        "templateDeleted": "Template deleted successfully",
+        "templateDetailFailed": "Failed to fetch task details"
+      }
+    },
+    "detail": {
+      "tabs": {
+        "basicInfo": "Basic Info",
+        "operators": "Operators",
+        "files": "Files",
+        "logs": "Logs"
+      },
+      "statistics": {
+        "totalDuration": "Total Duration",
+        "successFiles": "Success Files",
+        "failedFiles": "Failed Files",
+        "successRate": "Success Rate",
+        "operatorCount": "Operator Count"
+      },
+      "fileTable": {
+        "fileName": "File Name",
+        "processedFileName": "Processed File Name",
+        "fileType": "File Type",
+        "processedFileType": "Processed File Type",
+        "beforeSize": "Before Size",
+        "afterSize": "After Size",
+        "status": "Status",
+        "actions": "Actions",
+        "searchFileName": "Search file name",
+        "searchFileType": "Search file type",
+        "selectFiles": "{{count}} files selected",
+        "notCompleted": "Not Completed",
+        "downloadNotAvailable": "Not Available Yet",
+        "compareDialogTitle": "File Comparison - {{fileName}}",
+        "beforeProcessing": "Before Processing",
+        "afterProcessing": "After Processing",
+        "originalFilePreview": "Original File Preview",
+        "processedFilePreview": "Processed File Preview",
+        "size": "Size",
+        "fileFormat": "File Format",
+        "processingEffect": "Processing Effect Comparison",
+        "sizeOptimization": "File Size Optimization",
+        "reduced": "Reduced by {{percent}}%"
+      },
+      "logTable": {
+        "selectRun": "Select Run",
+        "currentDisplay": "Current Display: {{num}}th Run",
+        "nthRun": "{{num}}th Run",
+        "noLogs": "No logs available for this task"
+      },
+      "operatorTable": {
+        "serialNumber": "Serial Number",
+        "operatorName": "Operator Name",
+        "startTime": "Start Time",
+        "endTime": "End Time",
+        "duration": "Duration",
+        "processedFiles": "Processed Files",
+        "successRate": "Success Rate",
+        "status": "Status",
+        "searchOperatorName": "Search operator name",
+        "completed": "Completed",
+        "failed": "Failed",
+        "running": "Running",
+        "title": "Operator Execution Report",
+        "description": "Detailed execution status of each operator"
+      },
+      "basicInfo": {
+        "executionSummary": "Execution Summary",
+        "basicInformation": "Basic Information",
+        "processingProgress": "Processing Progress",
+        "taskId": "Task ID",
+        "taskName": "Task Name",
+        "srcDataset": "Source Dataset",
+        "destDataset": "Target Dataset",
+        "startTime": "Start Time",
+        "description": "Task Description",
+        "endTime": "End Time",
+        "retryCount": "Retry Count",
+        "completed": "Completed: {{count}}",
+        "processing": "Processing: {{count}}",
+        "failed": "Failed: {{count}}"
+      },
+      "breadcrumb": {
+        "dataProcessing": "Data Processing",
+        "taskDetail": "Task Detail",
+        "templateDetail": "Template Detail"
+      }
+    },
+    "operatorLibrary": {
+      "title": "Operator Library",
+      "searchPlaceholder": "Search operator name...",
+      "selectCategory": "Select Category",
+      "showFavoritesOnly": "Show Favorites Only",
+      "selectAll": "Select All",
+      "noMatchFound": "No matching operators found"
+    },
+    "operatorOrchestration": {
+      "title": "Operator Orchestration",
+      "clear": "Clear",
+      "selectTemplate": "Select Template",
+      "startBuilding": "Start building your operator workflow",
+      "dragTip": "Drag operators from the left library here, or click to add"
+    },
+    "placeholders": {
+      "searchTaskName": "Search task name, description",
+      "searchTemplateName": "Search template name, description"
+    },
+    "processFlow": {
+      "start": "Start",
+      "selectDataset": "Select Dataset",
+      "complete": "Complete"
+    },
+    "status": {
+      "completed": "Completed",
+      "failed": "Failed",
+      "running": "Running",
+      "pending": "Pending",
+      "stopped": "Stopped"
     }
   }
 }
