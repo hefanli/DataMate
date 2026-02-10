@@ -2061,5 +2061,362 @@
         "create": "创建Webhook"
       }
     }
+  },
+  "synthesisTask": {
+    "title": "数据合成",
+    "tabs": {
+      "tasks": "合成任务",
+      "templates": "指令模板"
+    },
+    "actions": {
+      "createTask": "创建任务",
+      "createTemplate": "创建模板",
+      "createSynthesisTask": "创建合成任务",
+      "enableDebug": "启用调测",
+      "archive": "归档",
+      "evaluate": "立即评估",
+      "viewDetail": "查看详情",
+      "delete": "删除",
+      "confirmDelete": "确认删除",
+      "cancel": "取消",
+      "confirm": "确定",
+      "refresh": "刷新",
+      "next": "下一步",
+      "prev": "上一步"
+    },
+    "home": {
+      "searchPlaceholder": "搜索任务名称...",
+      "empty": {
+        "title": "暂无合成任务",
+        "noMatch": "没有找到匹配的任务",
+        "createFirst": "开始创建您的第一个合成任务"
+      },
+      "filters": {
+        "type": "类型",
+        "allTypes": "全部类型"
+      },
+      "columns": {
+        "taskName": "任务名称",
+        "taskId": "任务ID",
+        "type": "类型",
+        "fileCount": "文件数",
+        "createdAt": "创建时间",
+        "actions": "操作"
+      },
+      "typeMap": {
+        "qa": "问答对生成",
+        "cot": "链式推理生成"
+      },
+      "confirm": {
+        "deleteTitle": "确认删除任务?",
+        "deleteContent": "任务名：{name}",
+        "archiveTitle": "确认归档该合成任务?",
+        "archiveContent": "任务名：{name}"
+      },
+      "modal": {
+        "evalTitle": "创建评估任务",
+        "evalName": "评估任务名称",
+        "evalMethod": "评估方式",
+        "evalModel": "评估模型",
+        "evalSource": "来源：合成任务（SYNTHESIS）",
+        "sourceName": "源名称：{name}",
+        "startEval": "开始评估",
+        "placeholders": {
+          "evalName": "例如：数据评估",
+          "modelLoading": "加载模型中...",
+          "selectModel": "请选择用于评估的模型"
+        },
+        "dimensions": {
+          "questionIndependence": "问题是否独立",
+          "questionIndependenceDesc": "仅分析问题，问题的主体和客体都比较明确，即使有省略，也符合语言习惯。在不需要补充其他信息的情况下不会引起疑惑。",
+          "grammarError": "语法是否错误",
+          "grammarErrorDesc": "问题为疑问句，答案为陈述句；不存在词语搭配不当的情况；连接词和标点符号不存在错用情况；逻辑混乱的情况不存在；语法结构都正确且完整。",
+          "answerRelevance": "回答是否有针对性",
+          "answerRelevanceDesc": "回答应对问题中的所有疑问点提供正面、直接的回答，不应引起疑惑。同时，答案不应有任何内容的遗漏，需构成一个完整的陈述。"
+        }
+      },
+      "archive": {
+        "success": "归档成功",
+        "failed": "归档失败",
+        "datasetFailed": "创建数据集失败"
+      }
+    },
+    "create": {
+      "title": "创建合成任务",
+      "step1": "基本信息",
+      "step2": "合成编排",
+      "form": {
+        "name": "任务名称",
+        "namePlaceholder": "输入任务名称",
+        "nameRequired": "请输入任务名称",
+        "description": "任务描述",
+        "descriptionPlaceholder": "描述任务的目的和要求（可选）",
+        "selectDataset": "选择数据集",
+        "currentDataset": "当前数据集：{name} - 已选择 {count} 个文件",
+        "datasetRequired": "请选择数据集"
+      },
+      "template": {
+        "title": "合成指令模板",
+        "description": "从左侧选择一个模板，我们会自动为你填充合适的 Prompt 与合成策略。",
+        "singleSelect": "单选",
+        "searchPlaceholder": "搜索模板名称，如：SFT 问答 / COT 推理",
+        "templates": {
+          "sftQa": {
+            "title": "SFT 问答数据合成",
+            "subtitle": "从长文档自动生成高质量问答样本",
+            "badge": "推荐",
+            "description": "适用于构建监督微调（SFT）问答数据集，支持从知识库或长文档中抽取关键问答对。"
+          },
+          "cotReasoning": {
+            "title": "COT 链式推理合成",
+            "subtitle": "一步步推理过程与最终答案",
+            "badge": "推理增强",
+            "description": "生成包含模型推理中间过程的 COT 数据，用于提升模型的复杂推理和解释能力。"
+          }
+        },
+        "tooltips": {
+          "selected": "当前已选模板",
+          "apply": "点击应用此模板"
+        }
+      },
+      "config": {
+        "title": "合成配置",
+        "description": "根据左侧模板自动带出配置，你也可以在此基础上进行微调。",
+        "steps": {
+          "1": "设置合成总数",
+          "2": "配置文本切片策略",
+          "3": "配置问题合成参数",
+          "4": "配置答案合成参数"
+        },
+        "totalLimit": {
+          "title": "合成总数上限",
+          "description": "控制整个任务最多生成的 QA 对数量",
+          "placeholder": "可选项，建议在大规模合成时设置上限"
+        },
+        "slice": {
+          "title": "文本切片配置",
+          "description": "影响上下文长度与召回粒度",
+          "strategy": "分块策略",
+          "size": "分块大小",
+          "overlap": "重叠大小",
+          "customDelimiter": "自定义分隔符",
+          "delimiterPlaceholder": "例如：\\n\\n 或 ###",
+          "options": {
+            "default": "默认分块",
+            "chapter": "按章节分块",
+            "paragraph": "按段落分块",
+            "fixedLength": "固定长度分块",
+            "customSeparator": "自定义分隔符分块"
+          }
+        },
+        "question": {
+          "title": "问题合成配置",
+          "description": "控制每个 chunk 生成的问题数量与多样性",
+          "count": "问题生成数量",
+          "countDesc": "每千tokens生成的问题条数",
+          "temperature": "温度 (Temperature)",
+          "temperatureDesc": "数值越大，问题越发散、多样",
+          "useModel": "使用模型",
+          "useModelDesc": "用于生成问题的对话模型",
+          "promptTemplate": "问题 Prompt 模板",
+          "promptDesc": "用于指导模型如何从切片文本中生成高质量问题，可在保持变量占位符不变的前提下个性化修改。",
+          "qaPlaceholder": "将根据 SFT 问答合成场景预填问题生成 Prompt，可按需微调",
+          "cotPlaceholder": "将根据 COT 推理合成场景预填问题生成 Prompt，可按需微调"
+        },
+        "answer": {
+          "title": "答案合成配置",
+          "description": "控制答案生成的稳定性与风格",
+          "temperature": "温度 (Temperature)",
+          "temperatureDesc": "数值越小，答案越稳定、保守",
+          "useModel": "使用模型",
+          "useModelDesc": "用于生成答案的对话模型",
+          "promptTemplate": "答案 Prompt 模板",
+          "promptDesc": "用于约束模型回答的风格与内容范围，例如是否需要分步推理、是否必须引用原文关键信息等。",
+          "qaPlaceholder": "将根据 SFT 问答合成场景预填答案生成 Prompt，可按需微调",
+          "cotPlaceholder": "将根据 COT 推理合成场景预填答案生成 Prompt，可按需微调"
+        }
+      },
+      "messages": {
+        "selectType": "请选择一个合成类型",
+        "selectModels": "请选择问题和答案使用的模型",
+        "selectFiles": "请至少选择一个文件",
+        "fillRequired": "请填写所有必填项",
+        "createSuccess": "合成任务创建成功",
+        "createFailed": "合成任务创建失败",
+        "fetchQuestionPromptFailed": "获取问题 Prompt 模板失败",
+        "fetchAnswerPromptFailed": "获取答案 Prompt 模板失败",
+        "loadModelsFailed": "加载模型列表失败"
+      }
+    },
+    "templates": {
+      "title": "指令模板",
+      "searchPlaceholder": "搜索模板名称或描述...",
+      "empty": {
+        "title": "暂无指令模板",
+        "noMatch": "没有找到匹配的模板",
+        "createFirst": "开始创建您的第一个指令模板"
+      },
+      "filters": {
+        "type": "类型",
+        "allTypes": "全部类型",
+        "preset": "预置模板",
+        "custom": "自定义模板"
+      },
+      "columns": {
+        "name": "模板名称",
+        "type": "类型",
+        "category": "分类",
+        "variables": "变量数量",
+        "usageCount": "使用次数",
+        "qualityScore": "质量评分",
+        "lastUsed": "最后使用",
+        "actions": "操作"
+      },
+      "typeMap": {
+        "preset": "预置",
+        "custom": "自定义"
+      }
+    },
+    "createTemplate": {
+      "title": "创建新模板",
+      "editTitle": "编辑模板",
+      "form": {
+        "basicInfo": "基本信息",
+        "name": "模板名称",
+        "namePlaceholder": "输入模板名称",
+        "nameRequired": "请输入模板名称",
+        "category": "分类",
+        "categoryPlaceholder": "选择分类",
+        "categoryRequired": "请选择分类",
+        "description": "模板描述",
+        "descriptionPlaceholder": "简要描述模板的用途和特点",
+        "promptContent": "Prompt内容",
+        "promptPlaceholder": "输入prompt内容，使用 {变量名} 格式定义变量",
+        "promptRequired": "请输入Prompt内容",
+        "promptHint": "提示：使用 {变量名} 格式定义变量，例如 {text} 或 {input}",
+        "testInput": "测试输入",
+        "testInputPlaceholder": "输入测试数据",
+        "testOutput": "测试输出",
+        "testOutputPlaceholder": "点击测试按钮查看输出结果"
+      },
+      "variables": {
+        "title": "变量管理",
+        "empty": "暂无变量，在Prompt中使用 {变量名} 格式定义",
+        "addPlaceholder": "添加变量名（如：text, input, question）",
+        "add": "添加"
+      },
+      "test": {
+        "title": "模板测试",
+        "testing": "测试中...",
+        "testButton": "测试模板"
+      },
+      "actions": {
+        "saveTemplate": "保存模板",
+        "cancel": "取消"
+      },
+      "messages": {
+        "saved": "模板已保存",
+        "testOutput": "基于输入 \"{input}\"生成的测试结果：\n\n这是一个模拟的输出结果，展示了模板的工作效果。在实际使用中，这里会显示AI模型根据您的模板和输入生成的真实结果。\n\n模板变量已正确替换，输出格式符合预期。",
+        "testFailed": "测试失败"
+      },
+      "categories": {
+        "qa": "问答对生成",
+        "distillation": "蒸馏数据集",
+        "textGeneration": "文本生成",
+        "multimodal": "多模态生成"
+      }
+    },
+    "detail": {
+      "title": "合成数据详情",
+      "breadcrumb": {
+        "tasks": "合成任务",
+        "taskDetail": "任务详情",
+        "fileDetail": "文件详情"
+      },
+      "chunkList": {
+        "title": "Chunk 列表",
+        "total": "共 {count} 条",
+        "empty": "暂无 Chunk",
+        "chunkIndex": "Chunk #{index}",
+        "confirmDeleteTitle": "确认删除该 Chunk 及其合成数据？",
+        "confirmDeleteDesc": "ID：{id}"
+      },
+      "synthData": {
+        "title": "合成数据",
+        "empty": "该 Chunk 暂无合成数据",
+        "noChunkSelected": "请选择左侧 Chunk",
+        "currentChunk": "当前 Chunk #{index}",
+        "record": "记录 {index}",
+        "confirmDeleteTitle": "确认删除该条合成数据？",
+        "confirmDeleteDesc": "ID：{id}",
+        "edit": {
+          "cancel": "取消",
+          "confirm": "确定"
+        }
+      },
+      "messages": {
+        "deleteSuccess": "删除成功",
+        "deleteFailed": "删除失败，请稍后重试",
+        "saveSuccess": "保存成功",
+        "saveFailed": "保存失败，请稍后重试"
+      },
+      "pagination": {
+        "total": "共 {total} 条"
+      }
+    },
+    "fileTask": {
+      "breadcrumb": {
+        "tasks": "合成任务",
+        "taskDetail": "任务详情"
+      },
+      "tabs": {
+        "files": "处理文件"
+      },
+      "columns": {
+        "file": "文件",
+        "status": "状态",
+        "totalChunks": "切片总数",
+        "progress": "处理进度",
+        "createdAt": "创建时间",
+        "updatedAt": "更新时间",
+        "actions": "操作"
+      },
+      "status": {
+        "unknown": "未知",
+        "processing": "处理中",
+        "completed": "已完成",
+        "failed": "失败"
+      },
+      "operations": {
+        "refresh": "刷新",
+        "delete": "删除任务"
+      },
+      "confirm": {
+        "deleteTitle": "确认删除该合成任务？",
+        "deleteDescription": "删除后将无法恢复，请谨慎操作。",
+        "okText": "确认删除",
+        "cancelText": "取消"
+      },
+      "messages": {
+        "fetchFailed": "获取合成任务详情失败",
+        "deleteSuccess": "合成任务已删除",
+        "deleteFailed": "删除合成任务失败"
+      },
+      "statistics": {
+        "type": "类型",
+        "fileCount": "文件数"
+      },
+      "typeMap": {
+        "qa": "问答对生成",
+        "cot": "链式推理生成"
+      }
+    },
+    "messages": {
+      "deleteSuccess": "删除成功",
+      "deleteFailed": "删除失败",
+      "evaluationCreated": "评估任务创建成功",
+      "evaluationCreateFailed": "评估任务创建失败",
+      "fetchModelsFailed": "获取模型列表失败"
+    }
   }
 }
