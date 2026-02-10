@@ -1971,7 +1971,7 @@
       },
       "messages": {
         "addSuccess": "模型添加成功",
-        "error": "{message}：{detail}"
+        "error": "{{message}}：{{detail}}"
       }
     },
     "systemConfig": {
@@ -2117,9 +2117,9 @@
       },
       "confirm": {
         "deleteTitle": "确认删除任务?",
-        "deleteContent": "任务名：{name}",
+        "deleteContent": "任务名：{{name}}",
         "archiveTitle": "确认归档该合成任务?",
-        "archiveContent": "任务名：{name}"
+        "archiveContent": "任务名：{{name}}"
       },
       "modal": {
         "evalTitle": "创建评估任务",
@@ -2127,7 +2127,7 @@
         "evalMethod": "评估方式",
         "evalModel": "评估模型",
         "evalSource": "来源：合成任务（SYNTHESIS）",
-        "sourceName": "源名称：{name}",
+        "sourceName": "源名称：{{name}}",
         "startEval": "开始评估",
         "placeholders": {
           "evalName": "例如：数据评估",
@@ -2160,7 +2160,7 @@
         "description": "任务描述",
         "descriptionPlaceholder": "描述任务的目的和要求（可选）",
         "selectDataset": "选择数据集",
-        "currentDataset": "当前数据集：{name} - 已选择 {count} 个文件",
+        "currentDataset": "当前数据集：{{name}} - 已选择 {{count}} 个文件",
         "datasetRequired": "请选择数据集"
       },
       "template": {
@@ -2281,6 +2281,7 @@
         "actions": "操作"
       },
       "typeMap": {
+        "all": "全部类型",
         "preset": "预置",
         "custom": "自定义"
       }
@@ -2301,7 +2302,7 @@
         "promptContent": "Prompt内容",
         "promptPlaceholder": "输入prompt内容，使用 {变量名} 格式定义变量",
         "promptRequired": "请输入Prompt内容",
-        "promptHint": "提示：使用 {变量名} 格式定义变量，例如 {text} 或 {input}",
+        "promptHint": "提示：使用 {变量名} 格式定义变量，例如 {{text}} 或 {{input}}",
         "testInput": "测试输入",
         "testInputPlaceholder": "输入测试数据",
         "testOutput": "测试输出",
@@ -2319,12 +2320,13 @@
         "testButton": "测试模板"
       },
       "actions": {
+        "createTemplate": "创建模板",
         "saveTemplate": "保存模板",
         "cancel": "取消"
       },
       "messages": {
         "saved": "模板已保存",
-        "testOutput": "基于输入 \"{input}\"生成的测试结果：\n\n这是一个模拟的输出结果，展示了模板的工作效果。在实际使用中，这里会显示AI模型根据您的模板和输入生成的真实结果。\n\n模板变量已正确替换，输出格式符合预期。",
+        "testOutput": "基于输入 \"{{input}}\"生成的测试结果：\n\n这是一个模拟的输出结果，展示了模板的工作效果。在实际使用中，这里会显示AI模型根据您的模板和输入生成的真实结果。\n\n模板变量已正确替换，输出格式符合预期。",
         "testFailed": "测试失败"
       },
       "categories": {
@@ -2343,24 +2345,25 @@
       },
       "chunkList": {
         "title": "Chunk 列表",
-        "total": "共 {count} 条",
+        "total": "共 {{count}} 条",
         "empty": "暂无 Chunk",
-        "chunkIndex": "Chunk #{index}",
+        "chunkIndex": "Chunk #{{index}}",
         "confirmDeleteTitle": "确认删除该 Chunk 及其合成数据？",
-        "confirmDeleteDesc": "ID：{id}"
+        "confirmDeleteDesc": "ID：{{id}}"
       },
       "synthData": {
         "title": "合成数据",
         "empty": "该 Chunk 暂无合成数据",
         "noChunkSelected": "请选择左侧 Chunk",
-        "currentChunk": "当前 Chunk #{index}",
-        "record": "记录 {index}",
+        "currentChunk": "当前 Chunk #{{index}}",
+        "record": "记录 {{index}}",
         "confirmDeleteTitle": "确认删除该条合成数据？",
-        "confirmDeleteDesc": "ID：{id}",
+        "confirmDeleteDesc": "ID：{{id}}",
         "edit": {
           "cancel": "取消",
           "confirm": "确定"
-        }
+        },
+        "id": "ID：{{id}}"
       },
       "messages": {
         "deleteSuccess": "删除成功",
@@ -2369,7 +2372,7 @@
         "saveFailed": "保存失败，请稍后重试"
       },
       "pagination": {
-        "total": "共 {total} 条"
+        "total": "共 {{total}} 条"
       }
     },
     "fileTask": {

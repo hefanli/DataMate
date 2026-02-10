@@ -1971,7 +1971,7 @@
       },
       "messages": {
         "addSuccess": "Model added successfully",
-        "error": "{message}: {detail}"
+        "error": "{{message}}: {{detail}}"
       }
     },
     "systemConfig": {
@@ -2117,9 +2117,9 @@
       },
       "confirm": {
         "deleteTitle": "Confirm delete this task?",
-        "deleteContent": "Task name: {name}",
+        "deleteContent": "Task name: {{name}}",
         "archiveTitle": "Confirm archive this synthesis task?",
-        "archiveContent": "Task name: {name}"
+        "archiveContent": "Task name: {{name}}"
       },
       "modal": {
         "evalTitle": "Create Evaluation Task",
@@ -2127,7 +2127,7 @@
         "evalMethod": "Evaluation Method",
         "evalModel": "Evaluation Model",
         "evalSource": "Source: Synthesis Task (SYNTHESIS)",
-        "sourceName": "Source Name: {name}",
+        "sourceName": "Source Name: {{name}}",
         "startEval": "Start Evaluation",
         "placeholders": {
           "evalName": "e.g., Data Evaluation",
@@ -2160,7 +2160,7 @@
         "description": "Task Description",
         "descriptionPlaceholder": "Describe the purpose and requirements of the task (optional)",
         "selectDataset": "Select Dataset",
-        "currentDataset": "Current dataset: {name} - Selected {count} files",
+        "currentDataset": "Current dataset: {{name}} - Selected {{count}} files",
         "datasetRequired": "Please select dataset"
       },
       "template": {
@@ -2281,6 +2281,7 @@
         "actions": "Actions"
       },
       "typeMap": {
+        "all": "All Types",
         "preset": "Preset",
         "custom": "Custom"
       }
@@ -2301,7 +2302,7 @@
         "promptContent": "Prompt Content",
         "promptPlaceholder": "Enter prompt content, use {variable_name} format to define variables",
         "promptRequired": "Please enter Prompt content",
-        "promptHint": "Tip: Use {variable_name} format to define variables, e.g., {text} or {input}",
+        "promptHint": "Tip: Use {variable_name} format to define variables, e.g., {{text}} or {input}",
         "testInput": "Test Input",
         "testInputPlaceholder": "Enter test data",
         "testOutput": "Test Output",
@@ -2319,12 +2320,13 @@
         "testButton": "Test Template"
       },
       "actions": {
+        "createTemplate": "Create Template",
         "saveTemplate": "Save Template",
         "cancel": "Cancel"
       },
       "messages": {
         "saved": "Template saved",
-        "testOutput": "Test result generated based on input \"{input}\"...",
+        "testOutput": "Test result generated based on input \"{{input}}\"...",
         "testFailed": "Test failed"
       },
       "categories": {
@@ -2343,24 +2345,25 @@
       },
       "chunkList": {
         "title": "Chunk List",
-        "total": "Total {count} items",
+        "total": "Total {{count}} items",
         "empty": "No Chunks",
-        "chunkIndex": "Chunk #{index}",
+        "chunkIndex": "Chunk #{{index}}",
         "confirmDeleteTitle": "Confirm delete this Chunk and its synthesis data?",
-        "confirmDeleteDesc": "ID: {id}"
+        "confirmDeleteDesc": "ID: {{id}}"
       },
       "synthData": {
         "title": "Synthesis Data",
         "empty": "No synthesis data for this Chunk",
         "noChunkSelected": "Please select a Chunk on the left",
-        "currentChunk": "Current Chunk #{index}",
-        "record": "Record {index}",
+        "currentChunk": "Current Chunk #{{index}}",
+        "record": "Record {{index}}",
         "confirmDeleteTitle": "Confirm delete this synthesis data?",
-        "confirmDeleteDesc": "ID: {id}",
+        "confirmDeleteDesc": "ID: {{id}}",
         "edit": {
           "cancel": "Cancel",
           "confirm": "Confirm"
-        }
+        },
+        "id": "ID: {{id}}"
       },
       "messages": {
         "deleteSuccess": "Delete successful",
@@ -2369,7 +2372,7 @@
         "saveFailed": "Save failed, please try again later"
       },
       "pagination": {
-        "total": "Total {total} items"
+        "total": "Total {{total}} items"
       }
     },
     "fileTask": {
