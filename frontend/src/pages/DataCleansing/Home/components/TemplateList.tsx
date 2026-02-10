@@ -27,7 +27,7 @@ export default function TemplateList() {
     fetchData,
     handleFiltersChange,
     handleKeywordChange,
-  } = useFetchData(queryCleaningTemplatesUsingGet, mapTemplate);
+  } = useFetchData(queryCleaningTemplatesUsingGet, template => mapTemplate(template, t));
 
   const templateOperations = () => {
     return [

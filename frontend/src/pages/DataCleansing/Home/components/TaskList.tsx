@@ -44,7 +44,7 @@ export default function TaskList() {
     fetchData,
     handleFiltersChange,
     handleKeywordChange,
-  } = useFetchData(queryCleaningTasksUsingGet, mapTask);
+  } = useFetchData(queryCleaningTasksUsingGet, task => mapTask(task, t));
 
   const pauseTask = async (item: CleansingTask) => {
     await stopCleaningTaskUsingPost(item.id);

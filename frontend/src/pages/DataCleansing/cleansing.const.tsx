@@ -84,7 +84,7 @@ export const TaskStatusMap = {
   },
 };
 
-export const mapTask = (task: CleansingTask) => {
+export const mapTask = (task: CleansingTask, t: (key: string) => string) => {
   const duration = formatExecutionDuration(task.startedAt, task.finishedAt);
   const before = formatBytes(task.beforeSize);
   const after = formatBytes(task.afterSize);
@@ -109,17 +109,17 @@ export const mapTask = (task: CleansingTask) => {
     before,
     after,
     statistics: [
-      { label: "进度", value: `${task?.progress?.process || 0}%` },
+      { label: t("dataCleansing.task.columns.progress"), value: `${task?.progress?.process || 0}%` },
       {
-        label: "执行耗时",
+        label: t("dataCleansing.task.columns.duration"),
         value: duration,
       },
       {
-        label: "已处理文件数",
+        label: t("dataCleansing.task.columns.processedFiles"),
         value: task?.progress?.finishedFileNum || 0,
       },
       {
-        label: "总文件数",
+        label: t("dataCleansing.task.columns.totalFiles"),
         value: task?.progress?.totalFileNum || 0,
       },
     ],
@@ -127,11 +127,13 @@ export const mapTask = (task: CleansingTask) => {
   };
 };
 
-export const mapTemplate = (template: CleansingTemplate) => ({
-  ...template,
-  createdAt: formatDateTime(template.createdAt),
-  updatedAt: formatDateTime(template.updatedAt),
-  icon: <Layout className="w-full h-full" />,
-  statistics: [{ label: "算子数量", value: template.instance?.length ?? 0 }],
-  lastModified: formatDateTime(template.updatedAt),
-});
+export const mapTemplate = (template: CleansingTemplate, t: (key: string) => string) => {
+  return {
+      ...template,
+      createdAt: formatDateTime(template.createdAt),
+      updatedAt: formatDateTime(template.updatedAt),
+      icon: <Layout className="w-full h-full" />,
+      statistics: [{ label: t("dataCleansing.template.columns.operatorCount"), value: template.instance?.length ?? 0 }],
+      lastModified: formatDateTime(template.updatedAt),
+    }
+};

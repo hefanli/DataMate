@@ -38,7 +38,7 @@ export default function CleansingTaskDetail() {
     if (!id) return;
     try {
       const { data } = await queryCleaningTaskByIdUsingGet(id);
-      setTask(mapTask(data));
+      setTask(mapTask(data, t));
     } catch (error) {
       message.error(t("dataCleansing.task.messages.taskDetailFailed"));
       navigate("/data/cleansing");

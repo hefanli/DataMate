@@ -27,7 +27,7 @@ export default function CleansingTemplateDetail() {
     if (!id) return;
     try {
       const { data } = await queryCleaningTemplateByIdUsingGet(id);
-      setTemplate(mapTemplate(data));
+      setTemplate(mapTemplate(data, t));
     } catch (error) {
       message.error(t("dataCleansing.template.messages.templateDetailFailed"));
       navigate("/data/cleansing");
