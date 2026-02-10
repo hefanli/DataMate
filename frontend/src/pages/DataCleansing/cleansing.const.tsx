@@ -17,39 +17,7 @@ import {
   PauseCircleOutlined,
 } from "@ant-design/icons";
 import { BrushCleaning, Layout } from "lucide-react";
-
-export const templateTypesMap = {
-  [TemplateType.TEXT]: {
-    label: "文本",
-    value: TemplateType.TEXT,
-    icon: "📝",
-    description: "处理文本数据的模板",
-  },
-  [TemplateType.IMAGE]: {
-    label: "图片",
-    value: TemplateType.IMAGE,
-    icon: "🖼️",
-    description: "处理图像数据的模板",
-  },
-  [TemplateType.VIDEO]: {
-    value: TemplateType.VIDEO,
-    label: "视频",
-    icon: "🎥",
-    description: "处理视频数据的模板",
-  },
-  [TemplateType.AUDIO]: {
-    value: TemplateType.AUDIO,
-    label: "音频",
-    icon: "🎵",
-    description: "处理音频数据的模板",
-  },
-  [TemplateType.IMAGE2TEXT]: {
-    value: TemplateType.IMAGE2TEXT,
-    label: "图片转文本",
-    icon: "🔄",
-    description: "图像识别转文本的处理模板",
-  },
-};
+import {DatasetStatus} from "@/pages/DataManagement/dataset.model.ts";
 
 export const TaskStatusMap = {
   [TaskStatus.PENDING]: {
@@ -84,11 +52,46 @@ export const TaskStatusMap = {
   },
 };
 
+export function getTaskStatusMap(t: (key: string) => string) {
+  return {
+    [TaskStatus.PENDING]: {
+      label: t("dataCleansing.status.pending"),
+      value: TaskStatus.PENDING,
+      color: "gray",
+      icon: <ClockCircleOutlined />,
+    },
+    [TaskStatus.RUNNING]: {
+      label: t("dataCleansing.status.running"),
+      value: TaskStatus.RUNNING,
+      color: "blue",
+      icon: <PlayCircleOutlined />,
+    },
+    [TaskStatus.COMPLETED]: {
+      label: t("dataCleansing.status.completed"),
+      value: TaskStatus.COMPLETED,
+      color: "green",
+      icon: <CheckCircleOutlined />,
+    },
+    [TaskStatus.FAILED]: {
+      label: t("dataCleansing.status.failed"),
+      value: TaskStatus.FAILED,
+      color: "red",
+      icon: <AlertOutlined />,
+    },
+    [TaskStatus.STOPPED]: {
+      label: t("dataCleansing.status.stopped"),
+      value: TaskStatus.STOPPED,
+      color: "orange",
+      icon: <PauseCircleOutlined />,
+    },
+  };
+}
+
 export const mapTask = (task: CleansingTask, t: (key: string) => string) => {
   const duration = formatExecutionDuration(task.startedAt, task.finishedAt);
   const before = formatBytes(task.beforeSize);
   const after = formatBytes(task.afterSize);
-  const status = TaskStatusMap[task.status];
+  const status = getTaskStatusMap(t)[task.status];
   const finishedAt = formatDateTime(task.finishedAt);
   const startedAt = formatDateTime(task.startedAt);
   const createdAt = formatDateTime(task.createdAt);
