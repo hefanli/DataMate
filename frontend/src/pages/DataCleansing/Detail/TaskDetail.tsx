@@ -192,10 +192,10 @@ export default function CleansingTaskDetail() {
 
   const breadItems = [
     {
-      title: <Link to="/data/cleansing">{t("dataCleansing.breadcrumb.dataProcessing")}</Link>,
+      title: <Link to="/data/cleansing">{t("dataCleansing.detail.breadcrumb.dataProcessing")}</Link>,
     },
     {
-      title: t("dataCleansing.breadcrumb.taskDetail"),
+      title: t("dataCleansing.detail.breadcrumb.taskDetail"),
     },
   ];
 
